@@ -1,0 +1,56 @@
+% Phase 5: Presentation
+
+\PhaseTitlePage{5}{Presentation}{TMA-PRES-P5}{Presentation Document}
+
+\section{Phase 5: Presentation}\label{sec:phase5}
+\SetDocHeader{Phase 5: Presentation}
+
+\subsection{Objective}
+The goal of this phase is the formal demonstration of project completion. The team must prove that
+the application meets the original user stories, functions reliably, and was developed using
+professional software engineering standards.
+
+\subsubsection{Checkpoints}
+\begin{itemize}
+  \item[$\square$] \textbf{Functional Demo:} Perform a complete walkthrough of all user stories in a live environment.
+  \item[$\square$] \textbf{Technical Review:} Explain the architectural choices, including the Spring Boot/Angular/JWT integration.
+  \item[$\square$] \textbf{Build Verification:} Demonstrate a clean build and successful application startup from scratch.
+  \item[$\square$] \textbf{Post-Mortem/Reflection:} Briefly summarize the team's Agile process and how blockers were handled.
+\end{itemize}
+
+\subsection{Presentation Requirements}
+
+\subsubsection{The Functional Walkthrough}
+You must demonstrate the following ``Happy Path'' scenarios:
+\begin{itemize}
+  \item \textbf{Onboarding:} A new user registers and successfully logs in.
+  \item \textbf{Core Workflow:} A user creates a Todo, adds nested subtasks, edits them, and eventually deletes them.
+  \item \textbf{Security Check:} Demonstrate that an unauthenticated user cannot access the dashboard.
+  \item \textbf{Persistence:} Show that tasks remain in the system after the application is restarted.
+\end{itemize}
+
+\subsubsection{Technical Deep-Dive}
+Be prepared to answer questions regarding:
+\begin{itemize}
+  \item \textbf{Data Flow:} How a request moves from an Angular component through the JWT interceptor to the Spring Boot controller and finally to SQLite.
+  \item \textbf{Schema Design:} Why you chose your specific relational structure for Todos and Subtasks.
+  \item \textbf{Challenges:} How the team utilized Git, resolved merge conflicts, or overcame technical blockers identified during Stand-ups.
+\end{itemize}
+
+\subsubsection{Build \& Deployment}
+\begin{itemize}
+  \item \textbf{Clean Build:} You must be able to run \texttt{./gradlew build} (or equivalent) and \texttt{ng build} to prove the project is not running on ``magic'' local configurations.
+  \item \textbf{Startup:} The application must start successfully with a single command or set of commands.
+\end{itemize}
+
+\subsection{Success Criteria}
+A successful presentation is evaluated on:
+\begin{itemize}
+  \item \textbf{Alignment:} Does the software actually do what the User Stories required?
+  \item \textbf{Reliability:} Does the application run smoothly during the demo without unexpected crashes?
+  \item \textbf{Communication:} Can the team clearly articulate \emph{how} the application works, not just \emph{that} it works?
+  \item \textbf{Professionalism:} Did the team demonstrate a disciplined approach to the SDLC and Agile practices?
+\end{itemize}
+
+\vspace{1em}
+\noindent\textbf{Project Complete.}

@@ -1,0 +1,57 @@
+% Phase 2: Design
+
+\PhaseTitlePage{2}{Design}{TMA-DES-P2}{Design Document}
+
+\section{Phase 2: Design}\label{sec:phase2}
+\SetDocHeader{Phase 2: Design}
+
+\subsection{Objective}
+The goal of this phase is architectural and interface planning. The team must define the data flow,
+security protocols, and user interface layouts. Successful completion of this phase ensures that
+the Backend and Frontend teams can work in parallel without integration conflicts.
+
+\subsubsection{Checkpoints}
+\begin{itemize}
+  \item[$\square$] \textbf{System Architecture:} Document the data flow (Angular $\rightarrow$ Spring Boot $\rightarrow$ SQLite).
+  \item[$\square$] \textbf{Security Planning:} Familiarize yourself with JJWT.
+  \item[$\square$] \textbf{UI Wireframing:} Map out the interface for authentication and task management.
+  \item[$\square$] \textbf{Component Design:} Loosely define the Angular component hierarchy and service structure.
+\end{itemize}
+
+\subsection{Technical Reference: Design Standards}
+
+\subsubsection{API Design Principles}
+All endpoints must follow RESTful conventions. Use the following templates for your design documentation:
+
+\subsubsection{Resource Creation Flow (Template)}
+Use this logic to design your \texttt{POST} endpoints to ensure consistent error handling
+(e.g., handling duplicate entries).
+\begin{enumerate}[label=\arabic*., nosep, leftmargin=*]
+  \item Client/Requester sends a Create Request to the API/Interface Layer.
+  \item API forwards the request to the Business Logic Layer for processing.
+  \item[\textbf{A.}] Resource is unique: Logic checks existence via Data Access $\rightarrow$ Storage (not found); persists the new resource; returns a 2xx Success Response to the client.
+  \item[\textbf{B.}] Conflict / already exists: Logic checks existence (found); signals conflict to API; returns a 4xx Error Response to the client.
+\end{enumerate}
+
+\subsubsection{Login/Auth Flow (Template)}
+Use this logic to design your \texttt{/auth} endpoints to ensure secure credential validation.
+\begin{enumerate}[label=\arabic*., nosep, leftmargin=*]
+  \item Client/Requester sends a Login Request to the API/Interface Layer.
+  \item API forwards the request to the Business Logic Layer.
+  \item[\textbf{A.}] Success: Logic fetches user data via Data Access $\rightarrow$ Storage; Utility validates credentials and generates a token; API returns a 2xx Success Response with token.
+  \item[\textbf{B.}] Invalid credentials: Logic fetches user data (null/empty); API returns a 4xx Error Response to the client.
+\end{enumerate}
+
+\subsubsection{Deliverables for Phase 2}
+By the end of this phase, your team should have:
+\begin{enumerate}
+  \item \textbf{API Specification:} A completed document defining all endpoints, request bodies, and response codes.
+  \item \textbf{Wireframes:} Visual mockups of the Login, Register, and Dashboard screens.
+  \item \textbf{Database Schema:} A final relational model (ERD) ready for implementation.
+\end{enumerate}
+
+\subsubsection{Moving to Phase 3}
+Once the API contracts and UI wireframes are finalized and agreed upon by all team members,
+proceed to \textbf{Phase 3: Backend Development}.
+
+\newpage

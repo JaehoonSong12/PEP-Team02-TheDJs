@@ -2,9 +2,9 @@
 % Compile: pdflatex main.tex (run twice for TOC/refs)
 %
 % Structure:
-%   modules/frontmatter.tex   — document control (revision history)
-%   modules/overview.tex      — project-wide context
-%   modules/phase01.tex … phase05.tex — one file per SDLC phase (each opens with \PhaseTitlePage)
+%   module/frontmatter.tex   — document control (revision history)
+%   module/overview.tex      — project-wide context
+%   module/phase01.tex … phase05.tex — one file per SDLC phase (each opens with \PhaseTitlePage)
 \documentclass{article}
 \hbadness=10000
 \vbadness=10000
@@ -101,15 +101,15 @@
 \begin{document}
 % -------------------------------------------------------------------
 
-\input{modules/frontmatter}
+\input{module/frontmatter}
 \tableofcontents
 
 \newpage
-\input{modules/overview}
-\input{modules/phase01}
-% \input{modules/phase02}
-% \input{modules/phase03}
-% \input{modules/phase04}
-% \input{modules/phase05}
+\input{module/overview}
+\input{module/phase01}
+% \input{module/phase02}
+% \input{module/phase03}
+% \input{module/phase04}
+% \input{module/phase05}
 
 \end{document}

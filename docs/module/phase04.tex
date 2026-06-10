@@ -1,0 +1,56 @@
+% Phase 4: Frontend Development
+
+\PhaseTitlePage{4}{Frontend Development}{TMA-FE-P4}{Frontend Development Document}
+
+\section{Phase 4: Frontend Development}\label{sec:phase4}
+\SetDocHeader{Phase 4: Frontend Development}
+
+\subsection{Objective}
+The goal of this phase is to build a responsive and interactive user interface. This phase focuses on
+the ``interface'' of the application: consuming the Spring Boot API, managing user authentication
+state via JWT, and creating a seamless user experience for task management.
+
+\subsubsection{Checkpoints}
+\begin{itemize}
+  \item[$\square$] \textbf{Project Scaffolding:} Initialize Angular and configure environment settings.
+  \item[$\square$] \textbf{Service Layer:} Build Angular services to consume the Spring Boot API.
+  \item[$\square$] \textbf{Auth Integration:} Implement login/register forms and JWT-based state management.
+  \item[$\square$] \textbf{Task Management UI:} Build the dashboard, task creation forms, and subtask nested lists.
+  \item[$\square$] \textbf{Design Validation:} Confirm the UI components and user workflows match the Phase~2 wireframes.
+\end{itemize}
+
+\subsection{Technical Requirements}
+
+\subsubsection{Authentication \& JWT Handling}
+\begin{itemize}
+  \item \textbf{Token Storage:} Securely store the JWT (e.g., in \texttt{localStorage} or a state management store) upon successful login.
+  \item \textbf{Interceptors:} Implement an Angular \texttt{HttpInterceptor} to automatically attach the \texttt{Authorization: Bearer <token>} header to all outgoing API requests.
+  \item \textbf{Route Guards:} Implement \texttt{CanActivate} guards to prevent unauthenticated users from accessing the Task Dashboard.
+  \item \textbf{Logout Logic:} Implement a clear logout flow that clears the token and redirects the user to the login page.
+\end{itemize}
+
+\subsubsection{API Integration}
+\begin{itemize}
+  \item \textbf{Asynchronous Operations:} Use RxJS Observables to handle all API calls to ensure the UI remains responsive during data fetching.
+  \item \textbf{Error Handling:} Implement user-friendly error messages (e.g., ``Invalid credentials'' or ``Task not found'') based on the HTTP status codes returned by the backend.
+\end{itemize}
+
+\subsubsection{User Interface (UI)}
+\begin{itemize}
+  \item \textbf{Responsiveness:} Ensure the layout is functional across different screen sizes.
+  \item \textbf{Component Hierarchy:} Follow the component structure defined during the Phase~2 design to maintain code modularity.
+\end{itemize}
+
+\subsubsection{Deliverables for Phase 4}
+By the end of this phase, your team should have:
+\begin{enumerate}
+  \item \textbf{Functional Angular Application:} A complete, running frontend integrated with the backend.
+  \item \textbf{End-to-End Workflow:} A user can successfully register, log in, manage todos, and manage subtasks without errors.
+  \item \textbf{Verified UI/UX:} A UI that matches the wireframes and provides a smooth, intuitive user experience.
+\end{enumerate}
+
+\subsubsection{Moving to Phase 5}
+Once the frontend is fully integrated and all user stories are functional,
+proceed to \textbf{Phase 5: Presentation}.
+
+\newpage
