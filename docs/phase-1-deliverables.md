@@ -18,6 +18,6 @@
     POST /api/todos/{id}/{subtask}
         The request body should include a text value of the new subtask. Returns a JSON of the subtask that was created with a response status of 200. If the creation was not successful, return response status of 400
     PATCH /api/todos/{id}/{subtask}
-        The request body should include a text value with which to update the subtask. Returns a JSON of the subtask that was updated with a response status of 200. If the creation was not successful, return response status of 400
+        The request body should include a text value with which to update the subtask. Returns a JSON of the number of rows that were updated with a response status of 200. If the creation was not successful, return response status of 400
     DELETE /api/todos/{id}/{subtask}
         The response body should include the number of rows that were updated, along with a response status of 200.
