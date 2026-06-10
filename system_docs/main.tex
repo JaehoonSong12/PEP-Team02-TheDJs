@@ -1,0 +1,172 @@
+% Phase 1: Requirements Analysis — Todo Management Application
+% Compile: pdflatex main.tex (run twice for TOC/refs)
+
+\documentclass{article}
+\hbadness=10000
+\vbadness=10000
+
+% -------------------------------------------------------------------
+% PACKAGES
+% -------------------------------------------------------------------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[english]{babel}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{parskip}
+
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,positioning,fit,backgrounds,shadows,arrows.meta,calc,babel}
+
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{amssymb}
+\usepackage{listings}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{Phase 1 Requirements Analysis \textbar\ Todo Management Application}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  urlcolor=blue,
+  pdftitle={Todo Management Application — Phase 1},
+  pdfauthor={Jaehoon Song, Daniel Patience, Jacqueline Lainhart}
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  breaklines=true,
+  columns=fullflexible,
+  showstringspaces=false
+}
+
+% -------------------------------------------------------------------
+\begin{document}
+% -------------------------------------------------------------------
+
+\begin{titlepage}
+  \thispagestyle{empty}
+  \centering
+  \vspace*{2.5cm}
+  {\LARGE\bfseries Phase 1: Requirements Analysis\par}
+  \vspace{1.2cm}
+  {\Large Todo Management Application\par}
+  \vspace{0.6cm}
+  {\large Full-Stack SDLC Project Document\par}
+  \vspace{2.5cm}
+  {\large
+    Jaehoon Song \\
+    Daniel Patience \\
+    Jacqueline Lainhart
+  \par}
+  \vspace{2cm}
+  \begin{tabular}{@{}r@{\hspace{1.5em}}l@{}}
+    \textbf{Document version:} & 0.1 (Draft) \\
+    \textbf{Status:}           & In Progress \\
+    \textbf{Phase:}            & 1 of 5 \\
+    \textbf{Date:}             & \today \\
+  \end{tabular}
+  \vfill
+  {\small Angular \textbullet\ Spring Boot \textbullet\ SQLite \textbullet\ Gradle\par}
+\end{titlepage}
+
+\tableofcontents
+
+
+
+
+\newpage
+% -------------------------------------------------------------------
+\section{Project Overview}\label{sec:overview}
+% -------------------------------------------------------------------
+
+\subsection{Objective}
+Build a full-stack, secure Todo Management application using Agile methodologies.
+The team moves from initial requirement analysis to a functional product demonstration,
+simulating a real-world Software Development Lifecycle (SDLC).
+
+\subsection{Technology Stack}
+\begin{tabularx}{\textwidth}{@{} l X @{}}
+\toprule
+\textbf{Layer} & \textbf{Technology} \\
+\midrule
+Frontend       & Angular \\
+Backend        & Java (Spring Boot, Web, Data JPA) \\
+Database       & SQLite \\
+Build / Tools  & Gradle, Git, GitHub \\
+\bottomrule
+\end{tabularx}
+
+\subsection{User Stories (Scope)}
+The following stories define \emph{what} the system must deliver. Phase~1 decomposes
+each story into technical tasks, data structures, and API contracts.
+
+\begin{enumerate}
+  \item \textbf{Registration:} As a new user, I can register an account.
+  \item \textbf{Authentication:} As a user, I can log in and log out securely.
+  \item \textbf{Task Management:} As a user, I can create, read, update, and delete primary Todo items.
+  \item \textbf{Organization:} As a user, I can create, read, update, and delete nested subtasks.
+\end{enumerate}
+
+\subsection{Project Roadmap}
+\begin{tabularx}{\textwidth}{@{} c l X @{}}
+\toprule
+\textbf{Phase} & \textbf{Name} & \textbf{Goal} \\
+\midrule
+1 & Requirements Analysis & Deconstruct user stories; define schema and API contracts. \\
+2 & Design                & Plan architecture, wireframes, and security flows. \\
+3 & Backend Development   & Build REST API, security layer, and persistence. \\
+4 & Frontend Development  & Build Angular UI and integrate with the API. \\
+5 & Presentation          & Demonstrate working software and architecture. \\
+\bottomrule
+\end{tabularx}
+
+\newpage
+% -------------------------------------------------------------------
+\section{Phase 1 Objectives and Checkpoints}\label{sec:phase1}
+% -------------------------------------------------------------------
+
+\subsection{Objective}
+Decompose user stories into granular technical work \emph{before} any implementation begins.
+The team must agree on data structures, API communication standards, and completion criteria.
+
+\subsection{Phase 1 Checkpoints}
+Use this checklist to track phase completion. Mark each item when the deliverable is reviewed
+and accepted by the team.
+
+\begin{itemize}
+  \item[$\square$] \textbf{Task Breakdown} — User stories decomposed into assignable technical tasks.
+  \item[$\square$] \textbf{Database Modeling} — Relational schema for User, Todo, and Subtask entities.
+  \item[$\square$] \textbf{API Contract} — RESTful endpoints with JSON request/response bodies.
+  \item[$\square$] \textbf{Definition of Done} — Team-specific criteria for completed work.
+\end{itemize}
+
+\subsection{Phase 1 Deliverables}
+\begin{enumerate}
+  \item \textbf{Entity Relationship Diagram (ERD)} — Visual or text-based SQLite schema.
+  \item \textbf{API Specification} — Endpoint list with payloads and status codes.
+  \item \textbf{Task Backlog} — Actionable items tracked in GitHub Issues and Projects.
+\end{enumerate}
+
+\subsection{Exit Criteria (Moving to Phase 2)}
+Proceed to Phase~2 when:
+\begin{itemize}
+  \item All checkpoints above are complete.
+  \item The team has reviewed and signed off on the ERD and API contract.
+  \item Backlog items are created in GitHub and assigned or ready for assignment.
+\end{itemize}
+
+
+
+
+\end{document}
