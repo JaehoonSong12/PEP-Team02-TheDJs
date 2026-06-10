@@ -1,0 +1,56 @@
+% Phase 3: Backend Development
+
+\PhaseTitlePage{3}{Backend Development}{TMA-BE-P3}{Backend Development Document}
+
+\section{Phase 3: Backend Development}\label{sec:phase3}
+\SetDocHeader{Phase 3: Backend Development}
+
+\subsection{Objective}
+The goal of this phase is to build a robust, secure REST API. This phase focuses on the
+``engine'' of the application: data persistence, business logic, and security. The backend
+must be fully functional and testable via tools like Postman or cURL before the frontend development begins.
+
+\subsubsection{Checkpoints}
+\begin{itemize}
+  \item[$\square$] \textbf{Project Scaffolding:} Initialize Gradle, Spring Boot, and SQLite configuration.
+  \item[$\square$] \textbf{Data Layer:} Implement Spring Data JPA repositories and entity mappings.
+  \item[$\square$] \textbf{Security Implementation:} Build the authentication and authorization logic.
+  \item[$\square$] \textbf{Business Logic:} Develop required CRUD services for all entities.
+  \item[$\square$] \textbf{Design Validation:} Confirm all implemented endpoints and data models match Phase~1/2 specifications.
+\end{itemize}
+
+\subsection{Technical Requirements}
+
+\subsubsection{API Compliance}
+All developed endpoints \textbf{must} match the API Contract defined in Phase~1/2. Any deviation from
+the agreed-upon JSON structure or endpoint path must be approved by the team before implementation.
+
+\subsubsection{Security Standards}
+\begin{itemize}
+  \item \textbf{Authentication:} Ensure all protected routes (Todo/Subtask management) require a valid user session or token.
+  \item \textbf{Authorization:} Ensure users can only access, edit, or delete data that belongs to their own account.
+\end{itemize}
+
+\subsubsection{Error Handling}
+The API must return meaningful HTTP status codes:
+\begin{itemize}
+  \item \texttt{200 OK} / \texttt{201 Created}: Successful operations.
+  \item \texttt{400 Bad Request}: Validation errors (e.g., missing required fields).
+  \item \texttt{401 Unauthorized}: Missing or invalid authentication.
+  \item \texttt{403 Forbidden}: Authenticated user attempting to access unauthorized data.
+  \item \texttt{404 Not Found}: Resource does not exist.
+\end{itemize}
+
+\subsubsection{Deliverables for Phase 3}
+By the end of this phase, your team should have:
+\begin{enumerate}
+  \item \textbf{Functional REST API:} A running Spring Boot application.
+  \item \textbf{Verified Endpoints:} A collection of successful tests (via Postman, cURL, or similar) demonstrating all CRUD operations.
+  \item \textbf{Persisted Data:} Evidence that data persists in the SQLite database after application restarts.
+\end{enumerate}
+
+\subsubsection{Moving to Phase 4}
+Once the backend is stable and the API endpoints are verified,
+proceed to \textbf{Phase 4: Frontend Development}.
+
+\newpage

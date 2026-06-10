@@ -1,0 +1,47 @@
+% Project-wide context — included once before phase modules.
+
+\section{Project Overview}\label{sec:overview}
+\SetDocHeader{Project Overview}
+
+\subsection{Objective}
+Build a full-stack, secure Todo Management application as part of the Revature full-stack
+SDLC training program. The team moves from initial requirement analysis to a functional
+product demonstration, simulating a real-world Software Development Lifecycle (SDLC).
+
+\subsection{Technology Stack}
+\begin{tabularx}{\textwidth}{@{} l X @{}}
+\toprule
+\textbf{Layer} & \textbf{Technology} \\
+\midrule
+Frontend       & Angular \\
+Backend        & Java (Spring Boot, Web, Data JPA) \\
+Database       & SQLite \\
+Build / Tools  & Gradle, Git, GitHub \\
+\bottomrule
+\end{tabularx}
+
+\subsection{User Stories (Scope)}
+The following stories define \emph{what} the system must deliver. Each phase builds on
+the prior phase toward a complete implementation.
+
+\begin{enumerate}
+  \item \textbf{Registration:} As a new user, I can register an account.
+  \item \textbf{Authentication:} As a user, I can log in and log out securely.
+  \item \textbf{Task Management:} As a user, I can create, read, update, and delete primary Todo items.
+  \item \textbf{Organization:} As a user, I can create, read, update, and delete nested subtasks.
+\end{enumerate}
+
+\subsection{Project Roadmap}
+\begin{tabularx}{\textwidth}{@{} c l X @{}}
+\toprule
+\textbf{Phase} & \textbf{Name} & \textbf{Goal} \\
+\midrule
+1 & Requirements Analysis & Deconstruct user stories; define schema and API contracts. \\
+2 & Design                & Plan architecture, wireframes, and security flows. \\
+3 & Backend Development   & Build REST API, security layer, and persistence. \\
+4 & Frontend Development  & Build Angular UI and integrate with the API. \\
+5 & Presentation          & Demonstrate working software and architecture. \\
+\bottomrule
+\end{tabularx}
+
+\newpage
