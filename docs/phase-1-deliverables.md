@@ -12,8 +12,13 @@
     }
 
     Response Payload 409:
-
+    {
+        "status": 409
+    }
     Response Payload 400:
+    {
+        "status": 400
+    }
 
 2. Authentication
     POST /api/auth/login
@@ -36,6 +41,11 @@
         "completed": boolean,
     }
 
+    Response Payload 400:
+    {
+        "status": 400
+    }
+
     GET /api/todos
     Response Payload 200:
     [
@@ -48,7 +58,6 @@
         }
     ]
     
-
     GET /api/todos/{id}
     Response Payload 200:
     {
@@ -57,6 +66,11 @@
         "title": "String",
         "description": "String",
         "completed": boolean,
+    }
+
+    Response Payload 404:
+    {
+        "status": 404
     }
 
     PUT /api/todos/{id}
@@ -76,13 +90,12 @@
         "completed": boolean,
     }
 
+    Response Payload 404:
+    {
+        "status": 404
+    }
 
     DELETE /api/todos/{id}
-
-    Response Payload 200:
-    {
-        "message": "String"
-    }
 
 4. Subtask Organization
     GET /api/todos/{id}
