@@ -1,0 +1,115 @@
+% Todo Management Application — System Documentation
+% Compile: pdflatex main.tex (run twice for TOC/refs)
+%
+% Structure:
+%   modules/frontmatter.tex   — document control (revision history)
+%   modules/overview.tex      — project-wide context
+%   modules/phase01.tex … phase05.tex — one file per SDLC phase (each opens with \PhaseTitlePage)
+\documentclass{article}
+\hbadness=10000
+\vbadness=10000
+
+% -------------------------------------------------------------------
+% PACKAGES
+% -------------------------------------------------------------------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[english]{babel}
+\usepackage[margin=1in]{geometry}
+\usepackage{parskip}
+\usepackage{graphicx}
+\usepackage[table]{xcolor} 
+\usepackage{colortbl}
+\usepackage{tikz}
+\usetikzlibrary{shapes,shapes.multipart,arrows,positioning,fit,backgrounds,shadows,arrows.meta,calc,babel}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{Todo Management Application \textbar\ \nouppercase{\leftmark}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  urlcolor=blue,
+  pdftitle={Todo Management Application — System Documentation},
+  pdfauthor={The DJs}
+}
+\lstset{
+  basicstyle=\ttfamily\small,
+  breaklines=true,
+  columns=fullflexible,
+  showstringspaces=false
+}
+
+% Update running header (call after each \section or at document start)
+\newcommand{\SetDocHeader}[1]{\markboth{#1}{#1}}
+
+% -------------------------------------------------------------------
+% Per-phase title page (each module calls this once at the top)
+% -------------------------------------------------------------------
+% Usage: \PhaseTitlePage{<n>}{<phase name>}{<doc id>}{<document type>}
+% Example: \PhaseTitlePage{1}{Requirements Analysis}{TMA-RAD-P1}{Requirements Analysis Document}
+\newcommand{\PhaseTitlePage}[4]{%
+  \clearpage
+  \begin{titlepage}
+    \thispagestyle{empty}
+    \centering
+    \vspace*{2.5cm}
+    {\large\textit{#4}\par}
+    \vspace{1.2cm}
+    {\Huge\bfseries Todo Management Application\par}
+    \vspace{0.5cm}
+    {\large Revature --- Full-Stack SDLC Project\par}
+    \vspace{0.8cm}
+    {\Large Phase #1: #2\par}
+    \vspace{2.5cm}
+    {\large\textbf{The DJs}\par}
+    \vspace{1.5cm}
+    \begin{tabular}{@{}c@{}}
+      \toprule
+      \textbf{Prepared by} \\
+      \midrule
+      Jaehoon Song \\
+      Daniel Patience \\
+      Jacqueline Lainhart \\
+      \bottomrule
+    \end{tabular}
+    \vfill
+    \begin{minipage}{0.72\textwidth}
+      \centering
+      \begin{tabular}{@{}r@{\hspace{1.2em}}l@{}}
+        \textbf{Document ID:} & #3 \\
+        \textbf{Version:}    & 0.1 \\
+        \textbf{Status:}     & Draft \\
+        \textbf{Phase:}      & #1 of 5 \\
+        \textbf{Issue date:}  & \today \\
+      \end{tabular}
+    \end{minipage}
+    \vspace{2cm}
+  \end{titlepage}
+}
+% -------------------------------------------------------------------
+\begin{document}
+% -------------------------------------------------------------------
+
+\input{modules/frontmatter}
+\tableofcontents
+
+\newpage
+\input{modules/overview}
+\input{modules/phase01}
+% \input{modules/phase02}
+% \input{modules/phase03}
+% \input{modules/phase04}
+% \input{modules/phase05}
+
+\end{document}
