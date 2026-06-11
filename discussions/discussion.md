@@ -22,8 +22,8 @@ Use these stories as the foundation for your task breakdown and API design:
         6. Users may only access their own todos (ownership)
     4. Subtask Organization: As a user, I can create, edit, and delete subtask items to better organize my primary tasks.
         1. Define Subtask entity (id, title, completed, todo_id, timestamps)
-        2. GET /api/todos/{id}
-        3. POST /api/todos/{id}/{subtask}
-        4. PATCH /api/todos/{id}/{subtask}
-        5. DELETE /api/todos/{id}/{subtask}
+        2. GET /api/todos/{id}              - get list of subtasks from a todo id
+        3. POST /api/todos/{id}/{subtask}   - create new subtask
+        4. PUT /api/todos/{id}/{subtask}  - update subtask
+        5. DELETE /api/todos/{id}/{subtask} - delete subtask
         6. Document cascade delete when parent todo is removed.
