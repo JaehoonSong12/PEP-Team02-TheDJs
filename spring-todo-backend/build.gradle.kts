@@ -23,16 +23,26 @@ extra["springModulithVersion"] = "2.1.0-RC1"
 
 dependencies {
 	implementation("org.springframework.modulith:spring-modulith-starter-core")
+	implementation("org.springframework.boot:spring-boot-starter-data-jpa") // [Added dependency] Added as instructed to support Spring Data JPA
+	implementation("org.springframework.boot:spring-boot-starter-webmvc") // [Added dependency] Added as instructed to support Spring Web MVC
 	compileOnly("org.projectlombok:lombok")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	developmentOnly("org.springframework.boot:spring-boot-docker-compose")
 	annotationProcessor("org.projectlombok:lombok")
 	annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testImplementation("org.springframework.boot:spring-boot-starter-data-jpa-test") // [Added dependency] Added as instructed to support JPA testing
+	testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test") // [Added dependency] Added as instructed to support Web MVC testing
 	testImplementation("org.springframework.modulith:spring-modulith-starter-test")
 	testCompileOnly("org.projectlombok:lombok")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 	testAnnotationProcessor("org.projectlombok:lombok")
+	implementation("org.xerial:sqlite-jdbc:3.53.2.0") // [Added dependency] Added as instructed for SQLite database driver
+	implementation("org.hibernate.orm:hibernate-community-dialects:8.0.0.Alpha1") // [Added dependency] Added as instructed for Hibernate SQLite dialect
+	implementation("io.jsonwebtoken:jjwt-api:0.13.0") // [Added dependency] Added as instructed for JSON Web Token API
+	runtimeOnly("io.jsonwebtoken:jjwt-impl:0.13.0") // [Added dependency] Added as instructed for JSON Web Token implementation
+	runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.13.0") // [Added dependency] Added as instructed for JSON Web Token Jackson mapping
+	testImplementation("com.h2database:h2:2.4.240") // [Added dependency] Added as instructed for in-memory H2 database testing
 }
 
 dependencyManagement {
