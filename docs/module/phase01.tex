@@ -294,6 +294,11 @@ RESTful endpoints with JSON request/response bodies and expected HTTP status cod
 Each exchange shows a raw HTTP request or response trace: status line, headers, a blank line, then the body.
 All paths are relative to the API base URL.
 
+\medskip
+\noindent\textbf{DELETE responses.} A successful delete returns \texttt{HTTP/1.1 204 No Content} with no
+response body---the server has fulfilled the request and there is no representation to return (RFC~9110).
+Error cases (e.g.\ resource not found) return \texttt{4xx} with a JSON body as documented below.
+
 \subsubsection{Endpoint Summary}
 \begin{tabularx}{\textwidth}{@{} l l X @{}}
   \toprule
@@ -522,10 +527,24 @@ Content-Type: application/json
 \medskip
 \textbf{\texttt{DELETE /api/todos/\{id\}}}
 
-Deletes the todo and cascades to its subtasks. Response body TBD in Phase~2 implementation.
+\noindent Deletes the todo and cascades to its subtasks.
 
+\begin{httpexchange}
+\begin{httplisting}
+DELETE /api/todos/{id} HTTP/1.1
+\end{httplisting}
+\httpmidarrows
+\begin{httplisting}
+HTTP/1.1 204 No Content
 
+HTTP/1.1 404 Not Found
+Content-Type: application/json
 
+{
+    "status": 404
+}
+\end{httplisting}
+\end{httpexchange}
 
 \newpage
 
@@ -633,17 +652,22 @@ Content-Type: application/json
 
 \textbf{\texttt{DELETE /api/todos/\{id\}/\{subtask\}}}
 
+Removes one subtask from the parent todo. On success the server responds with
+\texttt{204 No Content} and an empty body; no row count or deleted entity is returned.
+
 \begin{httpexchange}
 \begin{httplisting}
 DELETE /api/todos/{id}/{subtask} HTTP/1.1
 \end{httplisting}
 \httpmidarrows
 \begin{httplisting}
-HTTP/1.1 200 OK
+HTTP/1.1 204 No Content
+
+HTTP/1.1 404 Not Found
 Content-Type: application/json
 
 {
-    "rowsUpdated": Integer
+    "status": 404
 }
 \end{httplisting}
 \end{httpexchange}
