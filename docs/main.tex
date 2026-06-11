@@ -58,45 +58,114 @@
 % -------------------------------------------------------------------
 % Usage: \PhaseTitlePage{<n>}{<phase name>}{<doc id>}{<document type>}
 % Example: \PhaseTitlePage{1}{Requirements Analysis}{TMA-RAD-P1}{Requirements Analysis Document}
+% Do not use the titlepage environment --- it resets \thepage to 1 each time.
+% Scope layout in a group so \centering does not leak into body content.
 \newcommand{\PhaseTitlePage}[4]{%
   \clearpage
-  \begin{titlepage}
-    \thispagestyle{empty}
+  \thispagestyle{empty}%
+  \begingroup
+  \centering
+  \vspace*{2.5cm}
+  {\large\textit{#4}\par}
+  \vspace{1.2cm}
+  {\Huge\bfseries Todo Management Application\par}
+  \vspace{0.5cm}
+  {\large Revature --- Full-Stack SDLC Project\par}
+  \vspace{0.8cm}
+  {\Large Phase #1: #2\par}
+  \vspace{2.5cm}
+  {\large\textbf{The DJs}\par}
+  \vspace{1.5cm}
+  \begin{tabular}{@{}c@{}}
+    \toprule
+    \textbf{Prepared by} \\
+    \midrule
+    Jaehoon Song \\
+    Daniel Patience \\
+    Jacqueline Lainhart \\
+    \bottomrule
+  \end{tabular}
+  \vfill
+  \begin{minipage}{0.72\textwidth}
     \centering
-    \vspace*{2.5cm}
-    {\large\textit{#4}\par}
-    \vspace{1.2cm}
-    {\Huge\bfseries Todo Management Application\par}
-    \vspace{0.5cm}
-    {\large Revature --- Full-Stack SDLC Project\par}
-    \vspace{0.8cm}
-    {\Large Phase #1: #2\par}
-    \vspace{2.5cm}
-    {\large\textbf{The DJs}\par}
-    \vspace{1.5cm}
-    \begin{tabular}{@{}c@{}}
-      \toprule
-      \textbf{Prepared by} \\
-      \midrule
-      Jaehoon Song \\
-      Daniel Patience \\
-      Jacqueline Lainhart \\
-      \bottomrule
+    \begin{tabular}{@{}r@{\hspace{1.2em}}l@{}}
+      \textbf{Document ID:} & #3 \\
+      \textbf{Version:}    & 0.1 \\
+      \textbf{Status:}     & Draft \\
+      \textbf{Phase:}      & #1 of 5 \\
+      \textbf{Issue date:}  & \today \\
     \end{tabular}
-    \vfill
-    \begin{minipage}{0.72\textwidth}
-      \centering
-      \begin{tabular}{@{}r@{\hspace{1.2em}}l@{}}
-        \textbf{Document ID:} & #3 \\
-        \textbf{Version:}    & 0.1 \\
-        \textbf{Status:}     & Draft \\
-        \textbf{Phase:}      & #1 of 5 \\
-        \textbf{Issue date:}  & \today \\
-      \end{tabular}
-    \end{minipage}
-    \vspace{2cm}
-  \end{titlepage}
+  \end{minipage}
+  \vspace{2cm}
+  \par
+  \endgroup
+  \clearpage
 }
+
+
+
+
+
+
+
+% Raw HTTP/JSON payloads (CS-A: rest.tex). Framed listings pair with httpexchange below.
+\lstdefinestyle{http}{%
+  basicstyle=\ttfamily\footnotesize,
+  frame=single,
+  framerule=0.4pt,
+  framesep=3pt,
+  xleftmargin=2pt,
+  xrightmargin=2pt,
+  breaklines=true,
+  breakatwhitespace=true,
+  columns=fullflexible,
+  keepspaces=true,
+  aboveskip=4pt,
+  belowskip=4pt,
+}
+\lstnewenvironment{httplisting}{\lstset{style=http}}{}
+
+% Side-by-side request/response. One tabular row; \httpmidarrows sits between listings.
+% Do not pass lstlisting through a macro argument.
+\tikzset{%
+  http@arrow/.style={%
+    -{Stealth[scale=0.88]}, semithick, shorten >=0.5pt, shorten <=0.5pt, draw=black!55},
+}
+\newenvironment{httpexchange}{%
+  \par\medskip
+  \begingroup
+  \hfuzz=30pt\relax
+  \begin{center}%
+  \noindent
+  \begin{tabular}{@{} m{0.4\linewidth} >{\centering\arraybackslash}m{1.28cm} m{0.4\linewidth} @{}}%
+}{%
+  \end{tabular}%
+  \end{center}%
+  \endgroup
+  \medskip
+}
+\newcommand{\httpmidarrows}{%
+  &
+  \begin{minipage}[c]{1.28cm}%
+    \centering
+    \normalfont\footnotesize REQ\par\vspace{1pt}%
+    \begin{tikzpicture}[x=1cm, y=0.75cm]
+      \draw[http@arrow] (0,0.1) -- (0.92,0.1);
+      \draw[http@arrow] (0.92,-0.1) -- (0,-0.1);
+    \end{tikzpicture}\par\vspace{1pt}%
+    \normalfont\footnotesize RESP%
+  \end{minipage}%
+  &
+}
+
+
+
+
+
+
+
+
+
 % -------------------------------------------------------------------
 \begin{document}
 % -------------------------------------------------------------------
@@ -107,9 +176,9 @@
 \newpage
 \input{module/overview}
 \input{module/phase01}
-% \input{module/phase02}
-% \input{module/phase03}
-% \input{module/phase04}
-% \input{module/phase05}
+\input{module/phase02}
+\input{module/phase03}
+\input{module/phase04}
+\input{module/phase05}
 
 \end{document}
