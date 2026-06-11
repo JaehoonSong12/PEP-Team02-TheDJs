@@ -10,15 +10,15 @@ The goal of this phase is the technical decomposition of user stories. Before an
 the team must define the data structures, the API communication standards, and the criteria for
 successful completion.
 
-\subsubsection{Checkpoints}
+\subsection{Checkpoints}
 \begin{itemize}
-  \item[$\square$] \textbf{Task Breakdown:} Deconstruct user stories into granular technical tasks.
-  \item[$\square$] \textbf{Database Modeling:} Design the relational schema (User, Todo, and Subtask entities).
-  \item[$\square$] \textbf{API Contract:} Define RESTful endpoints and expected JSON request/response bodies.
-  \item[$\square$] \textbf{Definition of Done (DoD):} Establish team-specific criteria for completed work.
+  \item[$\checkmark$] \textbf{Task Breakdown:} Deconstruct user stories into granular technical tasks.
+  \item[$\checkmark$] \textbf{Database Modeling:} Design the relational schema (User, Todo, and Subtask entities).
+  \item[$\checkmark$] \textbf{API Contract:} Define RESTful endpoints and expected JSON request/response bodies.
+  \item[$\checkmark$] \textbf{Definition of Done (DoD):} Establish team-specific criteria for completed work.
 \end{itemize}
 
-\subsubsection{Technical Reference: User Stories}
+\subsection{Technical Reference: User Stories}
 Use these stories as the foundation for your task breakdown and API design:
 \begin{enumerate}
   \item \textbf{Account Creation:} As a new user, I can register an account to start tracking my todo tasks.
@@ -27,7 +27,7 @@ Use these stories as the foundation for your task breakdown and API design:
   \item \textbf{Subtask Organization:} As a user, I can create, edit, and delete subtask items to better organize my primary tasks.
 \end{enumerate}
 
-\subsubsection{Deliverables for Phase 1}
+\subsection{Deliverables for Phase 1}
 By the end of this phase, your team should have a shared document or repository folder containing:
 \begin{enumerate}
   \item \textbf{Entity Relationship Diagram (ERD):} Visual or text-based representation of your SQLite schema.
@@ -38,7 +38,7 @@ By the end of this phase, your team should have a shared document or repository 
   \end{itemize}
 \end{enumerate}
 
-\subsubsection{Moving to Phase 2}
+\subsection{Moving to Phase 2}
 Once all Phase~1 checkboxes are marked as complete and the team agrees on the API contracts,
 proceed to \textbf{Phase 2: Design}.
 
@@ -290,12 +290,443 @@ entity to its SQLite columns, types, and constraints.
 
 \newpage
 \subsection{API Contract}\label{sec:api}
-Define RESTful endpoints with JSON request/response bodies and expected HTTP status codes.
-See deliverable checklist in Section~\ref{sec:phase1}.
+RESTful endpoints with JSON request/response bodies and expected HTTP status codes.
+Each exchange shows a raw HTTP request or response trace: status line, headers, a blank line, then the body.
+All paths are relative to the API base URL.
+
+\subsubsection{Endpoint Summary}
+\begin{tabularx}{\textwidth}{@{} l l X @{}}
+  \toprule
+  \textbf{Method} & \textbf{Path} & \textbf{Purpose} \\
+  \midrule
+  \texttt{POST}   & \texttt{/api/auth/register}           & Register a new account \\
+  \texttt{POST}   & \texttt{/api/auth/login}              & Authenticate an existing account \\
+  \texttt{POST}   & \texttt{/api/todos}                   & Create a todo \\
+  \texttt{GET}    & \texttt{/api/todos}                   & List todos for the authenticated user \\
+  \texttt{GET}    & \texttt{/api/todos/\{id\}}            & Retrieve a single todo \\
+  \texttt{PUT}    & \texttt{/api/todos/\{id\}}            & Update a todo \\
+  \texttt{DELETE} & \texttt{/api/todos/\{id\}}            & Delete a todo (cascade subtasks) \\
+  \texttt{GET}    & \texttt{/api/todos/\{id\}}            & Retrieve parent todo (before subtask operations) \\
+  \texttt{POST}   & \texttt{/api/todos/\{id\}/\{subtask\}} & Create a subtask \\
+  \texttt{PUT}    & \texttt{/api/todos/\{id\}/\{subtask\}} & Update a subtask \\
+  \texttt{DELETE} & \texttt{/api/todos/\{id\}/\{subtask\}} & Delete a subtask \\
+  \bottomrule
+\end{tabularx}
+
+\subsubsection{Account Creation}
+\textbf{\texttt{POST /api/auth/register}}
+
+\begin{httpexchange}
+\begin{httplisting}
+POST /api/auth/register HTTP/1.1
+Content-Type: application/json
+
+{
+    "username": "String",
+    "password": "String"
+}
+\end{httplisting}
+\httpmidarrows
+\begin{httplisting}
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+    "accountId": Integer,
+    "username": "String"
+}
+
+HTTP/1.1 409 Conflict
+Content-Type: application/json
+
+{
+    "status": 409
+}
+
+HTTP/1.1 400 Bad Request
+Content-Type: application/json
+
+{
+    "status": 400
+}
+\end{httplisting}
+\end{httpexchange}
+
+
+\newpage
+
+
+
+\subsubsection{Authentication}
+\textbf{\texttt{POST /api/auth/login}}
+
+\begin{httpexchange}
+\begin{httplisting}
+POST /api/auth/login HTTP/1.1
+Content-Type: application/json
+
+{
+    "username": "String",
+    "password": "String"
+}
+\end{httplisting}
+\httpmidarrows
+\begin{httplisting}
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+    "accountId": Integer,
+    "username": "String"
+}
+
+HTTP/1.1 401 Unauthorized
+Content-Type: application/json
+
+{
+    "message": "String"
+}
+\end{httplisting}
+\end{httpexchange}
+
+\subsubsection{Task Management}
+\textbf{\texttt{POST /api/todos}}
+
+\begin{httpexchange}
+\begin{httplisting}
+POST /api/todos HTTP/1.1
+Content-Type: application/json
+
+{
+    "title": "String",
+    "description": "String",
+    "completed": boolean
+}
+\end{httplisting}
+\httpmidarrows
+\begin{httplisting}
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+    "todoId": Integer,
+    "accountId": Integer,
+    "title": "String",
+    "description": "String",
+    "completed": boolean
+}
+
+HTTP/1.1 400 Bad Request
+Content-Type: application/json
+
+{
+    "status": 400
+}
+\end{httplisting}
+\end{httpexchange}
+
+\textbf{\texttt{GET /api/todos}}
+
+\begin{httpexchange}
+\begin{httplisting}
+GET /api/todos HTTP/1.1
+\end{httplisting}
+\httpmidarrows
+\begin{httplisting}
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+[
+    {
+        "todoId": Integer,
+        "accountId": Integer,
+        "title": "String",
+        "description": "String",
+        "completed": boolean
+    }
+]
+\end{httplisting}
+\end{httpexchange}
+
+
+
+
+\newpage
+
+
+
+\textbf{\texttt{GET /api/todos/\{id\}}}
+
+\begin{httpexchange}
+\begin{httplisting}
+GET /api/todos/{id} HTTP/1.1
+\end{httplisting}
+\httpmidarrows
+\begin{httplisting}
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+    "todoId": Integer,
+    "accountId": Integer,
+    "title": "String",
+    "description": "String",
+    "completed": boolean
+}
+
+HTTP/1.1 404 Not Found
+Content-Type: application/json
+
+{
+    "status": 404
+}
+\end{httplisting}
+\end{httpexchange}
+
+\medskip
+\textbf{\texttt{PUT /api/todos/\{id\}}}
+
+\begin{httpexchange}
+\begin{httplisting}
+PUT /api/todos/{id} HTTP/1.1
+Content-Type: application/json
+
+{
+    "title": "String",
+    "description": "String",
+    "completed": boolean
+}
+\end{httplisting}
+\httpmidarrows
+\begin{httplisting}
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+    "todoId": Integer,
+    "accountId": Integer,
+    "title": "String",
+    "description": "String",
+    "completed": boolean
+}
+
+HTTP/1.1 404 Not Found
+Content-Type: application/json
+
+{
+    "status": 404
+}
+\end{httplisting}
+\end{httpexchange}
+
+\medskip
+\textbf{\texttt{DELETE /api/todos/\{id\}}}
+
+Deletes the todo and cascades to its subtasks. Response body TBD in Phase~2 implementation.
+
+
+
+
+\newpage
+
+
+
+\subsubsection{Subtask Organization}
+\textbf{\texttt{GET /api/todos/\{id\}}}
+
+Retrieve the parent todo before subtask operations.
+
+\begin{httpexchange}
+\begin{httplisting}
+GET /api/todos/{id} HTTP/1.1
+\end{httplisting}
+\httpmidarrows
+\begin{httplisting}
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+    "todoId": Integer,
+    "accountId": Integer,
+    "title": "String",
+    "description": "String",
+    "completed": boolean
+}
+\end{httplisting}
+\end{httpexchange}
+
+\medskip
+\textbf{\texttt{POST /api/todos/\{id\}/\{subtask\}}}
+
+\begin{httpexchange}
+\begin{httplisting}
+POST /api/todos/{id}/{subtask} HTTP/1.1
+Content-Type: application/json
+
+{
+    "title": "String",
+    "description": "String",
+    "completed": boolean
+}
+\end{httplisting}
+\httpmidarrows
+\begin{httplisting}
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+    "todoId": Integer,
+    "accountId": Integer,
+    "title": "String",
+    "description": "String",
+    "completed": boolean
+}
+
+HTTP/1.1 400 Bad Request
+Content-Type: application/json
+
+{
+    "status": 400
+}
+\end{httplisting}
+\end{httpexchange}
+
+\medskip
+\textbf{\texttt{PUT /api/todos/\{id\}/\{subtask\}}}
+
+\begin{httpexchange}
+\begin{httplisting}
+PUT /api/todos/{id}/{subtask} HTTP/1.1
+Content-Type: application/json
+
+{
+    "title": "String",
+    "description": "String",
+    "completed": boolean
+}
+\end{httplisting}
+\httpmidarrows
+\begin{httplisting}
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+    "todoId": Integer,
+    "accountId": Integer,
+    "title": "String",
+    "description": "String",
+    "completed": boolean
+}
+
+HTTP/1.1 404 Not Found
+Content-Type: application/json
+
+{
+    "status": 404
+}
+\end{httplisting}
+\end{httpexchange}
+
+\newpage
+
+
+
+\textbf{\texttt{DELETE /api/todos/\{id\}/\{subtask\}}}
+
+\begin{httpexchange}
+\begin{httplisting}
+DELETE /api/todos/{id}/{subtask} HTTP/1.1
+\end{httplisting}
+\httpmidarrows
+\begin{httplisting}
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+    "rowsUpdated": Integer
+}
+\end{httplisting}
+\end{httpexchange}
 
 \newpage
 \subsection{Definition of Done}\label{sec:dod}
-Establish team-specific criteria for completed work before moving to Phase~2.
-See deliverable checklist in Section~\ref{sec:phase1}.
+The team established the following criteria on \textbf{10 June 2026}. A Phase~1 checkpoint or
+deliverable is considered \emph{done} when all applicable items below are satisfied.
+
+\subsubsection{Documentation Criteria}
+\begin{itemize}
+  \item Content reflects decisions made in team discussion (see \texttt{discussions/} in the repository).
+  \item Technical writing is merged into \texttt{docs/module/phase01.tex} and compiles without errors.
+  \item Section owners verify accuracy before the item is marked complete in the checkpoint list.
+\end{itemize}
+
+\subsubsection{Collaboration Criteria}
+\begin{itemize}
+  \item Work is committed on a feature branch and merged via pull request---not pushed directly to \texttt{main}.
+  \item Discussion notes and LaTeX documentation may land on separate branches and are integrated independently.
+  \item At least one teammate reviews the pull request before merge.
+\end{itemize}
+
+\subsubsection{Checkpoint Exit Criteria}
+\begin{itemize}
+  \item \textbf{Task Breakdown} --- All four epics documented with task IDs (Section~\ref{sec:tasks}).
+  \item \textbf{Database Modeling} --- ERD, data dictionary, and integrity rules agreed upon (Section~\ref{sec:database}).
+  \item \textbf{API Contract} --- Every endpoint from the task breakdown has request/response bodies and HTTP status codes (Section~\ref{sec:api}).
+  \item \textbf{Task Backlog} --- Remaining Phase~1 items tracked in GitHub Issues or Projects (Section~\ref{sec:task-backlog}).
+\end{itemize}
+
+\subsubsection{Phase 1 Completion}
+As of 11 June 2026, all Phase~1 checkpoints are complete. The team may proceed to Phase~2 once all
+members have reviewed Sections~\ref{sec:tasks}--\ref{sec:api}.
+
+\newpage
+\subsection{Task Backlog}\label{sec:task-backlog}
+Use GitHub Issues and Github Project to track actionable items. The table below records Phase~1
+progress as of \textbf{11 June 2026}.
+
+\subsubsection{Session Summary --- 10 June 2026}
+\begin{tabularx}{\textwidth}{@{} l X @{}}
+  \toprule
+  \textbf{Activity} & \textbf{Outcome} \\
+  \midrule
+  LaTeX documentation initiated & Jaehoon Song set up the \texttt{docs/} structure and \texttt{main.tex} driver. \\
+  Team meeting --- task breakdown & All members decomposed user stories into epics and task IDs; documented in Section~\ref{sec:tasks}. \\
+  Initial ERD & Jaehoon Song drafted the Crow's Foot ERD and SQLite data dictionary (Section~\ref{sec:database}). \\
+  Repository integration & Each member used feature branches to merge discussion notes and LaTeX updates separately into \texttt{main}. \\
+  Definition of Done & Team agreed on completion criteria (Section~\ref{sec:dod}). \\
+  Task Backlog & Initial Phase~1 progress and GitHub workflow recorded (Section~\ref{sec:task-backlog}). \\
+  \bottomrule
+\end{tabularx}
+
+\subsubsection{Session Summary --- 11 June 2026}
+\begin{tabularx}{\textwidth}{@{} l X @{}}
+  \toprule
+  \textbf{Activity} & \textbf{Outcome} \\
+  \midrule
+  API Contract & Daniel Patience and Jacqueline Lainhart drafted payloads and status codes; documented in Section~\ref{sec:api}. \\
+  HTTP request/response documentation & Jaehoon Song formatted API exchanges as HTTP traces (\texttt{httpexchange} layout); Section~\ref{sec:api}. \\
+  \bottomrule
+\end{tabularx}
+
+\subsubsection{GitHub Workflow}
+\begin{enumerate}
+  \item Create a branch from \texttt{main} for the work item (discussion notes or documentation).
+  \item Commit changes locally; open a pull request when ready for review.
+  \item A teammate reviews and approves; merge into \texttt{main}.
+  \item Open or update a GitHub Issue for any remaining task IDs; link the issue to the pull request where applicable.
+\end{enumerate}
+
+\subsubsection{Backlog Status}
+\begin{tabularx}{\textwidth}{@{} l l X @{}}
+  \toprule
+  \textbf{Item} & \textbf{Status} & \textbf{Notes} \\
+  \midrule
+  Task Breakdown (Section~\ref{sec:tasks})       & Complete & Documented from team meeting discussion; 10 June 2026. \\
+  Database Modeling (Section~\ref{sec:database}) & Complete & Initial ERD and data dictionary; 10 June 2026. \\
+  API Contract (Section~\ref{sec:api})          & Complete & Payloads by Daniel Patience and Jacqueline Lainhart; HTTP req/res traces by Jaehoon Song; 11 June 2026. \\
+  Definition of Done (Section~\ref{sec:dod})     & Complete & Criteria established; 10 June 2026. \\
+  GitHub Issues / Project board                  & In progress & Create issues from AUTH/TODO/SUB task IDs as work is assigned. \\
+  \bottomrule
+\end{tabularx}
 
 \newpage

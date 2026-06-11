@@ -10,7 +10,7 @@ The goal of this phase is architectural and interface planning. The team must de
 security protocols, and user interface layouts. Successful completion of this phase ensures that
 the Backend and Frontend teams can work in parallel without integration conflicts.
 
-\subsubsection{Checkpoints}
+\subsection{Checkpoints}
 \begin{itemize}
   \item[$\square$] \textbf{System Architecture:} Document the data flow (Angular $\rightarrow$ Spring Boot $\rightarrow$ SQLite).
   \item[$\square$] \textbf{Security Planning:} Familiarize yourself with JJWT.
@@ -42,7 +42,7 @@ Use this logic to design your \texttt{/auth} endpoints to ensure secure credenti
   \item[\textbf{B.}] Invalid credentials: Logic fetches user data (null/empty); API returns a 4xx Error Response to the client.
 \end{enumerate}
 
-\subsubsection{Deliverables for Phase 2}
+\subsection{Deliverables for Phase 2}
 By the end of this phase, your team should have:
 \begin{enumerate}
   \item \textbf{API Specification:} A completed document defining all endpoints, request bodies, and response codes.
@@ -50,8 +50,38 @@ By the end of this phase, your team should have:
   \item \textbf{Database Schema:} A final relational model (ERD) ready for implementation.
 \end{enumerate}
 
-\subsubsection{Moving to Phase 3}
+\subsection{Moving to Phase 3}
 Once the API contracts and UI wireframes are finalized and agreed upon by all team members,
 proceed to \textbf{Phase 3: Backend Development}.
+
+\newpage
+\subsection{System Architecture}\label{sec:architecture}
+Document the data flow (Angular $\rightarrow$ Spring Boot $\rightarrow$ SQLite).
+See deliverable checklist in Section~\ref{sec:phase2}.
+
+\newpage
+\subsection{Security Planning}\label{sec:security-planning}
+Familiarize yourself with JJWT.
+See deliverable checklist in Section~\ref{sec:phase2}.
+
+\newpage
+\subsection{UI Wireframing}\label{sec:wireframing}
+Map out the interface for authentication and task management.
+See deliverable checklist in Section~\ref{sec:phase2}.
+
+\newpage
+\subsection{Component Design}\label{sec:component-design}
+Loosely define the Angular component hierarchy and service structure.
+See deliverable checklist in Section~\ref{sec:phase2}.
+
+\newpage
+\subsection{API Specification}\label{sec:api-spec}
+Complete the document defining all endpoints, request bodies, and response codes.
+See deliverable checklist in Section~\ref{sec:phase2}.
+
+\newpage
+\subsection{Database Schema}\label{sec:database-schema}
+Finalize the relational model (ERD) ready for implementation.
+See deliverable checklist in Section~\ref{sec:phase2}.
 
 \newpage

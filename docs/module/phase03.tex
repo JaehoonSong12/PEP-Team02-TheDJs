@@ -10,7 +10,7 @@ The goal of this phase is to build a robust, secure REST API. This phase focuses
 ``engine'' of the application: data persistence, business logic, and security. The backend
 must be fully functional and testable via tools like Postman or cURL before the frontend development begins.
 
-\subsubsection{Checkpoints}
+\subsection{Checkpoints}
 \begin{itemize}
   \item[$\square$] \textbf{Project Scaffolding:} Initialize Gradle, Spring Boot, and SQLite configuration.
   \item[$\square$] \textbf{Data Layer:} Implement Spring Data JPA repositories and entity mappings.
@@ -41,7 +41,7 @@ The API must return meaningful HTTP status codes:
   \item \texttt{404 Not Found}: Resource does not exist.
 \end{itemize}
 
-\subsubsection{Deliverables for Phase 3}
+\subsection{Deliverables for Phase 3}
 By the end of this phase, your team should have:
 \begin{enumerate}
   \item \textbf{Functional REST API:} A running Spring Boot application.
@@ -49,8 +49,48 @@ By the end of this phase, your team should have:
   \item \textbf{Persisted Data:} Evidence that data persists in the SQLite database after application restarts.
 \end{enumerate}
 
-\subsubsection{Moving to Phase 4}
+\subsection{Moving to Phase 4}
 Once the backend is stable and the API endpoints are verified,
 proceed to \textbf{Phase 4: Frontend Development}.
+
+\newpage
+\subsection{Project Scaffolding}\label{sec:be-scaffolding}
+Initialize Gradle, Spring Boot, and SQLite configuration.
+See deliverable checklist in Section~\ref{sec:phase3}.
+
+\newpage
+\subsection{Data Layer}\label{sec:data-layer}
+Implement Spring Data JPA repositories and entity mappings.
+See deliverable checklist in Section~\ref{sec:phase3}.
+
+\newpage
+\subsection{Security Implementation}\label{sec:security-impl}
+Build the authentication and authorization logic.
+See deliverable checklist in Section~\ref{sec:phase3}.
+
+\newpage
+\subsection{Business Logic}\label{sec:business-logic}
+Develop required CRUD services for all entities.
+See deliverable checklist in Section~\ref{sec:phase3}.
+
+\newpage
+\subsection{Design Validation}\label{sec:be-design-validation}
+Confirm all implemented endpoints and data models match Phase~1/2 specifications.
+See deliverable checklist in Section~\ref{sec:phase3}.
+
+\newpage
+\subsection{Functional REST API}\label{sec:functional-api}
+Document the running Spring Boot application.
+See deliverable checklist in Section~\ref{sec:phase3}.
+
+\newpage
+\subsection{Verified Endpoints}\label{sec:verified-endpoints}
+Record successful tests (via Postman, cURL, or similar) demonstrating all CRUD operations.
+See deliverable checklist in Section~\ref{sec:phase3}.
+
+\newpage
+\subsection{Persisted Data}\label{sec:persisted-data}
+Provide evidence that data persists in the SQLite database after application restarts.
+See deliverable checklist in Section~\ref{sec:phase3}.
 
 \newpage

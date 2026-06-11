@@ -1,0 +1,739 @@
+\documentclass[addpoints]{exam}
+\hbadness=10000                       % Suppress Warnings (Horizontal)
+\vbadness=10000                       % Suppress Warnings (Vertical)
+% `choices` sets \leftmargin using ``W.'' plus \labelsep plus 2.5em; drop only that last skip.
+\renewcommand{\choiceshook}{%
+  \addtolength{\leftmargin}{-3.0em}%
+  \labelwidth\leftmargin\advance\labelwidth-\labelsep}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{geometry}
+\geometry{letterpaper, margin=1in}
+\usepackage{amsmath, amssymb}
+\usepackage{graphicx}
+\usepackage[export]{adjustbox}
+\usepackage{stmaryrd}
+\usepackage[version=4]{mhchem}
+\usepackage{caption}
+\usepackage{xcolor}
+\usepackage{ulem}
+\usepackage{listings}
+\usepackage{array} 
+\usepackage{multicol}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+
+% AP CSP--style pseudocode listings (used by \texttt{cs-p/*.tex}).
+\lstdefinestyle{csppseudo}{%
+  basicstyle=\ttfamily\footnotesize,
+  keywordstyle=\bfseries\color{blue!55!black},
+  commentstyle=\itshape\color{black!50},
+  stringstyle=\color{green!50!black},
+  columns=fullflexible,
+  keepspaces=true,
+  tabsize=2,
+  showstringspaces=false,
+  breaklines=true,
+  breakatwhitespace=true,
+  frame=single,
+  rulecolor=\color{black!35},
+  backgroundcolor=\color{black!4},
+  frameround=tttt,
+  xleftmargin=0.9em,
+  xrightmargin=0.5em,
+  aboveskip=\smallskipamount,
+  belowskip=\smallskipamount,
+  numbers=left,
+  numberstyle=\scriptsize\color{black!45},
+  numbersep=7pt,
+  morekeywords={%
+    PROCEDURE,REPEAT,UNTIL,TIMES,IF,ELSE,RETURN,DISPLAY,%
+    LENGTH,RANDOM,MOVE_FORWARD,ROTATE_LEFT,MOVE_BACKWARD,ROTATE_RIGHT,%
+    REMOVE,FOR,TO,WHILE,EACH,IN,APPEND,IsFound,CAN_MOVE,GoalReached,%
+    AND,OR,NOT,true,false,min,max,MIN,MAX%
+  },
+  sensitive=false,
+}
+\lstnewenvironment{cspcode}{\lstset{style=csppseudo}}{}
+
+% Java (CS-A: lambda, etc.) --- built-in \texttt{language=Java} from \texttt{listings}.
+\lstdefinestyle{javaexam}{%
+  language=Java,
+  basicstyle=\ttfamily\footnotesize,
+  keywordstyle=\bfseries\color{blue!55!black},
+  commentstyle=\ttfamily\color{black!50}, 
+  stringstyle=\color{green!50!black},
+  columns=fullflexible,
+  keepspaces=true,
+  tabsize=2,
+  showstringspaces=false,
+  breaklines=true,
+  breakatwhitespace=true,
+  frame=single,
+  rulecolor=\color{black!35},
+  backgroundcolor=\color{black!4},
+  xleftmargin=0.5em,
+  xrightmargin=0.5em,
+  aboveskip=4pt,
+  belowskip=4pt,
+}
+
+% Inline \verb|\lstinline|: same Java lexer and colors as \texttt{javaexam}, without block-only options
+% (frame, line numbers, margins). A typical article preamble uses \verb|\lstset{...}| globally so inline
+% code picks up \texttt{basicstyle} / \texttt{keywordstyle}; we set \texttt{javainline} as the default.
+% Block listings still pass \texttt{[style=javaexam]} (or \texttt{http}, etc.) explicitly.
+\lstdefinestyle{javainline}{%
+  language=Java,
+  basicstyle=\ttfamily,
+  keywordstyle=\bfseries\color{blue!55!black},
+  commentstyle=\ttfamily\color{black!50},
+  stringstyle=\color{green!50!black},
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false,
+}
+
+% SQL snippets in \texttt{cs-a/sql.tex}: use \verb|\lstinline[style=sqlinline]| so keywords are not Java.
+\lstdefinelanguage{SQLEXAM}{%
+  morekeywords={%
+    SELECT,FROM,WHERE,INSERT,INTO,VALUES,DELETE,UPDATE,ALTER,TABLE,ADD,DROP,%
+    CREATE,TRUNCATE,VIEW,GROUP,BY,ORDER,HAVING,AND,OR,NOT,NULL,PRIMARY,KEY,%
+    FOREIGN,REFERENCES,JOIN,INNER,LEFT,RIGHT,FULL,OUTER,CROSS,NATURAL,ON,AS,%
+    CHECK,UNIQUE,DEFAULT,SERIAL,CASCADE,SET,COMMIT,ROLLBACK,SAVEPOINT,INDEX,%
+    MODIFY,COLUMN,DISTINCT,LIMIT,OFFSET,LIKE,IN,BETWEEN,IS,%
+  },%
+  sensitive=false,%
+  morecomment=[l]--,%
+  morestring=[b]',%
+}%
+\lstdefinestyle{sqlinline}{%
+  language=SQLEXAM,
+  basicstyle=\ttfamily,
+  keywordstyle=\bfseries\color{blue!55!black},
+  commentstyle=\ttfamily\color{black!50},
+  stringstyle=\color{green!50!black},
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false,
+}%
+% Multi-line SQL in \texttt{cs-a/sql.tex} (same lexer as \texttt{sqlinline}, block-friendly frame).
+\lstdefinestyle{sqlexam}{%
+  language=SQLEXAM,
+  basicstyle=\ttfamily\footnotesize,
+  keywordstyle=\bfseries\color{blue!55!black},
+  commentstyle=\ttfamily\color{black!50},
+  stringstyle=\color{green!50!black},
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false,
+  breaklines=true,
+  breakatwhitespace=true,
+  frame=single,
+  rulecolor=\color{black!35},
+  backgroundcolor=\color{black!4},
+  xleftmargin=0.5em,
+  xrightmargin=0.5em,
+  aboveskip=4pt,
+  belowskip=4pt,
+}%
+
+% Maven \texttt{pom.xml} snippets (\texttt{cs-a/software\_dev\_life\_cycle.tex}).
+\lstdefinestyle{pomxml}{%
+  language=XML,
+  numbers=none,
+  basicstyle=\ttfamily\footnotesize,
+  keywordstyle=\bfseries\color{blue!55!black},
+  stringstyle=\color{green!50!black},
+  columns=fullflexible,
+  keepspaces=true,
+  tabsize=4,
+  showstringspaces=false,
+  breaklines=true,
+  breakatwhitespace=true,
+  frame=single,
+  rulecolor=\color{black!35},
+  backgroundcolor=\color{black!4},
+  xleftmargin=0.5em,
+  xrightmargin=0.5em,
+  aboveskip=4pt,
+  belowskip=4pt,
+}%
+
+% HTML / CSS / JavaScript (CS-A: \texttt{cs-a/web.tex}). HTML uses built-in \texttt{language=HTML}.
+\lstdefinelanguage{CSSEXAM}{%
+  morekeywords={%
+    color,background,background-color,margin,padding,border,border-width,%
+    border-style,border-color,width,height,display,font,font-size,font-style,%
+    font-weight,text-align,text-decoration,box-sizing,position,overflow,%
+    opacity,max-width,min-width,flex,align-items,justify-content,gap,z-index},%
+  sensitive=false,%
+  morecomment=[s]{/*}{*/},%
+  morestring=[b]',%
+}%
+\lstdefinelanguage{JSEXAM}{%
+  morekeywords={%
+    break,case,catch,class,const,continue,debugger,default,delete,do,else,%
+    export,extends,false,finally,for,function,if,import,in,instanceof,new,%
+    null,return,super,switch,this,throw,true,try,typeof,var,void,while,%
+    let,static,async,await,of,yield},%
+  sensitive=true,%
+  morecomment=[l]{//},%
+  morecomment=[s]{/*}{*/},%
+  morestring=[b]',%
+  morestring=[b]"% 
+}%
+\lstdefinestyle{htmlexam}{%
+  language=HTML,
+  basicstyle=\ttfamily\footnotesize,
+  keywordstyle=\bfseries\color{blue!55!black},
+  commentstyle=\ttfamily\color{black!50},
+  stringstyle=\color{green!50!black},
+  columns=fullflexible,
+  keepspaces=true,
+  tabsize=2,
+  showstringspaces=false,
+  breaklines=true,
+  breakatwhitespace=true,
+  frame=single,
+  rulecolor=\color{black!35},
+  backgroundcolor=\color{black!4},
+  xleftmargin=0.5em,
+  xrightmargin=0.5em,
+  aboveskip=4pt,
+  belowskip=4pt,
+}%
+\lstdefinestyle{cssexam}{%
+  language=CSSEXAM,
+  basicstyle=\ttfamily\footnotesize,
+  keywordstyle=\bfseries\color{blue!55!black},
+  commentstyle=\ttfamily\color{black!50},
+  stringstyle=\color{green!50!black},
+  columns=fullflexible,
+  keepspaces=true,
+  tabsize=2,
+  showstringspaces=false,
+  breaklines=true,
+  breakatwhitespace=true,
+  frame=single,
+  rulecolor=\color{black!35},
+  backgroundcolor=\color{black!4},
+  xleftmargin=0.5em,
+  xrightmargin=0.5em,
+  aboveskip=4pt,
+  belowskip=4pt,
+}%
+\lstdefinestyle{jsexam}{%
+  language=JSEXAM,
+  basicstyle=\ttfamily\footnotesize,
+  keywordstyle=\bfseries\color{blue!55!black},
+  commentstyle=\ttfamily\color{black!50},
+  stringstyle=\color{green!50!black},
+  columns=fullflexible,
+  keepspaces=true,
+  tabsize=2,
+  showstringspaces=false,
+  breaklines=true,
+  breakatwhitespace=true,
+  frame=single,
+  rulecolor=\color{black!35},
+  backgroundcolor=\color{black!4},
+  xleftmargin=0.5em,
+  xrightmargin=0.5em,
+  aboveskip=4pt,
+  belowskip=4pt,
+}%
+
+% TypeScript / Angular (CS-A: \texttt{cs-web/web-angular.tex}).
+\lstdefinelanguage{TSEXAM}{%
+  morekeywords={%
+    break,case,catch,class,const,continue,debugger,default,delete,do,else,%
+    export,extends,false,finally,for,function,if,import,in,instanceof,new,%
+    null,return,super,switch,this,throw,true,try,typeof,var,void,while,%
+    let,static,async,await,of,yield,%
+    interface,type,implements,private,public,protected,readonly,enum,%
+    namespace,keyof,infer,abstract,as,is,any,unknown,never,%
+    Component,NgModule,Injectable,Input,Output,Directive,Pipe,%
+    inject,standalone,selector,template,templateUrl,styleUrls,%
+    providers,imports,declarations,bootstrap,%
+  },%
+  sensitive=true,%
+  morecomment=[l]{//},%
+  morecomment=[s]{/*}{*/},%
+  morestring=[b]',%
+  morestring=[b]",%
+  alsoletter={@\$},%
+}%
+\lstdefinestyle{tsexam}{%
+  language=TSEXAM,
+  basicstyle=\ttfamily\footnotesize,
+  keywordstyle=\bfseries\color{blue!55!black},
+  commentstyle=\ttfamily\color{black!50},
+  stringstyle=\color{green!50!black},
+  columns=fullflexible,
+  keepspaces=true,
+  tabsize=2,
+  showstringspaces=false,
+  breaklines=true,
+  breakatwhitespace=true,
+  frame=single, 
+  rulecolor=\color{black!35},
+  backgroundcolor=\color{black!4},
+  xleftmargin=0.5em,
+  xrightmargin=0.5em,
+  aboveskip=4pt,
+  belowskip=4pt,
+}%
+\lstdefinestyle{tsinline}{%
+  language=TSEXAM,
+  basicstyle=\ttfamily,
+  keywordstyle=\bfseries\color{blue!55!black},
+  commentstyle=\ttfamily\color{black!50},
+  stringstyle=\color{green!50!black},
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false,
+}%
+% Shell / CLI one-liners (\texttt{ng}, \texttt{npm}).
+\lstdefinestyle{cliexam}{%
+  basicstyle=\ttfamily\footnotesize,
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false,
+  breaklines=true,
+  breakatwhitespace=true,
+  frame=single,
+  rulecolor=\color{black!35},
+  backgroundcolor=\color{black!4},
+  xleftmargin=0.5em,
+  xrightmargin=0.5em,
+  aboveskip=4pt,
+  belowskip=4pt,
+}%
+\lstdefinestyle{cliinline}{%
+  basicstyle=\ttfamily,
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false,
+}%
+% \texttt{angular.json} and similar config snippets.
+\lstdefinestyle{jsonexam}{%
+  basicstyle=\ttfamily\footnotesize,
+  stringstyle=\color{green!50!black},
+  columns=fullflexible,
+  keepspaces=true,
+  tabsize=2,
+  showstringspaces=false,
+  breaklines=true,
+  breakatwhitespace=true,
+  frame=single,
+  rulecolor=\color{black!35},
+  backgroundcolor=\color{black!4},
+  xleftmargin=0.5em,
+  xrightmargin=0.5em,
+  aboveskip=4pt,
+  belowskip=4pt,
+}%
+
+% Raw HTTP traces and plain text payloads (CS-A: \texttt{rest.tex}); no lexer---plain monospace.
+\lstdefinestyle{http}{%
+  basicstyle=\ttfamily\footnotesize,
+  frame=single,
+  framerule=0.4pt,
+  framesep=3pt,
+  xleftmargin=2pt, 
+  xrightmargin=2pt,
+  breaklines=true,
+  breakatwhitespace=true,
+  columns=fullflexible,
+  keepspaces=true,
+  aboveskip=4pt,
+  belowskip=4pt,
+}
+
+\lstset{style=javainline}
+
+% Side-by-side request/response with \texttt{lstlisting} (CS-A: \texttt{rest.tex}). One tabular
+% row (\texttt{m} columns); \verb|\httpmidarrows| sits between listings. Middle strip: \textbf{REQ}
+% above, two short arrows, \textbf{RESP} below (compact gap so code columns get most of
+% \verb|\linewidth|). Do not pass \texttt{lstlisting} through a macro argument.
+\tikzset{%
+  http@arrow/.style={%
+    -{Stealth[scale=0.88]}, semithick, shorten >=0.5pt, shorten <=0.5pt, draw=black!55},
+}
+\newenvironment{httpexchange}{%
+  \par\medskip
+  \begingroup
+  \hfuzz=30pt\relax
+  \begin{center}%
+  \noindent
+  \begin{tabular}{@{} m{0.4\linewidth} >{\centering\arraybackslash}m{1.28cm} m{0.4\linewidth} @{}}%
+}{%
+  \end{tabular}%
+  \end{center}%
+  \endgroup
+  \medskip
+}
+\newcommand{\httpmidarrows}{%
+  &
+  \begin{minipage}[c]{1.28cm}%
+    \centering
+    \normalfont\footnotesize REQ\par\vspace{1pt}%
+    \begin{tikzpicture}[x=1cm, y=0.75cm]
+      \draw[http@arrow] (0,0.1) -- (0.92,0.1);
+      \draw[http@arrow] (0.92,-0.1) -- (0,-0.1);
+    \end{tikzpicture}\par\vspace{1pt}%
+    \normalfont\footnotesize RESP%
+  \end{minipage}%
+  &
+}
+
+\pointsinrightmargin
+\bracketedpoints
+\marginpointname{pts}
+
+\hqword{Question:}
+\hpword{Points:}
+\hsword{Score:}
+\htword{Total}
+\vqword{Question}
+\vpword{Points}
+\vsword{Score}
+\vtword{Total}
+\gradetablestretch{1.15}
+
+% Inline blanks using \fillin (no \answerline question-number prefix).
+% Space between printed answer and rule: exam default \answerclearance is tight; widen with:
+\newlength{\fillinrulegap}
+\setlength{\fillinrulegap}{0.55ex}
+\makeatletter
+\newcommand{\exam@fillinspaced}[2]{%
+  \begingroup
+  \setlength{\answerclearance}{\fillinrulegap}%
+  \fillin[#1][#2]%
+  \endgroup
+}%
+\newcommand{\labeledfillin}[2]{%
+  \par\nobreak\vskip\answerskip
+  \noindent#1:\ \exam@fillinspaced{#2}{2.3in}%
+}%
+% Optional arg = blank width (default 2.2in); mandatory arg = answer key for \printanswers.
+\newcommand{\rightfillin}[2][2.2in]{%
+  \par\nobreak\vskip\answerskip
+  \noindent\hfill\exam@fillinspaced{#2}{#1}%
+}%
+% Visual-only underlined blank in running text (e.g. MCQ stems). Does not print an answer.
+% For blanks that should show the key when \printanswers is on, use \fillin[Answer][width]
+% or \exam@fillinspaced{Answer}{width} (see above). The exam class has no global option
+% to turn every question into fill-in; use \fillin / \makeemptybox / \answerline per item.
+\newcommand{\blank}[1][6em]{\underline{\hspace{#1}}}%
+\makeatother
+
+\newcommand{\statementbox}[2][0.86\linewidth]{%
+  \begin{center}
+    \begingroup
+    \setlength{\fboxsep}{10pt}
+    \fbox{%
+      \begin{minipage}{#1}
+        #2
+      \end{minipage}%
+    }
+    \endgroup
+  \end{center}
+}
+
+
+% Per-module cover (own title, name box, instructions). Use before each \begin{questions} block.
+% Args: #1 = course/series, #2 = module title, #3 = one-line blurb (empty {} if none).
+\newcommand{\exammodulecover}[3]{%
+  \clearpage
+  \thispagestyle{empty}%
+  \vspace*{0.35in}%
+  \begin{center} 
+    {\Large \textbf{#1}\par}
+    \vspace{1.1em}
+    {\LARGE \textbf{#2}\par}
+    \vspace{0.65em}
+    {\large \textbf{\today}\par}
+    \if\relax\detokenize{#3}\relax\else
+      \vspace{0.9em}
+      {\normalsize #3\par}%
+    \fi
+  \end{center}
+  \vspace{1.1cm}
+  \begin{center}
+    \fbox{%
+      \begin{minipage}{0.92\linewidth}
+        \vspace{2mm}
+        \textbf{Name:}\ \hrulefill \\
+        \textbf{Student ID:}\ \hrulefill \quad
+        \textbf{Section:}\ \hrulefill
+        \vspace{2mm}
+      \end{minipage}%
+    }%
+  \end{center}
+  \vspace{4mm}
+  \begin{center}
+    \textbf{Instructions}
+  \end{center}
+  \begin{itemize}
+    \item Verify that your copy has \textbf{all \numpages\ pages}.
+    \item Show all work where space is provided; partial credit may be awarded.
+    \item Do not use calculators unless your instructor says otherwise.
+    \item Total possible points: \textbf{\numpoints}.
+  \end{itemize}
+  \clearpage
+}
+
+% Spacer before the next repetition of practice (e.g.\ second practice pass). No header/footer; ends with \newpage.
+\newcommand{\emptypage}{%
+  \newpage
+  \thispagestyle{empty}%
+  \null\vfill
+  \begin{center}\textit{Transition to the next practice section.}\end{center}
+  \vfill\null
+  \newpage
+}
+
+\pagestyle{headandfoot}
+% Global headers are neutral; each module file sets \runningheader{...}{...}{...} for question pages.
+\firstpageheader{}{}{}
+\runningheader{}{}{Page \thepage\ of \numpages}
+\firstpagefooter{}{}{}
+\runningfooter{}{\small Page \thepage\ of \numpages}{}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+% Instructor answer key: uncomment \printanswers (or add class option [answers]).
+% global changes for the answer key version
+\printanswers
+\ifprintanswers
+  \SolutionEmphasis{\color{blue}}
+  \CorrectChoiceEmphasis{\color{blue}}
+\fi
+
+
+
+
+\begin{document} 
+
+
+
+
+% \exammodulecover{Mathematics 6}{Statistics}{Unit assessment: data and statistics.}
+% \begin{questions}
+%   % \input{math-6th/05-stats}
+%   % \emptypage
+%   % \input{math-6th/99-all}
+%   % \emptypage
+%   \input{math-6th/98-practice}
+% \end{questions}
+
+\exammodulecover{AP Calculus}{Practice Questions}{}
+\begin{questions}
+  \input{calculus/unit01-function.tex}
+  \emptypage
+  \input{calculus/unit02-limite_conti.tex}
+  \emptypage
+  \input{calculus/unit03-diff.tex}
+  \emptypage
+  \input{calculus/unit04-app_of_diff.tex}
+  \emptypage
+  \input{calculus/unit05-anti_der.tex}
+  \emptypage
+  \input{calculus/unit06-def_int.tex}
+  \emptypage
+  \input{calculus/unit07-app_of_int1.tex}
+  \emptypage
+  \input{calculus/unit08-app_of_int2.tex}
+  \emptypage
+  \input{calculus/unit09-diff_equ.tex}
+  \emptypage
+  \input{calculus/unit10-seq+series.tex}
+  \emptypage
+  \input{calculus/unit11-misc1.tex}
+  \emptypage
+  \input{calculus/unit12-misc2.tex}
+  \emptypage
+  \input{calculus/unit20-test03.tex}
+\end{questions}
+
+
+
+
+% \exammodulecover{Computer Science Principles}{AP Practice Exam (Set 1)}{College Board style practice questions.}
+% \begin{questions}
+%   \input{cs-p/01-practice} 
+% \end{questions}
+
+% \exammodulecover{Computer Science Principles}{AP Practice Exam (Set 2)}{College Board style practice questions.}
+% \begin{questions}
+%   \input{cs-p/02-practice}
+% \end{questions}
+
+
+
+
+% \exammodulecover{Computer Science Principles}{AP Practice Exam}{College Board style practice questions.}
+% \begin{questions}
+%   % \input{cs-p/01-practice}
+%   % \emptypage
+%   % \input{cs-p/02-practice}
+%   % \emptypage
+%   \input{cs-p/98-fundamentals.tex}
+%   \emptypage
+%   \input{cs-p/97-data.tex}
+%   % \emptypage
+%   % \input{cs-p/99-coding.tex}
+% \end{questions}
+
+
+
+% https://www.crackap.com/ap/computer-science-principles/index.html
+% AP Computer Science Principles Practice Test 9: Algorithms
+% AP Computer Science Principles Practice Test 10: Algorithms
+% AP Computer Science Principles Practice Test 11: Algorithms
+% AP Computer Science Principles Practice Test 12: Algorithms
+% AP Computer Science Principles Practice Test 13: Algorithms
+% AP Computer Science Principles Practice Test 14: Algorithms
+% AP Computer Science Principles Practice Test 19: The Internet
+% AP Computer Science Principles Practice Test 20: The Internet
+% AP Computer Science Principles Practice Test 21: The Internet
+% AP Computer Science Principles Practice Test 22: Global Impact
+% AP Computer Science Principles Practice Test 23: Global Impact
+% AP Computer Science Principles Practice Test 24: Global Impact
+% AP Computer Science Principles Practice Test 25
+% AP Computer Science Principles Practice Test 26
+% AP Computer Science Principles Practice Test 27
+% AP Computer Science Principles Practice Test 28
+% AP Computer Science Principles Practice Test 29
+% AP Computer Science Principles Practice Test 30
+% AP Computer Science Principles Practice Test 31
+% AP Computer Science Principles Practice Test 32
+% AP Computer Science Principles Practice Test 33
+% AP Computer Science Principles Practice Test 34
+% AP Computer Science Principles Practice Test 35
+% AP Computer Science Principles Practice Test 36
+% AP Computer Science Principles Practice Test 37
+% AP Computer Science Principles Practice Test 38
+% AP Computer Science Principles Practice Test 39
+% AP Computer Science Principles Practice Test 40
+% AP Computer Science Principles Practice Test 41
+% AP Computer Science Principles Practice Test 42
+% AP Computer Science Principles Practice Test 43
+% AP Computer Science Principles Practice Test 44
+% AP Computer Science Principles Practice Test 45
+% AP Computer Science Principles Practice Test 1: Stimulus Practice Questions
+% AP Computer Science Principles Practice Test 2: Creative Development
+% AP Computer Science Principles Practice Test 3: Creative Development
+% AP Computer Science Principles Practice Test 4: Data
+% AP Computer Science Principles Practice Test 5: Data
+% AP Computer Science Principles Practice Test 6: Data
+% AP Computer Science Principles Practice Test 7: Algorithms and Programming
+% AP Computer Science Principles Practice Test 8: Algorithms and Programming
+% AP Computer Science Principles Practice Test 9: Algorithms and Programming
+% AP Computer Science Principles Practice Test 10: Algorithms and Programming
+% AP Computer Science Principles Practice Test 11: Computing Systems and Networks
+% AP Computer Science Principles Practice Test 12: Computing Systems and Networks
+% AP Computer Science Principles Practice Test 13: Impact of Computing
+% AP Computer Science Principles Practice Test 14: Impact of Computing
+% AP Computer Science Principles Practice Test 15
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+% \exammodulecover{Computer Science A}{AP Practice Exam}{College Board styled practice questions.}
+% \begin{questions} 
+%   % \input{cs-a/git}
+%   % \emptypage
+%   % \input{cs-a/lang}
+
+
+%   % \emptypage
+
+
+%   % \input{cs-a/procedural}
+%   % \emptypage
+%   % \input{cs-a/object_oriented}
+%   % \emptypage
+%   % \input{cs-a/software_dev_life_cycle}
+%   % \emptypage
+%   % \input{cs-a/dsa}
+%   % \emptypage
+%   % \input{cs-a/testing_logging}
+%   % \emptypage
+%   % \input{cs-a/functional}
+
+
+%   % \emptypage
+
+
+%   % \input{cs-db/sql}
+%   % \emptypage
+%   % \input{cs-db/distributed_computing}
+  
+
+%   % \emptypage
+
+
+%   % \input{cs-web/rest}
+%   % \emptypage
+%   % \input{cs-web/spring}
+%   % \emptypage
+%   % \input{cs-web/springboot}
+
+
+%   % \emptypage
+
+
+%   % \input{cs-web/web-static}
+%   % \emptypage
+%   % \input{cs-web/web-js}
+%   % \emptypage
+%   % \input{cs-web/web-ts}
+%   % \emptypage
+%   % \input{cs-web/web-angular}
+%   % \emptypage
+%   \input{frq/frq}
+% \end{questions}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
