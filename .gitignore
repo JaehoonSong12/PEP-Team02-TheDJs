@@ -1,7 +1,97 @@
-# --- Generated from ./.gitignores on Wed Jun 10 15:09:16 2026 ---
+# --- Generated from ./.gitignores on Thu Jun 11 10:40:08 2026 ---
 
-_*
+#############################################
+# A.gitignore
+#############################################
+#################### ALL PURPOSE GITIGNORE ####################
+.gemini/
+project2305*
+_*/
+tmp*/
+remote*/
+VSLive*/
+vscode*/
+pyright*/
+cursor*/
+python-lang*/
+*.key
+*.key.pub
 
+log*/
+playwright*/
+h2/
+
+/.*
+
+################################################################
+# General Ignores (Large Media Files & Common File Types)
+################################################################ 
+# Videos (large media files)
+*.mp4
+*.avi
+*.mov
+*.mkv
+
+# Audios (large media files)
+# *.mp3
+# *.wav
+# *.flac
+
+# # Images (large media files)
+# *.jpg
+# *.jpeg
+# *.png
+# *.gif
+
+
+
+
+# Microsoft Office files
+*.docx
+*.xlsx
+*.pptx
+
+
+
+
+
+################################################################
+# System Specific Ignores
+################################################################
+# Native build files 
+bin/
+obj/
+
+# IDE configurations
+.idea/
+.vs/
+.vscode/
+
+# Binary files
+[Dd]ist/
+[Dd]ists/
+[Bb]uild/
+[Bb]uilds/
+[Bb]in/
+[Ee]xt/
+
+*.exe
+*.dll
+*.lib
+
+# System files
+.DS_Store
+Thumbs.db
+*.lnk
+*.url
+# Cache files
+*.psd
+ref/
+Ruth*.pdf
+.env
+
+# Python
+venv/
 
 #############################################
 # AL.gitignore
@@ -2562,7 +2652,7 @@ Reports/
 \.project
 \.settings/
 bin/lib/
-Libs/
+# Libs/
 .svn/
 .gradle
 
@@ -2739,7 +2829,7 @@ auth.json
 # pom.xml.asc
 # *.jar
 *.class
-/lib/
+# /lib/
 /classes/
 /target/
 /checkouts/
@@ -3501,7 +3591,7 @@ inc/
 bin/
 /db
 .eclipse
-/lib/
+# /lib/
 /logs/
 /modules
 /project/project
@@ -3759,7 +3849,7 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
+# lib/
 lib64/
 parts/
 sdist/
@@ -3843,14 +3933,14 @@ ipython_config.py
 #   Similar to Pipfile.lock, it is generally recommended to include uv.lock in version control.
 #   This is especially recommended for binary packages to ensure reproducibility, and is more
 #   commonly ignored for libraries.
-# uv.lock
+uv.lock
 
 # poetry
 #   Similar to Pipfile.lock, it is generally recommended to include poetry.lock in version control.
 #   This is especially recommended for binary packages to ensure reproducibility, and is more
 #   commonly ignored for libraries.
 #   https://python-poetry.org/docs/basic-usage/#commit-your-poetrylock-file-to-version-control
-# poetry.lock
+poetry.lock
 # poetry.toml
 
 # pdm
@@ -4093,7 +4183,7 @@ devel/
 logs/
 build/
 bin/
-lib/
+# lib/
 msg_gen/
 srv_gen/
 msg/*Action.msg
@@ -4240,7 +4330,7 @@ lib/.precomp
 # ReScript.gitignore
 #############################################
 /node_modules/
-/lib/
+# /lib/
 .bsb.lock
 
 #############################################
