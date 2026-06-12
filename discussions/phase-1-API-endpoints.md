@@ -112,14 +112,16 @@
     - GET ALL SUBTASKS
     GET /api/todos/{id}
     Response Payload 200:
-    {
-        "todoId": Integer,
-        "accountId": Integer,
-        "title": "String",
-        "description": "String",
-        "completed": boolean,
-    }
-
+    [
+        {
+            "todoId": Integer,
+            "accountId": Integer,
+            "title": "String",
+            "description": "String",
+            "completed": boolean,
+        }
+    ]
+    
     - CREATE NEW SUBTASK    
     POST /api/todos/{id}/{subtask}
     Request Payload:
