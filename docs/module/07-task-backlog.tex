@@ -1,6 +1,6 @@
 \subsection{Task Backlog}\label{sec:task-backlog}
-Use GitHub Issues and Github Project to track actionable items. The table below records Phase~1
-progress as of \textbf{11 June 2026}.
+Use GitHub Issues and Github Project to track actionable items. Phase~1 completed \textbf{11 June 2026};
+Phase~2 completed \textbf{12 June 2026}. Session summaries below record how each phase was closed out.
 
 \subsubsection{Session Summary --- 10 June 2026}
 \begin{tabularx}{\textwidth}{@{} l X @{}}
@@ -23,6 +23,19 @@ progress as of \textbf{11 June 2026}.
   \midrule
   API Contract & Daniel Patience and Jacqueline Lainhart drafted payloads and status codes; documented in Section~\ref{sec:api}. \\
   HTTP request/response documentation & Jaehoon Song formatted API exchanges as HTTP traces (\texttt{httpexchange} layout); Section~\ref{sec:api}. \\
+  Phase 1 completion & All Phase~1 checkpoints satisfied; team cleared to begin Phase~2 (Section~\ref{sec:dod}). \\
+  \bottomrule
+\end{tabularx}
+
+\subsubsection{Session Summary --- 12 June 2026}
+\begin{tabularx}{\textwidth}{@{} l X @{}}
+  \toprule
+  \textbf{Activity} & \textbf{Outcome} \\
+  \midrule
+  LaTeX documentation refactor & Jaehoon Song reorganized content into \texttt{docs/module/}, added section introductions in \texttt{main.tex}, and expanded Epic~3/4 sequence diagrams (Section~\ref{sec:seq-diagrams}). \\
+  UI Wireframing & Login, Register, Dashboard, and screen-navigation wireframes added to \texttt{docs/Wireframes/} and documented in Section~\ref{sec:wireframes}. \\
+  Component Design & Team agreed Angular routes (\texttt{/}, \texttt{/register}, \texttt{/dashboard}), component hierarchy (\texttt{AppComponent}, auth views, \texttt{TodoItemComponent} with nested subtasks), and services (\texttt{AuthService}, \texttt{TodoService}, \texttt{SubtaskService}, \texttt{AuthInterceptor}, \texttt{AuthGuard}). \\
+  Phase 2 completion & All Phase~2 checkpoints and deliverables satisfied; team cleared to begin Phase~3 (Section~\ref{sec:dod}). \\
   \bottomrule
 \end{tabularx}
 
@@ -34,7 +47,7 @@ progress as of \textbf{11 June 2026}.
   \item Open or update a GitHub Issue for any remaining task IDs; link the issue to the pull request where applicable.
 \end{enumerate}
 
-\subsubsection{Backlog Status}
+\subsubsection{Backlog Status --- Phase 1 (complete 11 June 2026)}
 \begin{tabularx}{\textwidth}{@{} l l X @{}}
   \toprule
   \textbf{Item} & \textbf{Status} & \textbf{Notes} \\
@@ -43,7 +56,22 @@ progress as of \textbf{11 June 2026}.
   Database Modeling (Section~\ref{sec:database}) & Complete & Initial ERD and data dictionary; 10 June 2026. \\
   API Contract (Section~\ref{sec:api})          & Complete & Payloads by Daniel Patience and Jacqueline Lainhart; HTTP req/res traces by Jaehoon Song; 11 June 2026. \\
   Definition of Done (Section~\ref{sec:dod})     & Complete & Criteria established; 10 June 2026. \\
-  GitHub Issues / Project board                  & In progress & Create issues from AUTH/TODO/SUB task IDs as work is assigned. \\
+  GitHub Issues / Project board                  & Complete & Workflow recorded; issues to be opened as Phase~3 work is assigned. \\
+  \bottomrule
+\end{tabularx}
+
+\subsubsection{Backlog Status --- Phase 2 (complete 12 June 2026)}
+\begin{tabularx}{\textwidth}{@{} l l X @{}}
+  \toprule
+  \textbf{Item} & \textbf{Status} & \textbf{Notes} \\
+  \midrule
+  System Architecture (Appendix~\ref{sec:architecture}) & Complete & Data flow documented in \texttt{discussions/phase-2-deliverables.md}; 12 June 2026. \\
+  Security Planning (Appendix~\ref{sec:security-planning}) & Complete & JJWT and auth approach agreed; 12 June 2026. \\
+  UI Wireframing (Section~\ref{sec:wireframes})   & Complete & Four wireframes under \texttt{docs/Wireframes/}; 12 June 2026. \\
+  Component Design (Appendix~\ref{sec:component-design}) & Complete & Routes, component tree, and services agreed; 12 June 2026. \\
+  LaTeX documentation refactor                   & Complete & Modular \texttt{docs/module/} structure and section intros; 12 June 2026. \\
+  API Specification (Section~\ref{sec:api})       & Complete & Finalized for implementation; 12 June 2026. \\
+  Database Schema (Section~\ref{sec:database})   & Complete & ERD and data dictionary signed off; 12 June 2026. \\
   \bottomrule
 \end{tabularx}
 

@@ -1,0 +1,52 @@
+\subsection{UI Wireframing}\label{sec:wireframes}
+Low-fidelity wireframes define the primary screens and navigation paths for the Angular frontend.
+Each view maps to the user stories in Section~\ref{sec:overview}; arrows in the interaction overview
+show how the client moves between routes after register, login, logout, and dashboard actions.
+
+\subsubsection{Screen Navigation}
+Figure~\ref{fig:wireframe-navigation} summarizes the application flow. Unauthenticated users land on
+the home (login) screen; \textbf{SIGN UP} routes to register and \textbf{LOG IN} or successful
+\textbf{CREATE ACCOUNT} routes to the dashboard. \textbf{LOG OUT} returns the user to login.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\linewidth]{Wireframes/Interaction.png}
+  \caption{Screen navigation --- home, register, and dashboard}
+  \label{fig:wireframe-navigation}
+\end{figure}
+
+\subsubsection{Authentication Screens}
+Figures~\ref{fig:wireframe-login} and~\ref{fig:wireframe-register} cover Epic~1 (account creation)
+and Epic~2 (authentication). Both screens share the \texttt{TODO APP} header and a footer link to
+switch between sign-in and sign-up.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.92\linewidth]{Wireframes/Login.png}
+  \caption{Login --- home route (\texttt{/})}
+  \label{fig:wireframe-login}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.92\linewidth]{Wireframes/Register.png}
+  \caption{Register --- \texttt{/register}}
+  \label{fig:wireframe-register}
+\end{figure}
+
+
+\newpage
+\subsubsection{Task Dashboard}
+Figure~\ref{fig:wireframe-dashboard} covers Epic~3 (task management) and Epic~4 (subtask organization).
+The dashboard lists primary todos with expandable groups, completion progress (e.g.\ \texttt{1/3}),
+checkboxes, and delete controls. Users add top-level tasks via \textbf{+ ADD TASK} and nested items
+via \textbf{+ ADD SUBTASK}. The header shows the authenticated username and a \textbf{LOG OUT} action.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\linewidth]{Wireframes/Dashboard.png}
+  \caption{Dashboard --- \texttt{/dashboard}}
+  \label{fig:wireframe-dashboard}
+\end{figure}
+
+\newpage
