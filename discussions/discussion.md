@@ -12,7 +12,7 @@ Use these stories as the foundation for your task breakdown and API design:
         1. Check the database for username/password combination
         2. Register endpoints e.g. POST /api/auth/login
         3. Return OK (HTTP 200) if request body with JSON matches with the database 
-        4. 
+        4. Return an error if the match fails
     3. Task Management: As a user, I can create, edit, and delete todo items to keep track of my work.
         1. Specify POST /api/todos, 
         2. Specify GET /api/todos         - list todos for authenticated user.
