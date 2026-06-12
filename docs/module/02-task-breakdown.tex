@@ -1,0 +1,71 @@
+\subsection{Task Breakdown}\label{sec:tasks}
+
+\subsubsection{Epic 1: Account Creation}
+\textbf{User story:} As a new user, I can register an account to start tracking my todo tasks.
+
+\begin{tabularx}{\textwidth}{@{} p{2.4cm} X @{}}
+\toprule
+\textbf{Task ID} & \textbf{Description} \\
+\midrule 
+AUTH-01 & Define \texttt{User} entity fields (id, username, email, password); SQLite \texttt{users} table. \\
+AUTH-02 & Encrypt passwords before storage (persist hash only, never plaintext). \\
+AUTH-03 & Define validation rules (unique username/email, required fields). \\
+AUTH-04 & Specify registration endpoint: \texttt{POST /api/auth/register}. \\
+AUTH-05 & Document responses: HTTP 200 on success; HTTP 409 duplicate username/email; HTTP 400 on validation errors. \\
+\bottomrule
+\end{tabularx}
+
+\subsubsection{Epic 2: Authentication}
+\textbf{User story:} As a user, I can log in and log out to securely access my todo items.
+
+\begin{tabularx}{\textwidth}{@{} p{2.4cm} X @{}}
+\toprule
+\textbf{Task ID} & \textbf{Description} \\
+\midrule
+AUTH-06 & Verify username/password combination against the database on login. \\
+AUTH-07 & Specify login endpoint: \texttt{POST /api/auth/login}. \\
+AUTH-08 & Return HTTP 200 when request JSON matches stored credentials. \\
+AUTH-09 & Define session-based authentication for protected routes. \\
+AUTH-10 & Document logout behavior and HTTP 401 responses for unauthenticated access. \\
+\bottomrule
+\end{tabularx}
+
+\subsubsection{Epic 3: Task Management}
+\textbf{User story:} As a user, I can create, edit, and delete todo items to keep track of my work.
+
+\begin{tabularx}{\textwidth}{@{} p{2.4cm} X @{}}
+\toprule
+\textbf{Task ID} & \textbf{Description} \\
+\midrule
+TODO-01 & Define \texttt{Todo} entity (id, title, description, completed, user\_id, timestamps). \\
+TODO-02 & Specify \texttt{POST /api/todos} --- create todo. \\
+TODO-03 & Specify \texttt{GET /api/todos} --- list todos for authenticated user. \\
+TODO-04 & Specify \texttt{GET /api/todos/\{id\}} --- retrieve single todo. \\
+TODO-05 & Specify \texttt{PUT /api/todos/\{id\}} --- update todo fields. \\
+TODO-06 & Specify \texttt{DELETE /api/todos/\{id\}} --- delete todo (cascade subtasks). \\
+TODO-07 & Enforce ownership: users may only access their own todos. \\
+\bottomrule
+\end{tabularx}
+
+\subsubsection{Epic 4: Subtask Organization}
+\textbf{User story:} As a user, I can create, edit, and delete subtask items to better organize my primary tasks.
+
+\begin{tabularx}{\textwidth}{@{} p{2.4cm} X @{}}
+\toprule
+\textbf{Task ID} & \textbf{Description} \\
+\midrule
+SUB-01 & Define \texttt{Subtask} entity (id, title, completed, todo\_id, timestamps). \\
+SUB-02 & Use \texttt{GET /api/todos/\{id\}} to retrieve the parent todo before subtask operations. \\
+SUB-03 & Specify \texttt{POST /api/todos/\{id\}/\{subtask\}} --- create subtask. \\
+SUB-04 & Specify \texttt{PATCH /api/todos/\{id\}/\{subtask\}} --- update subtask fields. \\
+SUB-05 & Specify \texttt{DELETE /api/todos/\{id\}/\{subtask\}} --- delete subtask. \\
+SUB-06 & Validate parent todo exists, belongs to the authenticated user; document cascade delete when parent todo is removed. \\
+\bottomrule
+\end{tabularx}
+
+
+
+
+\newpage
+
+

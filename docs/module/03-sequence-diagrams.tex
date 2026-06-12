@@ -1,0 +1,198 @@
+\subsection{Sequence Diagrams}\label{sec:seq-diagrams}
+All endpoints must follow RESTful conventions. Use the following templates; each user story below
+applies one template as a concrete sequence diagram.
+
+\subsubsection{Resource Creation Flow (Template)}
+Use this logic to design your \texttt{POST} endpoints to ensure consistent error handling
+(e.g., handling duplicate entries). See Figures~\ref{fig:seq-register}, \ref{fig:seq-todo-create},
+and \ref{fig:seq-subtask-create}.
+
+\subsubsection{Login/Auth Flow (Template)}
+Use this logic to design your \texttt{/auth} endpoints to ensure secure credential validation.
+See Figure~\ref{fig:seq-login}.
+
+\newpage
+\subsubsection{Epic 1: Account Creation}
+\textbf{User story:} As a new user, I can register an account to start tracking my todo tasks.
+\newline
+\texttt{POST /api/auth/register} --- duplicate username/email returns \texttt{409}; validation errors return \texttt{400}.
+
+\begin{figure}[htbp]
+  \centering
+  \resizebox{\linewidth}{!}{%
+  \begin{sequencediagram}
+    \newthread{requester}{Client/Requester}
+    \newinst[1.3]{api}{API/Interface Layer}
+    \newinst[1.3]{logic}{Business Logic Layer}
+    \newinst[1.3]{da}{Data Access Layer}
+    \newinst[1.3]{store}{Data Storage}
+    \begin{sdblock}[gray!10]{SCENARIO A}{[Resource is Unique]}
+      \begin{call}{requester}{[Register Request]}{api}{[2xx Success Response]}
+        \begin{call}{api}{[Process Registration]}{logic}{[Success Data/Object]}
+          \begin{call}[2]{logic}{[Check Existence]}{da}{}
+            \begin{call}{da}{[Query]}{store}{[Result (Not Found)]}
+            \end{call}
+          \end{call}
+          \begin{call}[2]{logic}{[Persist New Resource]}{da}{[Resource Object]}
+            \begin{call}{da}{[Insert/Write]}{store}{[New Resource Object]}
+            \end{call}
+          \end{call}
+        \end{call}
+      \end{call}
+    \end{sdblock}
+    \begin{sdblock}[gray!10]{SCENARIO B}{[Conflict/Already Exists]}
+      \begin{call}{requester}{[Register Request]}{api}{[4xx Error Response]}
+        \begin{call}{api}{[Process Registration]}{logic}{[Conflict/Error Signal]}
+          \begin{call}[2]{logic}{[Check Existence]}{da}{}
+            \begin{call}{da}{[Query]}{store}{[Result (Found)]}
+            \end{call}
+          \end{call}
+        \end{call}
+      \end{call}
+    \end{sdblock}
+  \end{sequencediagram}%
+  }
+  \caption{Account creation --- \texttt{POST /api/auth/register}}
+  \label{fig:seq-register}
+\end{figure}
+
+
+\newpage
+\subsubsection{Epic 2: Authentication}
+\textbf{User story:} As a user, I can log in and log out to securely access my todo items.
+\newline
+\texttt{POST /api/auth/login} --- invalid credentials return \texttt{401}.
+
+\begin{figure}[htbp]
+  \centering
+  \resizebox{\linewidth}{!}{%
+  \begin{sequencediagram}
+    \newthread{requester}{Client/Requester}
+    \newinst[1.1]{api}{API/Interface Layer}
+    \newinst[1.1]{logic}{Business Logic Layer}
+    \newinst[1.1]{da}{Data Access Layer}
+    \newinst[1.1]{util}{Utility/Service}
+    \newinst[1.1]{store}{Data Storage}
+    \begin{sdblock}[gray!10]{SCENARIO A}{[Success]}
+      \begin{call}{requester}{[Login Request]}{api}{[2xx Success Response]}
+        \begin{call}{api}{[Execute Process]}{logic}{[Return Success/Token]}
+          \begin{call}[2]{logic}{[Request User Data]}{da}{}
+            \begin{call}{da}{[Query/Fetch]}{store}{[Return User Object]}
+            \end{call}
+          \end{call}
+          \begin{call}[1]{logic}{[Validate Credentials/Generate Token]}{util}{[Return Result]}
+          \end{call}
+        \end{call}
+      \end{call}
+    \end{sdblock}
+    \begin{sdblock}[gray!10]{SCENARIO B}{[Failure - Invalid Credentials]}
+      \begin{call}{requester}{[Login Request]}{api}{[4xx Error Response]}
+        \begin{call}{api}{[Execute Process]}{logic}{[Return Error/Fail]}
+          \begin{call}[2]{logic}{[Request User Data]}{da}{}
+            \begin{call}{da}{[Query/Fetch]}{store}{[Return Null/Empty]}
+            \end{call}
+          \end{call}
+        \end{call}
+      \end{call}
+    \end{sdblock}
+  \end{sequencediagram}%
+  }
+  \caption{Authentication --- \texttt{POST /api/auth/login}}
+  \label{fig:seq-login}
+\end{figure}
+
+\newpage
+
+\subsubsection{Epic 3: Task Management}
+\textbf{User story:} As a user, I can create, edit, and delete todo items to keep track of my work.
+\newline
+\texttt{POST /api/todos} --- validation errors return \texttt{400}.
+
+\begin{figure}[htbp]
+  \centering
+  \resizebox{\linewidth}{!}{%
+  \begin{sequencediagram}
+    \newthread{requester}{Client/Requester}
+    \newinst[1.3]{api}{API/Interface Layer}
+    \newinst[1.3]{logic}{Business Logic Layer}
+    \newinst[1.3]{da}{Data Access Layer}
+    \newinst[1.3]{store}{Data Storage}
+    \begin{sdblock}[gray!10]{SCENARIO A}{[Request Valid]}
+      \begin{call}{requester}{[Create Todo Request]}{api}{[2xx Success Response]}
+        \begin{call}{api}{[Process Creation]}{logic}{[Success Data/Object]}
+          \begin{call}[2]{logic}{[Validate Request]}{da}{}
+            \begin{call}{da}{[Query]}{store}{[Result (Valid)]}
+            \end{call}
+          \end{call}
+          \begin{call}[2]{logic}{[Persist New Resource]}{da}{[Resource Object]}
+            \begin{call}{da}{[Insert/Write]}{store}{[New Resource Object]}
+            \end{call}
+          \end{call}
+        \end{call}
+      \end{call}
+    \end{sdblock}
+    \begin{sdblock}[gray!10]{SCENARIO B}{[Validation Error]}
+      \begin{call}{requester}{[Create Todo Request]}{api}{[4xx Error Response]}
+        \begin{call}{api}{[Process Creation]}{logic}{[Validation/Error Signal]}
+          \begin{call}[2]{logic}{[Validate Request]}{da}{}
+            \begin{call}{da}{[Query]}{store}{[Result (Invalid)]}
+            \end{call}
+          \end{call}
+        \end{call}
+      \end{call}
+    \end{sdblock}
+  \end{sequencediagram}%
+  }
+  \caption{Task management --- \texttt{POST /api/todos}}
+  \label{fig:seq-todo-create}
+\end{figure}
+
+
+\newpage
+
+
+\subsubsection{Epic 4: Subtask Organization}
+\textbf{User story:} As a user, I can create, edit, and delete subtask items to better organize my primary tasks.
+\newline
+\texttt{POST /api/todos/\{id\}/\{subtask\}} --- parent todo must exist and belong to the authenticated user.
+
+\begin{figure}[htbp]
+  \centering
+  \resizebox{\linewidth}{!}{%
+  \begin{sequencediagram}
+    \newthread{requester}{Client/Requester}
+    \newinst[1.3]{api}{API/Interface Layer}
+    \newinst[1.3]{logic}{Business Logic Layer}
+    \newinst[1.3]{da}{Data Access Layer}
+    \newinst[1.3]{store}{Data Storage}
+    \begin{sdblock}[gray!10]{SCENARIO A}{[Parent Todo Valid]}
+      \begin{call}{requester}{[Create Subtask Request]}{api}{[2xx Success Response]}
+        \begin{call}{api}{[Process Creation]}{logic}{[Success Data/Object]}
+          \begin{call}[2]{logic}{[Verify Parent Todo]}{da}{}
+            \begin{call}{da}{[Query]}{store}{[Parent Found \& Owned]}
+            \end{call}
+          \end{call}
+          \begin{call}[2]{logic}{[Persist New Resource]}{da}{[Resource Object]}
+            \begin{call}{da}{[Insert/Write]}{store}{[New Resource Object]}
+            \end{call}
+          \end{call}
+        \end{call}
+      \end{call}
+    \end{sdblock}
+    \begin{sdblock}[gray!10]{SCENARIO B}{[Parent Not Found/Unauthorized]}
+      \begin{call}{requester}{[Create Subtask Request]}{api}{[4xx Error Response]}
+        \begin{call}{api}{[Process Creation]}{logic}{[Conflict/Error Signal]}
+          \begin{call}[2]{logic}{[Verify Parent Todo]}{da}{}
+            \begin{call}{da}{[Query]}{store}{[Not Found/Unauthorized]}
+            \end{call}
+          \end{call}
+        \end{call}
+      \end{call}
+    \end{sdblock}
+  \end{sequencediagram}%
+  }
+  \caption{Subtask organization --- \texttt{POST /api/todos/\{id\}/\{subtask\}}}
+  \label{fig:seq-subtask-create}
+\end{figure}
+
+\newpage

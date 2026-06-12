@@ -1,97 +1,9 @@
 # --- Generated from ./.gitignores on Thu Jun 11 10:40:08 2026 ---
 
-#############################################
-# A.gitignore
-#############################################
-#################### ALL PURPOSE GITIGNORE ####################
-.gemini/
-project2305*
-_*/
-tmp*/
-remote*/
-VSLive*/
-vscode*/
-pyright*/
-cursor*/
-python-lang*/
-*.key
-*.key.pub
 
-log*/
-playwright*/
-h2/
-
-/.*
-
-################################################################
-# General Ignores (Large Media Files & Common File Types)
-################################################################ 
-# Videos (large media files)
-*.mp4
-*.avi
-*.mov
-*.mkv
-
-# Audios (large media files)
-# *.mp3
-# *.wav
-# *.flac
-
-# # Images (large media files)
-# *.jpg
-# *.jpeg
-# *.png
-# *.gif
+_*
 
 
-
-
-# Microsoft Office files
-*.docx
-*.xlsx
-*.pptx
-
-
-
-
-
-################################################################
-# System Specific Ignores
-################################################################
-# Native build files 
-bin/
-obj/
-
-# IDE configurations
-.idea/
-.vs/
-.vscode/
-
-# Binary files
-[Dd]ist/
-[Dd]ists/
-[Bb]uild/
-[Bb]uilds/
-[Bb]in/
-[Ee]xt/
-
-*.exe
-*.dll
-*.lib
-
-# System files
-.DS_Store
-Thumbs.db
-*.lnk
-*.url
-# Cache files
-*.psd
-ref/
-Ruth*.pdf
-.env
-
-# Python
-venv/
 
 #############################################
 # AL.gitignore
