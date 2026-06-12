@@ -3,9 +3,17 @@ All endpoints must follow RESTful conventions. Use the following templates; each
 applies one template as a concrete sequence diagram.
 
 \subsubsection{Resource Creation Flow (Template)}
-Use this logic to design your \texttt{POST} endpoints to ensure consistent error handling
-(e.g., handling duplicate entries). See Figures~\ref{fig:seq-register}, \ref{fig:seq-todo-create},
-and \ref{fig:seq-subtask-create}.
+Use this logic to design your \texttt{POST} and \texttt{PUT} endpoints to ensure consistent error handling
+(e.g., handling duplicate entries or missing resources). See Figures~\ref{fig:seq-register},
+\ref{fig:seq-todo-create}, and \ref{fig:seq-subtask-create}.
+
+\subsubsection{Resource Read Flow (Template)}
+Use this logic to design your \texttt{GET} endpoints. See Figures~\ref{fig:seq-todo-list}
+and \ref{fig:seq-subtask-list}.
+
+\subsubsection{Resource Delete Flow (Template)}
+Use this logic to design your \texttt{DELETE} endpoints. See Figures~\ref{fig:seq-todo-delete}
+and \ref{fig:seq-subtask-delete}.
 
 \subsubsection{Login/Auth Flow (Template)}
 Use this logic to design your \texttt{/auth} endpoints to ensure secure credential validation.
@@ -106,7 +114,10 @@ See Figure~\ref{fig:seq-login}.
 \subsubsection{Epic 3: Task Management}
 \textbf{User story:} As a user, I can create, edit, and delete todo items to keep track of my work.
 \newline
-\texttt{POST /api/todos} --- validation errors return \texttt{400}.
+\texttt{GET /api/todos} lists todos for the authenticated user; \texttt{POST /api/todos} and
+\texttt{PUT /api/todos/\{id\}} create or edit a todo; \texttt{DELETE /api/todos/\{id\}} removes a
+todo and cascades its subtasks. Validation errors return \texttt{400}; missing resources return
+\texttt{404}.
 
 \begin{figure}[htbp]
   \centering
@@ -117,25 +128,44 @@ See Figure~\ref{fig:seq-login}.
     \newinst[1.3]{logic}{Business Logic Layer}
     \newinst[1.3]{da}{Data Access Layer}
     \newinst[1.3]{store}{Data Storage}
-    \begin{sdblock}[gray!10]{SCENARIO A}{[Request Valid]}
-      \begin{call}{requester}{[Create Todo Request]}{api}{[2xx Success Response]}
-        \begin{call}{api}{[Process Creation]}{logic}{[Success Data/Object]}
-          \begin{call}[2]{logic}{[Validate Request]}{da}{}
-            \begin{call}{da}{[Query]}{store}{[Result (Valid)]}
-            \end{call}
+    \begin{call}{requester}{[Request All Todos]}{api}{[2xx Success Response]}
+      \begin{call}{api}{[Execute Request]}{logic}{[Return Data]}
+        \begin{call}{logic}{[Ask for Data]}{da}{[Return Data]}
+          \begin{call}{da}{[Query Data]}{store}{[Return Data]}
           \end{call}
-          \begin{call}[2]{logic}{[Persist New Resource]}{da}{[Resource Object]}
-            \begin{call}{da}{[Insert/Write]}{store}{[New Resource Object]}
+        \end{call}
+      \end{call}
+    \end{call}
+  \end{sequencediagram}%
+  }
+  \caption{List todos --- \texttt{GET /api/todos}}
+  \label{fig:seq-todo-list}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \resizebox{\linewidth}{!}{%
+  \begin{sequencediagram}
+    \newthread{requester}{Client/Requester}
+    \newinst[1.3]{api}{API/Interface Layer}
+    \newinst[1.3]{logic}{Business Logic Layer}
+    \newinst[1.3]{da}{Data Access Layer}
+    \newinst[1.3]{store}{Data Storage}
+    \begin{sdblock}[gray!10]{SCENARIO A}{[Success]}
+      \begin{call}{requester}{[Create or Edit Todo]}{api}{[2xx Success Response]}
+        \begin{call}{api}{[Execute Request]}{logic}{[Return Success/Data]}
+          \begin{call}{logic}{[Send Todo Data]}{da}{[Return Data]}
+            \begin{call}{da}{[Input New Data]}{store}{[Return Data]}
             \end{call}
           \end{call}
         \end{call}
       \end{call}
     \end{sdblock}
-    \begin{sdblock}[gray!10]{SCENARIO B}{[Validation Error]}
-      \begin{call}{requester}{[Create Todo Request]}{api}{[4xx Error Response]}
-        \begin{call}{api}{[Process Creation]}{logic}{[Validation/Error Signal]}
-          \begin{call}[2]{logic}{[Validate Request]}{da}{}
-            \begin{call}{da}{[Query]}{store}{[Result (Invalid)]}
+    \begin{sdblock}[gray!10]{SCENARIO B}{[Null Message]}
+      \begin{call}{requester}{[Create or Edit Todo]}{api}{[4xx Error Response]}
+        \begin{call}{api}{[Execute Request]}{logic}{[Return Error]}
+          \begin{call}{logic}{[Send Todo Data]}{da}{[Return Null]}
+            \begin{call}{da}{[Send to Repository]}{store}{[Result: Null]}
             \end{call}
           \end{call}
         \end{call}
@@ -143,8 +173,31 @@ See Figure~\ref{fig:seq-login}.
     \end{sdblock}
   \end{sequencediagram}%
   }
-  \caption{Task management --- \texttt{POST /api/todos}}
+  \caption{Create or edit todo --- \texttt{POST /api/todos}, \texttt{PUT /api/todos/\{id\}}}
   \label{fig:seq-todo-create}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \resizebox{\linewidth}{!}{%
+  \begin{sequencediagram}
+    \newthread{requester}{Client/Requester}
+    \newinst[1.3]{api}{API/Interface Layer}
+    \newinst[1.3]{logic}{Business Logic Layer}
+    \newinst[1.3]{da}{Data Access Layer}
+    \newinst[1.3]{store}{Data Storage}
+    \begin{call}{requester}{[Delete Todo]}{api}{[2xx Success Response]}
+      \begin{call}{api}{[Execute Request]}{logic}{[Return Success]}
+        \begin{call}{logic}{[Send Todo ID]}{da}{[Return Success]}
+          \begin{call}{da}{[Delete Todo]}{store}{[Return Success]}
+          \end{call}
+        \end{call}
+      \end{call}
+    \end{call}
+  \end{sequencediagram}%
+  }
+  \caption{Delete todo --- \texttt{DELETE /api/todos/\{id\}} (API contract: \texttt{204 No Content})}
+  \label{fig:seq-todo-delete}
 \end{figure}
 
 
@@ -154,7 +207,10 @@ See Figure~\ref{fig:seq-login}.
 \subsubsection{Epic 4: Subtask Organization}
 \textbf{User story:} As a user, I can create, edit, and delete subtask items to better organize my primary tasks.
 \newline
-\texttt{POST /api/todos/\{id\}/\{subtask\}} --- parent todo must exist and belong to the authenticated user.
+\texttt{GET /api/todos/\{id\}} retrieves the parent todo before subtask operations;
+\texttt{POST /api/todos/\{id\}/\{subtask\}} and \texttt{PUT /api/todos/\{id\}/\{subtask\}} create or edit
+a subtask; \texttt{DELETE /api/todos/\{id\}/\{subtask\}} removes one subtask. The parent todo must
+exist and belong to the authenticated user.
 
 \begin{figure}[htbp]
   \centering
@@ -165,25 +221,44 @@ See Figure~\ref{fig:seq-login}.
     \newinst[1.3]{logic}{Business Logic Layer}
     \newinst[1.3]{da}{Data Access Layer}
     \newinst[1.3]{store}{Data Storage}
-    \begin{sdblock}[gray!10]{SCENARIO A}{[Parent Todo Valid]}
-      \begin{call}{requester}{[Create Subtask Request]}{api}{[2xx Success Response]}
-        \begin{call}{api}{[Process Creation]}{logic}{[Success Data/Object]}
-          \begin{call}[2]{logic}{[Verify Parent Todo]}{da}{}
-            \begin{call}{da}{[Query]}{store}{[Parent Found \& Owned]}
-            \end{call}
+    \begin{call}{requester}{[Request All Subtasks]}{api}{[2xx Success Response]}
+      \begin{call}{api}{[Execute Request]}{logic}{[Return Data]}
+        \begin{call}{logic}{[Ask for Data]}{da}{[Return Data]}
+          \begin{call}{da}{[Query Data]}{store}{[Return Data]}
           \end{call}
-          \begin{call}[2]{logic}{[Persist New Resource]}{da}{[Resource Object]}
-            \begin{call}{da}{[Insert/Write]}{store}{[New Resource Object]}
+        \end{call}
+      \end{call}
+    \end{call}
+  \end{sequencediagram}%
+  }
+  \caption{List subtasks --- \texttt{GET /api/todos/\{id\}} (parent todo context)}
+  \label{fig:seq-subtask-list}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \resizebox{\linewidth}{!}{%
+  \begin{sequencediagram}
+    \newthread{requester}{Client/Requester}
+    \newinst[1.3]{api}{API/Interface Layer}
+    \newinst[1.3]{logic}{Business Logic Layer}
+    \newinst[1.3]{da}{Data Access Layer}
+    \newinst[1.3]{store}{Data Storage}
+    \begin{sdblock}[gray!10]{SCENARIO A}{[Success]}
+      \begin{call}{requester}{[Create or Edit Subtask]}{api}{[2xx Success Response]}
+        \begin{call}{api}{[Execute Request]}{logic}{[Return Success/Data]}
+          \begin{call}{logic}{[Send Subtask Data]}{da}{[Return Data]}
+            \begin{call}{da}{[Input New Data]}{store}{[Return Data]}
             \end{call}
           \end{call}
         \end{call}
       \end{call}
     \end{sdblock}
-    \begin{sdblock}[gray!10]{SCENARIO B}{[Parent Not Found/Unauthorized]}
-      \begin{call}{requester}{[Create Subtask Request]}{api}{[4xx Error Response]}
-        \begin{call}{api}{[Process Creation]}{logic}{[Conflict/Error Signal]}
-          \begin{call}[2]{logic}{[Verify Parent Todo]}{da}{}
-            \begin{call}{da}{[Query]}{store}{[Not Found/Unauthorized]}
+    \begin{sdblock}[gray!10]{SCENARIO B}{[Null Message]}
+      \begin{call}{requester}{[Create or Edit Subtask]}{api}{[4xx Error Response]}
+        \begin{call}{api}{[Execute Request]}{logic}{[Return Error]}
+          \begin{call}{logic}{[Send Subtask Data]}{da}{[Return Null]}
+            \begin{call}{da}{[Attempt Data Input]}{store}{[Result: Null]}
             \end{call}
           \end{call}
         \end{call}
@@ -191,8 +266,31 @@ See Figure~\ref{fig:seq-login}.
     \end{sdblock}
   \end{sequencediagram}%
   }
-  \caption{Subtask organization --- \texttt{POST /api/todos/\{id\}/\{subtask\}}}
+  \caption{Create or edit subtask --- \texttt{POST /api/todos/\{id\}/\{subtask\}}, \texttt{PUT /api/todos/\{id\}/\{subtask\}}}
   \label{fig:seq-subtask-create}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \resizebox{\linewidth}{!}{%
+  \begin{sequencediagram}
+    \newthread{requester}{Client/Requester}
+    \newinst[1.3]{api}{API/Interface Layer}
+    \newinst[1.3]{logic}{Business Logic Layer}
+    \newinst[1.3]{da}{Data Access Layer}
+    \newinst[1.3]{store}{Data Storage}
+    \begin{call}{requester}{[Delete Subtask]}{api}{[2xx Success Response]}
+      \begin{call}{api}{[Execute Request]}{logic}{[Return Success]}
+        \begin{call}{logic}{[Send Subtask ID]}{da}{[Return Success]}
+          \begin{call}{da}{[Delete Subtask]}{store}{[Return Success]}
+          \end{call}
+        \end{call}
+      \end{call}
+    \end{call}
+  \end{sequencediagram}%
+  }
+  \caption{Delete subtask --- \texttt{DELETE /api/todos/\{id\}/\{subtask\}} (API contract: \texttt{204 No Content})}
+  \label{fig:seq-subtask-delete}
 \end{figure}
 
 \newpage

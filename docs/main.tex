@@ -105,25 +105,65 @@
 \newpage
 \input{module/01-overview}
 
+
+
+
+
+
+
 \TitlePage{TMA-RAD-P1}{Requirements Analysis Document}
 \section{Requirements Analysis}\label{sec:requirements}
 \SetDocHeader{Requirements Analysis}
+This portion decomposes the project user stories into granular technical tasks and defines the
+REST API contract---the agreed communication standard between the Angular frontend and the
+Spring Boot backend. Together, the task breakdown and endpoint specifications establish what
+the system must expose before implementation begins.
+
 \input{module/02-task-breakdown}
 \input{module/05-api-contract}
+
+
+
+
+
 
 \TitlePage{TMA-BEH-P1}{Behavioral Specification Document}
 \section{Behavioral Specification}\label{sec:behavioral}
 \SetDocHeader{Behavioral Specification}
+This portion documents how actors and application layers interact during key operations.
+Sequence diagrams below model each user story as a flow of requests and responses, including
+success paths and error handling, so backend and frontend teams can implement against a shared
+behavioral model.
+
 \input{module/03-sequence-diagrams}
+
+
+
+
+
 
 \TitlePage{TMA-STR-P1}{Structural Specification Document}
 \section{Structural Specification}\label{sec:structural}
 \SetDocHeader{Structural Specification}
+This portion defines the persistent data model for the Todo Management application.
+The entity summary, Crow's Foot ERD, data dictionary, and integrity rules describe how
+\texttt{User}, \texttt{Todo}, and \texttt{Subtask} data is organized and constrained in SQLite.
+
 \input{module/04-database-modeling}
+
+
+
+
+
 
 \TitlePage{TMA-TWR-P1}{Team Work Records}
 \section{Team Work Records}\label{sec:team-records}
 \SetDocHeader{Team Work Records}
+This portion records how the team measures completion and tracks ongoing work.
+The Definition of Done establishes criteria for finished deliverables; the task backlog
+summarizes session outcomes, backlog status, and the GitHub Issues workflow used to assign
+remaining items.
+
 \input{module/06-definition-of-done}
 \input{module/07-task-backlog}
 
