@@ -1,7 +1,5 @@
-% Phase 2: Design
 
-\PhaseTitlePage{2}{Design}{TMA-DES-P2}{Design Document}
-
+% Phase 2 instructions (appendix).
 \section{Phase 2: Design}\label{sec:phase2}
 \SetDocHeader{Phase 2: Design}
 
@@ -23,24 +21,99 @@ the Backend and Frontend teams can work in parallel without integration conflict
 \subsubsection{API Design Principles}
 All endpoints must follow RESTful conventions. Use the following templates for your design documentation:
 
+
+\newpage
+
+
 \subsubsection{Resource Creation Flow (Template)}
 Use this logic to design your \texttt{POST} endpoints to ensure consistent error handling
 (e.g., handling duplicate entries).
-\begin{enumerate}[label=\arabic*., nosep, leftmargin=*]
-  \item Client/Requester sends a Create Request to the API/Interface Layer.
-  \item API forwards the request to the Business Logic Layer for processing.
-  \item[\textbf{A.}] Resource is unique: Logic checks existence via Data Access $\rightarrow$ Storage (not found); persists the new resource; returns a 2xx Success Response to the client.
-  \item[\textbf{B.}] Conflict / already exists: Logic checks existence (found); signals conflict to API; returns a 4xx Error Response to the client.
-\end{enumerate}
+
+\begin{figure}[htbp]
+  \centering
+  \resizebox{\linewidth}{!}{%
+  \begin{sequencediagram}
+    \newthread{requester}{Client/Requester}
+    \newinst[1.3]{api}{API/Interface Layer}
+    \newinst[1.3]{logic}{Business Logic Layer}
+    \newinst[1.3]{da}{Data Access Layer}
+    \newinst[1.3]{store}{Data Storage}
+    \begin{sdblock}[gray!10]{SCENARIO A}{[Resource is Unique]}
+      \begin{call}{requester}{[Create Request]}{api}{[2xx Success Response]}
+        \begin{call}{api}{[Process Creation]}{logic}{[Success Data/Object]}
+          \begin{call}[2]{logic}{[Check Existence]}{da}{}
+            \begin{call}{da}{[Query]}{store}{[Result (Not Found)]}
+            \end{call}
+          \end{call}
+          \begin{call}[2]{logic}{[Persist New Resource]}{da}{[Resource Object]}
+            \begin{call}{da}{[Insert/Write]}{store}{[New Resource Object]}
+            \end{call}
+          \end{call}
+        \end{call}
+      \end{call}
+    \end{sdblock}
+    \begin{sdblock}[gray!10]{SCENARIO B}{[Conflict/Already Exists]}
+      \begin{call}{requester}{[Create Request]}{api}{[4xx Error Response]}
+        \begin{call}{api}{[Process Creation]}{logic}{[Conflict/Error Signal]}
+          \begin{call}[2]{logic}{[Check Existence]}{da}{}
+            \begin{call}{da}{[Query]}{store}{[Result (Found)]}
+            \end{call}
+          \end{call}
+        \end{call}
+      \end{call}
+    \end{sdblock}
+  \end{sequencediagram}%
+  }
+\end{figure}
+
+
+\newpage
+
+
 
 \subsubsection{Login/Auth Flow (Template)}
 Use this logic to design your \texttt{/auth} endpoints to ensure secure credential validation.
-\begin{enumerate}[label=\arabic*., nosep, leftmargin=*]
-  \item Client/Requester sends a Login Request to the API/Interface Layer.
-  \item API forwards the request to the Business Logic Layer.
-  \item[\textbf{A.}] Success: Logic fetches user data via Data Access $\rightarrow$ Storage; Utility validates credentials and generates a token; API returns a 2xx Success Response with token.
-  \item[\textbf{B.}] Invalid credentials: Logic fetches user data (null/empty); API returns a 4xx Error Response to the client.
-\end{enumerate}
+
+\begin{figure}[htbp]
+  \centering
+  \resizebox{\linewidth}{!}{%
+  \begin{sequencediagram}
+    \newthread{requester}{Client/Requester}
+    \newinst[1.1]{api}{API/Interface Layer}
+    \newinst[1.1]{logic}{Business Logic Layer}
+    \newinst[1.1]{da}{Data Access Layer}
+    \newinst[1.1]{util}{Utility/Service}
+    \newinst[1.1]{store}{Data Storage}
+    \begin{sdblock}[gray!10]{SCENARIO A}{[Success]}
+      \begin{call}{requester}{[Login Request]}{api}{[2xx Success Response]}
+        \begin{call}{api}{[Execute Process]}{logic}{[Return Success/Token]}
+          \begin{call}[2]{logic}{[Request User Data]}{da}{}
+            \begin{call}{da}{[Query/Fetch]}{store}{[Return User Object]}
+            \end{call}
+          \end{call}
+          \begin{call}[1]{logic}{[Validate Credentials/Generate Token]}{util}{[Return Result]}
+          \end{call}
+        \end{call}
+      \end{call}
+    \end{sdblock}
+    \begin{sdblock}[gray!10]{SCENARIO B}{[Failure - Invalid Credentials]}
+      \begin{call}{requester}{[Login Request]}{api}{[4xx Error Response]}
+        \begin{call}{api}{[Execute Process]}{logic}{[Return Error/Fail]}
+          \begin{call}[2]{logic}{[Request User Data]}{da}{}
+            \begin{call}{da}{[Query/Fetch]}{store}{[Return Null/Empty]}
+            \end{call}
+          \end{call}
+        \end{call}
+      \end{call}
+    \end{sdblock}
+  \end{sequencediagram}%
+  }
+\end{figure}
+
+
+
+\newpage
+
 
 \subsection{Deliverables for Phase 2}
 By the end of this phase, your team should have:

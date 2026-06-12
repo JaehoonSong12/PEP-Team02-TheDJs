@@ -1,0 +1,40 @@
+% Phase 1 instructions (appendix).
+\section{Phase 1: Requirements Analysis}\label{sec:phase1}
+\SetDocHeader{Phase 1: Requirements Analysis}
+
+\subsection{Objective}
+The goal of this phase is the technical decomposition of user stories. Before any code is written,
+the team must define the data structures, the API communication standards, and the criteria for
+successful completion.
+
+\subsection{Checkpoints}
+\begin{itemize}
+  \item[$\checkmark$] \textbf{Task Breakdown:} Deconstruct user stories into granular technical tasks.
+  \item[$\checkmark$] \textbf{Database Modeling:} Design the relational schema (User, Todo, and Subtask entities).
+  \item[$\checkmark$] \textbf{API Contract:} Define RESTful endpoints and expected JSON request/response bodies.
+  \item[$\checkmark$] \textbf{Definition of Done (DoD):} Establish team-specific criteria for completed work.
+\end{itemize}
+
+\subsection{Technical Reference: User Stories}
+Use these stories as the foundation for your task breakdown and API design:
+\begin{enumerate}
+  \item \textbf{Account Creation:} As a new user, I can register an account to start tracking my todo tasks.
+  \item \textbf{Authentication:} As a new user, I can log in and out to securely access my todo items.
+  \item \textbf{Task Management:} As a user, I can create, edit, and delete todo items to keep track of my work.
+  \item \textbf{Subtask Organization:} As a user, I can create, edit, and delete subtask items to better organize my primary tasks.
+\end{enumerate}
+
+\subsection{Deliverables for Phase 1}
+By the end of this phase, your team should have a shared document or repository folder containing:
+\begin{enumerate}
+  \item \textbf{Entity Relationship Diagram (ERD):} Visual or text-based representation of your SQLite schema.
+  \item \textbf{API Specification:} A list of endpoints (e.g., \texttt{POST /api/auth/register}, \texttt{GET /api/todos}) including expected payloads.
+  \item \textbf{Task Backlog:} A list of specific, actionable items ready to be assigned to team-members.
+  \begin{itemize}
+    \item Use GitHub Issues and Github Project to facilitate this.
+  \end{itemize}
+\end{enumerate}
+
+\subsection{Moving to Phase 2}
+Once all Phase~1 checkboxes are marked as complete and the team agrees on the API contracts,
+proceed to \textbf{Phase 2: Design}.

@@ -1,0 +1,173 @@
+\subsection{Database Modeling}\label{sec:database}
+
+\subsubsection{Entity Summary}
+\begin{tabularx}{\textwidth}{@{} l l X @{}}
+\toprule
+\textbf{Entity} & \textbf{Table} & \textbf{Purpose} \\
+\midrule
+User    & \texttt{users}    & Account credentials and identity \\
+Todo    & \texttt{todos}    & Primary task items owned by a user \\
+Subtask & \texttt{subtasks} & Nested items belonging to one todo \\
+\bottomrule
+\end{tabularx}
+
+\subsubsection{Entity Relationship Diagram}
+Figure~\ref{fig:erd} shows a compact \textbf{Crow's Foot} (IE) style ERD.
+Each \texttt{todo} references exactly one \texttt{user} (\texttt{user\_id});
+each \texttt{user} owns zero or more \texttt{todos}.
+Each \texttt{subtask} references exactly one \texttt{todo} (\texttt{todo\_id});
+each \texttt{todo} has zero or more \texttt{subtasks}.
+
+\begin{figure}[htbp]
+  \centering
+  \begin{tikzpicture}[
+    font=\footnotesize,
+    entity/.style={
+      rectangle split,
+      rectangle split parts=2,
+      draw,
+      thick,
+      minimum width=5.9cm,
+      inner sep=5pt,
+      rectangle split part align={center, left},
+    },
+  ]
+    \node[entity] (User) {
+      \textbf{User} {\footnotesize(\texttt{users})}
+      \nodepart{two}
+      {\setlength{\tabcolsep}{2pt}%
+       \setlength{\extrarowheight}{2.5pt}%
+       \renewcommand{\arraystretch}{1.18}%
+       \begin{tabular}{@{\hspace{3pt}}p{8mm}!{\color{gray!55}\vrule width 0.35pt}@{\hspace{4pt}}p{4.45cm}@{\hspace{3pt}}}
+        \textbf{PK} & \texttt{id}\hfill\texttt{INTEGER}\\
+        \arrayrulecolor{gray!55}\hline\arrayrulecolor{black}
+         & \texttt{username}\hfill\texttt{TEXT UNIQUE}\\
+         & \texttt{email}\hfill\texttt{TEXT UNIQUE}\\
+         & \texttt{password\_hash}\hfill\texttt{TEXT}\\
+         & \texttt{created\_at}\hfill\texttt{TEXT}\\
+         & \texttt{updated\_at}\hfill\texttt{TEXT}\\
+       \end{tabular}%
+      }
+    };
+
+    \node[entity, right=3.1cm of User] (Todo) {
+      \textbf{Todo} {\footnotesize(\texttt{todos})}
+      \nodepart{two}
+      {\setlength{\tabcolsep}{2pt}%
+       \setlength{\extrarowheight}{2.5pt}%
+       \renewcommand{\arraystretch}{1.18}%
+       \begin{tabular}{@{\hspace{3pt}}p{8mm}!{\color{gray!55}\vrule width 0.35pt}@{\hspace{4pt}}p{4.45cm}@{\hspace{3pt}}}
+        \textbf{PK} & \texttt{id}\hfill\texttt{INTEGER}\\
+        \arrayrulecolor{gray!55}\hline\arrayrulecolor{black}
+        \textbf{FK} & \texttt{user\_id}\hfill\texttt{INTEGER}\\
+         & \texttt{title}\hfill\texttt{TEXT}\\
+         & \texttt{description}\hfill\texttt{TEXT}\\
+         & \texttt{completed}\hfill\texttt{INTEGER}\\
+         & \texttt{created\_at}\hfill\texttt{TEXT}\\
+         & \texttt{updated\_at}\hfill\texttt{TEXT}\\
+       \end{tabular}%
+      }
+    };
+
+    \node[entity, below=2.9cm of Todo] (Subtask) {
+      \textbf{Subtask} {\footnotesize(\texttt{subtasks})}
+      \nodepart{two}
+      {\setlength{\tabcolsep}{2pt}%
+       \setlength{\extrarowheight}{2.5pt}%
+       \renewcommand{\arraystretch}{1.18}%
+       \begin{tabular}{@{\hspace{3pt}}p{8mm}!{\color{gray!55}\vrule width 0.35pt}@{\hspace{4pt}}p{4.45cm}@{\hspace{3pt}}}
+        \textbf{PK} & \texttt{id}\hfill\texttt{INTEGER}\\
+        \arrayrulecolor{gray!55}\hline\arrayrulecolor{black}
+        \textbf{FK} & \texttt{todo\_id}\hfill\texttt{INTEGER}\\
+         & \texttt{title}\hfill\texttt{TEXT}\\
+         & \texttt{completed}\hfill\texttt{INTEGER}\\
+         & \texttt{created\_at}\hfill\texttt{TEXT}\\
+         & \texttt{updated\_at}\hfill\texttt{TEXT}\\
+       \end{tabular}%
+      }
+    };
+
+    % User (one) --- (many) Todo  [horizontal]
+    \coordinate (TodoWest) at (Todo.west);
+    \coordinate (CrowUT) at ($(TodoWest)+(-11pt,0)$);
+    \coordinate (RingUT) at ($(CrowUT)+(-9pt,0)$);
+    \coordinate (UserEast) at (User.east);
+    \coordinate (PipeUT) at ($(UserEast)+(2.4pt,0)$);
+    \draw[thick] (UserEast) -- ($(RingUT)+(-2.6pt,0)$);
+    \draw[thick] (RingUT) circle[radius=2.6pt];
+    \draw[thick] ($(RingUT)+(2.6pt,0)$) -- (CrowUT);
+    \draw[thick] ($(PipeUT)+(0,5.5pt)$) -- ($(PipeUT)+(0,-5.5pt)$);
+    \draw[thick] ($(PipeUT)+(2.3pt,5.5pt)$) -- ($(PipeUT)+(2.3pt,-5.5pt)$);
+    \draw[thick] (CrowUT) -- ($(TodoWest)+(0,5.5pt)$);
+    \draw[thick] (CrowUT) -- (TodoWest);
+    \draw[thick] (CrowUT) -- ($(TodoWest)+(0,-5.5pt)$);
+
+    % Todo (one) --- (many) Subtask  [vertical]
+    \coordinate (SubNorth) at (Subtask.north);
+    \coordinate (CrowTS) at ($(SubNorth)+(0,11pt)$);
+    \coordinate (RingTS) at ($(CrowTS)+(0,9pt)$);
+    \coordinate (TodoSouth) at (Todo.south);
+    \coordinate (PipeTS) at ($(TodoSouth)+(0,-2.4pt)$);
+    \draw[thick] (TodoSouth) -- ($(RingTS)+(0,2.6pt)$);
+    \draw[thick] (RingTS) circle[radius=2.6pt];
+    \draw[thick] ($(RingTS)+(0,-2.6pt)$) -- (CrowTS);
+    \draw[thick] ($(PipeTS)+(-5.5pt,0)$) -- ($(PipeTS)+(5.5pt,0)$);
+    \draw[thick] ($(PipeTS)+(-5.5pt,-2.3pt)$) -- ($(PipeTS)+(5.5pt,-2.3pt)$);
+    \draw[thick] (CrowTS) -- ($(SubNorth)+(-5.5pt,0)$);
+    \draw[thick] (CrowTS) -- (SubNorth);
+    \draw[thick] (CrowTS) -- ($(SubNorth)+(5.5pt,0)$);
+  \end{tikzpicture}
+  \caption{Crow's Foot ERD}
+  \label{fig:erd}
+\end{figure}
+
+\newpage
+
+\subsubsection{Data Dictionary}
+The ERD above is the canonical model. Table~\ref{tab:data-dictionary} maps each logical
+entity to its SQLite columns, types, and constraints.
+
+\begin{table}[htbp]
+  \centering
+  \caption{SQLite data dictionary}
+  \label{tab:data-dictionary}
+  \small
+  \begin{tabularx}{\textwidth}{@{} l l l X @{}}
+    \toprule
+    \textbf{Table} & \textbf{Column} & \textbf{Type} & \textbf{Constraints / Notes} \\
+    \midrule
+    \texttt{users} & \texttt{id}             & \texttt{INTEGER} & \texttt{PRIMARY KEY}, \texttt{AUTOINCREMENT} \\
+    \texttt{users} & \texttt{username}       & \texttt{TEXT}    & \texttt{NOT NULL}, \texttt{UNIQUE} \\
+    \texttt{users} & \texttt{email}          & \texttt{TEXT}    & \texttt{NOT NULL}, \texttt{UNIQUE} \\
+    \texttt{users} & \texttt{password\_hash} & \texttt{TEXT}    & \texttt{NOT NULL} \\
+    \texttt{users} & \texttt{created\_at}    & \texttt{TEXT}    & \texttt{NOT NULL}; ISO-8601 timestamp \\
+    \texttt{users} & \texttt{updated\_at}    & \texttt{TEXT}    & \texttt{NOT NULL}; ISO-8601 timestamp \\
+    \midrule
+    \texttt{todos} & \texttt{id}             & \texttt{INTEGER} & \texttt{PRIMARY KEY}, \texttt{AUTOINCREMENT} \\
+    \texttt{todos} & \texttt{user\_id}       & \texttt{INTEGER} & \texttt{NOT NULL}; \texttt{REFERENCES} \texttt{users(id)}, \texttt{ON DELETE CASCADE} \\
+    \texttt{todos} & \texttt{title}          & \texttt{TEXT}    & \texttt{NOT NULL} \\
+    \texttt{todos} & \texttt{description}    & \texttt{TEXT}    & Optional \\
+    \texttt{todos} & \texttt{completed}      & \texttt{INTEGER} & \texttt{NOT NULL}, \texttt{DEFAULT} \texttt{0} (\texttt{0} = false, \texttt{1} = true) \\
+    \texttt{todos} & \texttt{created\_at}    & \texttt{TEXT}    & \texttt{NOT NULL}; ISO-8601 timestamp \\
+    \texttt{todos} & \texttt{updated\_at}    & \texttt{TEXT}    & \texttt{NOT NULL}; ISO-8601 timestamp \\
+    \midrule
+    \texttt{subtasks} & \texttt{id}          & \texttt{INTEGER} & \texttt{PRIMARY KEY}, \texttt{AUTOINCREMENT} \\
+    \texttt{subtasks} & \texttt{todo\_id}    & \texttt{INTEGER} & \texttt{NOT NULL}; \texttt{REFERENCES} \texttt{todos(id)}, \texttt{ON DELETE CASCADE} \\
+    \texttt{subtasks} & \texttt{title}       & \texttt{TEXT}    & \texttt{NOT NULL} \\
+    \texttt{subtasks} & \texttt{completed}   & \texttt{INTEGER} & \texttt{NOT NULL}, \texttt{DEFAULT} \texttt{0} \\
+    \texttt{subtasks} & \texttt{created\_at} & \texttt{TEXT}    & \texttt{NOT NULL}; ISO-8601 timestamp \\
+    \texttt{subtasks} & \texttt{updated\_at} & \texttt{TEXT}    & \texttt{NOT NULL}; ISO-8601 timestamp \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\subsubsection{Integrity Rules}
+\begin{itemize}
+  \item \texttt{users.username} and \texttt{users.email} must be unique.
+  \item Every \texttt{todo} must reference a valid \texttt{user\_id}.
+  \item Every \texttt{subtask} must reference a valid \texttt{todo\_id}.
+  \item Deleting a user cascades to their todos and subtasks.
+  \item Deleting a todo cascades to its subtasks.
+\end{itemize}
+
+\newpage

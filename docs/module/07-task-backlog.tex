@@ -1,0 +1,50 @@
+\subsection{Task Backlog}\label{sec:task-backlog}
+Use GitHub Issues and Github Project to track actionable items. The table below records Phase~1
+progress as of \textbf{11 June 2026}.
+
+\subsubsection{Session Summary --- 10 June 2026}
+\begin{tabularx}{\textwidth}{@{} l X @{}}
+  \toprule
+  \textbf{Activity} & \textbf{Outcome} \\
+  \midrule
+  LaTeX documentation initiated & Jaehoon Song set up the \texttt{docs/} structure and \texttt{main.tex} driver. \\
+  Team meeting --- task breakdown & All members decomposed user stories into epics and task IDs; documented in Section~\ref{sec:tasks}. \\
+  Initial ERD & Jaehoon Song drafted the Crow's Foot ERD and SQLite data dictionary (Section~\ref{sec:database}). \\
+  Repository integration & Each member used feature branches to merge discussion notes and LaTeX updates separately into \texttt{main}. \\
+  Definition of Done & Team agreed on completion criteria (Section~\ref{sec:dod}). \\
+  Task Backlog & Initial Phase~1 progress and GitHub workflow recorded (Section~\ref{sec:task-backlog}). \\
+  \bottomrule
+\end{tabularx}
+
+\subsubsection{Session Summary --- 11 June 2026}
+\begin{tabularx}{\textwidth}{@{} l X @{}}
+  \toprule
+  \textbf{Activity} & \textbf{Outcome} \\
+  \midrule
+  API Contract & Daniel Patience and Jacqueline Lainhart drafted payloads and status codes; documented in Section~\ref{sec:api}. \\
+  HTTP request/response documentation & Jaehoon Song formatted API exchanges as HTTP traces (\texttt{httpexchange} layout); Section~\ref{sec:api}. \\
+  \bottomrule
+\end{tabularx}
+
+\subsubsection{GitHub Workflow}
+\begin{enumerate}
+  \item Create a branch from \texttt{main} for the work item (discussion notes or documentation).
+  \item Commit changes locally; open a pull request when ready for review.
+  \item A teammate reviews and approves; merge into \texttt{main}.
+  \item Open or update a GitHub Issue for any remaining task IDs; link the issue to the pull request where applicable.
+\end{enumerate}
+
+\subsubsection{Backlog Status}
+\begin{tabularx}{\textwidth}{@{} l l X @{}}
+  \toprule
+  \textbf{Item} & \textbf{Status} & \textbf{Notes} \\
+  \midrule
+  Task Breakdown (Section~\ref{sec:tasks})       & Complete & Documented from team meeting discussion; 10 June 2026. \\
+  Database Modeling (Section~\ref{sec:database}) & Complete & Initial ERD and data dictionary; 10 June 2026. \\
+  API Contract (Section~\ref{sec:api})          & Complete & Payloads by Daniel Patience and Jacqueline Lainhart; HTTP req/res traces by Jaehoon Song; 11 June 2026. \\
+  Definition of Done (Section~\ref{sec:dod})     & Complete & Criteria established; 10 June 2026. \\
+  GitHub Issues / Project board                  & In progress & Create issues from AUTH/TODO/SUB task IDs as work is assigned. \\
+  \bottomrule
+\end{tabularx}
+
+\newpage
