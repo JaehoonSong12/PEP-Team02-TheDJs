@@ -108,7 +108,8 @@ Content-Type: application/json
 \end{httpexchange}
 
 \subsubsection{Task Management}
-Use the resource-creation flow template for \texttt{POST} endpoints (Figure~\ref{fig:seq-todo-create}).
+Use the resource read, creation, and delete flow templates
+(Figures~\ref{fig:seq-todo-list}, \ref{fig:seq-todo-create}, and \ref{fig:seq-todo-delete}).
 
 \textbf{\texttt{POST /api/todos}}
 
@@ -290,7 +291,8 @@ Content-Type: application/json
 \end{httpexchange}
 
 \medskip
-Use the resource-creation flow template for this \texttt{POST} endpoint (Figure~\ref{fig:seq-subtask-create}).
+Use the resource read, creation, and delete flow templates
+(Figures~\ref{fig:seq-subtask-list}, \ref{fig:seq-subtask-create}, and \ref{fig:seq-subtask-delete}).
 
 \textbf{\texttt{POST /api/todos/\{id\}/\{subtask\}}}
 
