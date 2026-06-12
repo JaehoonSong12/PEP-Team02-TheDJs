@@ -5,7 +5,7 @@
 %   module/00-coverpage.tex       — document control (revision history)
 %   module/01-overview.tex        — project-wide context
 %   Requirements Analysis         — 02-task-breakdown, 05-api-contract
-%   Behavioral Specification      — 03-sequence-diagrams (Use Case Analysis)
+%   Behavioral Specification      — 03-sequence-diagrams, 08-ui-wireframing
 %   Structural Specification      — 04-database-modeling (System Architecture)
 %   Team Work Records             — 06-definition-of-done, 07-task-backlog
 %   module/appendix/A01 … A05       — phase instructions (appendix)
@@ -84,7 +84,7 @@
     \centering
     \begin{tabular}{@{}r@{\hspace{1.2em}}l@{}}
       \textbf{Document ID:} & #1 \\
-      \textbf{Version:}    & 0.2 \\
+      \textbf{Version:}    & 0.3 \\
       \textbf{Status:}     & Draft \\
       \textbf{Issue date:}  & \today \\
     \end{tabular}
@@ -131,11 +131,12 @@ the system must expose before implementation begins.
 \section{Behavioral Specification}\label{sec:behavioral}
 \SetDocHeader{Behavioral Specification}
 This portion documents how actors and application layers interact during key operations.
-Sequence diagrams below model each user story as a flow of requests and responses, including
-success paths and error handling, so backend and frontend teams can implement against a shared
-behavioral model.
+Sequence diagrams model each user story as a flow of requests and responses, including success
+paths and error handling; UI wireframes map the same stories to screens, routes, and navigation
+so the frontend team can implement against a shared behavioral model.
 
 \input{module/03-sequence-diagrams}
+\input{module/08-ui-wireframing}
 
 
 
