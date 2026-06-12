@@ -1,29 +1,16 @@
 \subsection{Sequence Diagrams}\label{sec:seq-diagrams}
-All endpoints must follow RESTful conventions. Use the following templates; each user story below
-applies one template as a concrete sequence diagram.
-
-\subsubsection{Resource Creation Flow (Template)}
-Use this logic to design your \texttt{POST} and \texttt{PUT} endpoints to ensure consistent error handling
-(e.g., handling duplicate entries or missing resources). See Figures~\ref{fig:seq-register},
-\ref{fig:seq-todo-create}, and \ref{fig:seq-subtask-create}.
-
-\subsubsection{Resource Read Flow (Template)}
-Use this logic to design your \texttt{GET} endpoints. See Figures~\ref{fig:seq-todo-list}
-and \ref{fig:seq-subtask-list}.
-
-\subsubsection{Resource Delete Flow (Template)}
-Use this logic to design your \texttt{DELETE} endpoints. See Figures~\ref{fig:seq-todo-delete}
-and \ref{fig:seq-subtask-delete}.
-
-\subsubsection{Login/Auth Flow (Template)}
-Use this logic to design your \texttt{/auth} endpoints to ensure secure credential validation.
-See Figure~\ref{fig:seq-login}.
+The team modeled each user story as a request--response flow across five layers: Client/Requester,
+API/Interface Layer, Business Logic Layer, Data Access Layer, and Data Storage. Each diagram aligns
+with the REST endpoints in Section~\ref{sec:api} and documents both success paths and error handling.
+Diagrams are grouped by epic below.
 
 \newpage
 \subsubsection{Epic 1: Account Creation}
 \textbf{User story:} As a new user, I can register an account to start tracking my todo tasks.
 \newline
 \texttt{POST /api/auth/register} --- duplicate username/email returns \texttt{409}; validation errors return \texttt{400}.
+Figure~\ref{fig:seq-register} documents the resource creation flow: Scenario~A persists a new account when
+the username is unique; Scenario~B returns a conflict when the resource already exists.
 
 \begin{figure}[htbp]
   \centering
@@ -70,6 +57,8 @@ See Figure~\ref{fig:seq-login}.
 \textbf{User story:} As a user, I can log in and log out to securely access my todo items.
 \newline
 \texttt{POST /api/auth/login} --- invalid credentials return \texttt{401}.
+Figure~\ref{fig:seq-login} documents the login/auth flow: Scenario~A validates credentials and returns a
+token; Scenario~B rejects invalid credentials.
 
 \begin{figure}[htbp]
   \centering
@@ -118,6 +107,9 @@ See Figure~\ref{fig:seq-login}.
 \texttt{PUT /api/todos/\{id\}} create or edit a todo; \texttt{DELETE /api/todos/\{id\}} removes a
 todo and cascades its subtasks. Validation errors return \texttt{400}; missing resources return
 \texttt{404}.
+Figure~\ref{fig:seq-todo-list} documents the read flow; Figure~\ref{fig:seq-todo-create} documents
+create and edit with success and null-result error paths; Figure~\ref{fig:seq-todo-delete} documents
+delete.
 
 \begin{figure}[htbp]
   \centering
@@ -211,6 +203,9 @@ todo and cascades its subtasks. Validation errors return \texttt{400}; missing r
 \texttt{POST /api/todos/\{id\}/\{subtask\}} and \texttt{PUT /api/todos/\{id\}/\{subtask\}} create or edit
 a subtask; \texttt{DELETE /api/todos/\{id\}/\{subtask\}} removes one subtask. The parent todo must
 exist and belong to the authenticated user.
+Figure~\ref{fig:seq-subtask-list} documents the read flow in parent-todo context;
+Figure~\ref{fig:seq-subtask-create} documents create and edit with success and null-result error paths;
+Figure~\ref{fig:seq-subtask-delete} documents delete.
 
 \begin{figure}[htbp]
   \centering
