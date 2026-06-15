@@ -6176,3 +6176,11 @@ Backup_*
 __pycache__/
 *.py[cod]
 
+
+################################################################
+# AI Model Specific Ignores
+################################################################ 
+# Gemini (Google's AI model)
+*[gG][eE][mM][iI][nN][iI]*
+# Cursor IDE
+*[cC][uU][rR][sS][oO][rR]*
