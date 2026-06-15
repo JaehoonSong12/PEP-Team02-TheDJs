@@ -4,9 +4,9 @@
 % Structure:
 %   module/00-coverpage.tex       — document control (revision history)
 %   module/01-overview.tex        — project-wide context
-%   Requirements Analysis         — 02-task-breakdown, 05-api-contract
-%   Behavioral Specification      — 03-sequence-diagrams, 08-ui-wireframing
-%   Structural Specification      — 04-database-modeling (System Architecture)
+%   Requirements Analysis         — 11-use-case-diagrams, 02-task-breakdown, 05-api-contract
+%   Behavioral Specification      — 12-state-diagrams, 03-sequence-diagrams, 08-ui-wireframing
+%   Structural Specification      — 04-database-modeling, 09-class-diagrams, 10-system-architecture
 %   Team Work Records             — 06-definition-of-done, 07-task-backlog
 %   module/appendix/A01 … A05       — phase instructions (appendix)
 \documentclass{article}
@@ -25,11 +25,15 @@
 \usepackage{graphicx}
 \usepackage{subcaption}
 \usepackage[table]{xcolor}
-\input{preamble-code}
-\input{preamble-uml}
-\usepackage{colortbl}
+
+
 \usepackage{tikz}
 \usetikzlibrary{shapes,shapes.multipart,arrows,positioning,fit,backgrounds,shadows,arrows.meta,calc,babel}
+\input{preamble-code}
+\input{preamble-uml}
+
+
+\usepackage{colortbl}
 \usepackage{tabularx}
 \usepackage{booktabs}
 \usepackage{enumitem}
@@ -117,9 +121,11 @@
 \SetDocHeader{Requirements Analysis}
 This portion decomposes the project user stories into granular technical tasks and defines the
 REST API contract---the agreed communication standard between the Angular frontend and the
-Spring Boot backend. Together, the task breakdown and endpoint specifications establish what
-the system must expose before implementation begins.
+Spring Boot backend. A use case diagram summarizes each story as an actor--system interaction;
+the task breakdown and endpoint specifications establish what the system must expose before
+implementation begins.
 
+% \input{module/11-use-case-diagrams}
 \input{module/02-task-breakdown}
 \input{module/05-api-contract}
 
@@ -132,10 +138,12 @@ the system must expose before implementation begins.
 \section{Behavioral Specification}\label{sec:behavioral}
 \SetDocHeader{Behavioral Specification}
 This portion documents how actors and application layers interact during key operations.
-Sequence diagrams model each user story as a flow of requests and responses, including success
-paths and error handling; UI wireframes map the same stories to screens, routes, and navigation
-so the frontend team can implement against a shared behavioral model.
+A state diagram captures the client login/session lifecycle; sequence diagrams model each user story
+as a flow of requests and responses, including success paths and error handling; UI wireframes map
+the same stories to screens, routes, and navigation so the frontend team can implement against a
+shared behavioral model.
 
+% \input{module/12-state-diagrams}
 \input{module/03-sequence-diagrams}
 \input{module/08-ui-wireframing}
 
@@ -147,11 +155,14 @@ so the frontend team can implement against a shared behavioral model.
 \TitlePage{TMA-STR-P1}{Structural Specification Document}
 \section{Structural Specification}\label{sec:structural}
 \SetDocHeader{Structural Specification}
-This portion defines the persistent data model for the Todo Management application.
-The entity summary, Crow's Foot ERD, data dictionary, and integrity rules describe how
-\texttt{User}, \texttt{Todo}, and \texttt{Subtask} data is organized and constrained in SQLite.
+This portion defines the persistent data model and system structure for the Todo Management application.
+The component diagram, entity summary, Crow's Foot ERD, JPA class diagram, data dictionary, and integrity
+rules describe how the application is deployed and how \texttt{User}, \texttt{Todo}, and \texttt{Subtask}
+data is organized and constrained in SQLite.
 
+% \input{module/10-system-architecture}
 \input{module/04-database-modeling}
+% \input{module/09-class-diagrams}
  
  
 

@@ -1,0 +1,38 @@
+% !TeX root = ../main.tex
+\subsection{System Architecture}\label{sec:architecture}
+The deployment model follows the data-flow path documented in Phase~2 design: Angular client $\rightarrow$
+Spring Boot API $\rightarrow$ SQLite. Figure~\ref{fig:component-architecture} maps each layer to a UML
+component; provided and required interfaces show how \texttt{HTTP/JSON} and \texttt{JPA/JDBC} connect
+the tiers. Nested components mirror the request path in Section~\ref{sec:seq-diagrams} (component
+$\rightarrow$ service $\rightarrow$ controller $\rightarrow$ repository $\rightarrow$ storage). 
+
+\begin{figure}[htbp]
+  \centering
+  \resizebox{\linewidth}{!}{%
+  \begin{tikzpicture}
+    \begin{umlcomponent}{Angular Client}
+      \umlbasiccomponent{UI Components}
+      \umlbasiccomponent[y=-1.8]{Angular Services}
+      \umlprovidedinterface[interface=REST API, with port, distance=2.2cm, padding=1.2cm]{Angular Services}
+    \end{umlcomponent}
+
+    \begin{umlcomponent}[x=9]{Spring Boot API}
+      \umlbasiccomponent{Controllers}
+      \umlbasiccomponent[y=-1.5]{Services}
+      \umlbasiccomponent[y=-3]{Repositories}
+      \umlbasiccomponent[y=-4.5]{Security}
+      \umlrequiredinterface[interface=REST API, distance=1.8cm]{Controllers}
+      \umlprovidedinterface[interface=JPA/JDBC, with port, distance=2.2cm, padding=1.2cm]{Repositories}
+    \end{umlcomponent}
+
+    \umlbasiccomponent[x=18,y=-2.5]{SQLite}
+
+    \umlassemblyconnector[interface=HTTP/JSON, with port]{Angular Client}{Spring Boot API}
+    \umlHVassemblyconnector[interface=JPA/JDBC, with port]{Spring Boot API}{SQLite}
+  \end{tikzpicture}%
+  }
+  \caption{System architecture --- Angular client, Spring Boot API, SQLite}
+  \label{fig:component-architecture}
+\end{figure}
+
+\newpage

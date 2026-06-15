@@ -1,0 +1,47 @@
+\subsection{Class Diagrams}\label{sec:class-diagrams}
+The JPA entity model mirrors the relational schema in Section~\ref{sec:database}.
+Figure~\ref{fig:class-diagram} shows the three entity classes, their attributes, and composition
+relationships that reflect cascade-delete rules: deleting a \texttt{User} removes owned
+\texttt{Todo} records, and deleting a \texttt{Todo} removes its \texttt{Subtask} records.
+
+\begin{figure}[htbp]
+  \centering
+  \resizebox{\linewidth}{!}{%
+  \begin{tikzpicture}
+    \begin{class}[text width=4.4cm]{User}{0,0}
+      \attribute{- id : Long}
+      \attribute{- username : String}
+      \attribute{- email : String}
+      \attribute{- passwordHash : String}
+      \attribute{- createdAt : String}
+      \attribute{- updatedAt : String}
+    \end{class}
+
+    \begin{class}[text width=4.4cm]{Todo}{9,0}
+      \attribute{- id : Long}
+      \attribute{- userId : Long}
+      \attribute{- title : String}
+      \attribute{- description : String}
+      \attribute{- completed : boolean}
+      \attribute{- createdAt : String}
+      \attribute{- updatedAt : String}
+    \end{class}
+
+    \begin{class}[text width=4.4cm]{Subtask}{9,-5.5}
+      \attribute{- id : Long}
+      \attribute{- todoId : Long}
+      \attribute{- title : String}
+      \attribute{- completed : boolean}
+      \attribute{- createdAt : String}
+      \attribute{- updatedAt : String}
+    \end{class}
+
+    \composition{User}{todos}{0..*}{Todo}
+    \composition{Todo}{subtasks}{0..*}{Subtask}
+  \end{tikzpicture}%
+  }
+  \caption{JPA entity class diagram --- \texttt{User}, \texttt{Todo}, \texttt{Subtask}}
+  \label{fig:class-diagram}
+\end{figure}
+
+\newpage

@@ -1,0 +1,57 @@
+% !TeX root = ../main.tex
+\subsection{Use Case Diagram}\label{sec:use-cases}
+The four user stories in Section~\ref{sec:tasks} are modeled as actors and use cases within the
+Todo Management application boundary. Figure~\ref{fig:use-case-overview} shows who interacts with
+the system and which capabilities each story maps to; protected operations \emph{include} authentication
+so every todo and subtask flow assumes an active session.
+
+\begin{figure}[htbp]
+  \centering
+  \resizebox{\linewidth}{!}{%
+  \begin{tikzpicture}
+    \begin{umlsystem}[x=5]{Todo Management Application}
+      \umlusecase[name=register]{Register Account}
+      \umlusecase[name=login, y=-2]{Log In}
+      \umlusecase[name=logout, y=-4]{Log Out}
+
+      \umlusecase[name=create-todo, x=5]{Create Todo}
+      \umlusecase[name=view-todos, x=5, y=-2]{View Todos}
+      \umlusecase[name=update-todo, x=5, y=-4]{Update Todo}
+      \umlusecase[name=delete-todo, x=5, y=-6]{Delete Todo}
+
+      \umlusecase[name=create-sub, x=10]{Create Subtask}
+      \umlusecase[name=update-sub, x=10, y=-2]{Update Subtask}
+      \umlusecase[name=delete-sub, x=10, y=-4]{Delete Subtask}
+    \end{umlsystem}
+
+    \umlactor[x=-1, y=0]{Guest}
+    \umlactor[x=-1, y=-4]{User}
+
+    \umlassoc{Guest}{register}
+    \umlassoc{User}{login}
+    \umlassoc{User}{logout}
+    \umlassoc{User}{create-todo}
+    \umlassoc{User}{view-todos}
+    \umlassoc{User}{update-todo}
+    \umlassoc{User}{delete-todo}
+    \umlassoc{User}{create-sub}
+    \umlassoc{User}{update-sub}
+    \umlassoc{User}{delete-sub}
+
+    \umlinclude{create-todo}{login}
+    \umlinclude{view-todos}{login}
+    \umlinclude{update-todo}{login}
+    \umlinclude{delete-todo}{login}
+    \umlinclude{create-sub}{login}
+    \umlinclude{update-sub}{login}
+    \umlinclude{delete-sub}{login}
+    \umlinclude{create-sub}{view-todos}
+    \umlinclude{update-sub}{view-todos}
+    \umlinclude{delete-sub}{view-todos}
+  \end{tikzpicture}%
+  }
+  \caption{Use cases mapped to user stories --- Guest registers; User authenticates and manages todos and subtasks}
+  \label{fig:use-case-overview}
+\end{figure}
+
+\newpage
