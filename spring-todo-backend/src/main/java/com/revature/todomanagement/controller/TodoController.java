@@ -1,5 +1,8 @@
 package com.revature.todomanagement.controller;
 
+import com.revature.todomanagement.dto.SubtaskRequest;
+import com.revature.todomanagement.dto.SubtaskResponse;
+import com.revature.todomanagement.dto.TodoRequest;
 import com.revature.todomanagement.dto.TodoResponse;
 import com.revature.todomanagement.entity.Subtask;
 import com.revature.todomanagement.entity.Task;
@@ -39,8 +42,13 @@ public class TodoController {
     }
 
     @PostMapping
-    public ResponseEntity<TodoResponse> createTodo(@RequestBody Task task) {
+    public ResponseEntity<TodoResponse> createTodo(@RequestBody TodoRequest todoRequest) {
         User user = getAuthenticatedUser();
+        Task task = Task.builder()
+                .title(todoRequest.getTitle())
+                .description(todoRequest.getDescription())
+                .completed(todoRequest.isCompleted())
+                .build();
         Task createdTask = taskService.createTask(task, user);
         return ResponseEntity.ok(mapToTodoResponse(createdTask));
     }
@@ -53,9 +61,14 @@ public class TodoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TodoResponse> updateTodo(@PathVariable Long id, @RequestBody Task task) {
+    public ResponseEntity<TodoResponse> updateTodo(@PathVariable Long id, @RequestBody TodoRequest todoRequest) {
         User user = getAuthenticatedUser();
-        Task updatedTask = taskService.updateTask(id, task, user);
+        Task taskDetails = Task.builder()
+                .title(todoRequest.getTitle())
+                .description(todoRequest.getDescription())
+                .completed(todoRequest.isCompleted())
+                .build();
+        Task updatedTask = taskService.updateTask(id, taskDetails, user);
         return ResponseEntity.ok(mapToTodoResponse(updatedTask));
     }
 
@@ -67,17 +80,25 @@ public class TodoController {
     }
 
     @PostMapping("/{id}/subtask")
-    public ResponseEntity<Subtask> createSubtask(@PathVariable Long id, @RequestBody Subtask subtask) {
+    public ResponseEntity<SubtaskResponse> createSubtask(@PathVariable Long id, @RequestBody SubtaskRequest subtaskRequest) {
         User user = getAuthenticatedUser();
+        Subtask subtask = Subtask.builder()
+                .title(subtaskRequest.getTitle())
+                .completed(subtaskRequest.isCompleted())
+                .build();
         Subtask createdSubtask = subtaskService.createSubtask(id, subtask, user);
-        return ResponseEntity.ok(createdSubtask);
+        return ResponseEntity.ok(mapToSubtaskResponse(createdSubtask));
     }
 
     @PutMapping("/{id}/{subtaskId}")
-    public ResponseEntity<Subtask> updateSubtask(@PathVariable Long id, @PathVariable Long subtaskId, @RequestBody Subtask subtask) {
+    public ResponseEntity<SubtaskResponse> updateSubtask(@PathVariable Long id, @PathVariable Long subtaskId, @RequestBody SubtaskRequest subtaskRequest) {
         User user = getAuthenticatedUser();
-        Subtask updatedSubtask = subtaskService.updateSubtask(id, subtaskId, subtask, user);
-        return ResponseEntity.ok(updatedSubtask);
+        Subtask subtaskDetails = Subtask.builder()
+                .title(subtaskRequest.getTitle())
+                .completed(subtaskRequest.isCompleted())
+                .build();
+        Subtask updatedSubtask = subtaskService.updateSubtask(id, subtaskId, subtaskDetails, user);
+        return ResponseEntity.ok(mapToSubtaskResponse(updatedSubtask));
     }
 
     @DeleteMapping("/{id}/{subtaskId}")
@@ -94,6 +115,15 @@ public class TodoController {
                 .title(task.getTitle())
                 .description(task.getDescription())
                 .completed(task.isCompleted())
+                .build();
+    }
+
+    private SubtaskResponse mapToSubtaskResponse(Subtask subtask) {
+        return SubtaskResponse.builder()
+                .id(subtask.getId())
+                .todoId(subtask.getTask().getId())
+                .title(subtask.getTitle())
+                .completed(subtask.isCompleted())
                 .build();
     }
 }
