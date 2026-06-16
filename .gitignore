@@ -6195,5 +6195,12 @@ __pycache__/
 !/.kiro/specs/
 !.config.kiro
 !/.kiro/steering/
-/.kiro/steering/analysis*
-/.kiro/steering/execute*
+# CI/CD convention for personal configurations
+/.kiro/steering/plan-*
+/.kiro/steering/code-*
+/.kiro/steering/build-*
+/.kiro/steering/test-*
+/.kiro/steering/release-*
+/.kiro/steering/deploy-*
+/.kiro/steering/operate-*
+/.kiro/steering/monitor-*
