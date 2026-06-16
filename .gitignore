@@ -39,8 +39,8 @@ bin-release/
 [Oo]bj/
 [Bb]in/
 
-# Other files and folders
-.settings/
+# # Other files and folders
+# .settings/
 
 # Executables
 *.swf
@@ -1660,8 +1660,8 @@ Debug/
 # IAR project "Release" directory
 Release/
 
-# IAR project settings directory
-settings/
+# # IAR project settings directory
+# settings/
 
 # IAR backup files
 Backup*
@@ -6177,6 +6177,8 @@ __pycache__/
 *.py[cod]
 
 
+
+
 ################################################################
 # AI Model Specific Ignores
 ################################################################ 
@@ -6184,3 +6186,11 @@ __pycache__/
 *[gG][eE][mM][iI][nN][iI]*
 # Cursor IDE
 *[cC][uU][rR][sS][oO][rR]*
+# Kiro (AI code assistant)
+*[kK][iI][rR][oO]*
+
+# for project specific specs
+!/.kiro/
+/.kiro/*
+!/.kiro/specs/
+!.config.kiro
