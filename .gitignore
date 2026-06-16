@@ -6194,3 +6194,6 @@ __pycache__/
 /.kiro/*
 !/.kiro/specs/
 !.config.kiro
+!/.kiro/steering/
+/.kiro/steering/analysis*
+/.kiro/steering/execute*
