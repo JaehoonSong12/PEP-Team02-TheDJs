@@ -6184,3 +6184,15 @@ __pycache__/
 *[gG][eE][mM][iI][nN][iI]*
 # Cursor IDE
 *[cC][uU][rR][sS][oO][rR]*
+# Kiro (AI code assistant)
+*[kK][iI][rR][oO]*
+
+
+# for project specific specs
+!/.kiro/
+/.kiro/*
+!/.kiro/specs/
+!.config.kiro
+!/.kiro/steering/
+/.kiro/steering/analysis*
+/.kiro/steering/execute*
