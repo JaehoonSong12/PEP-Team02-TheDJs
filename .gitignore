@@ -6189,13 +6189,21 @@ __pycache__/
 # Kiro (AI code assistant)
 *[kK][iI][rR][oO]*
 
+
 # for project specific specs
 !/.kiro/
 /.kiro/*
 !/.kiro/specs/
 !.config.kiro
 !/.kiro/steering/
-/.kiro/steering/analysis*
-/.kiro/steering/execute*
+# CI/CD convention for personal configurations
+/.kiro/steering/plan-*
+/.kiro/steering/code-*
+/.kiro/steering/build-*
+/.kiro/steering/test-*
+/.kiro/steering/release-*
+/.kiro/steering/deploy-*
+/.kiro/steering/operate-*
+/.kiro/steering/monitor-*
 # Educational Purposed configurations
 /.kiro/steering/edu-*
