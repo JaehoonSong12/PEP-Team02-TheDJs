@@ -4010,7 +4010,7 @@ ui_*.h
 *.qmlc
 *.jsc
 Makefile*
-*build-*
+# *build-*
 *.qm
 *.prl
 
@@ -6011,7 +6011,7 @@ wp-config.php
 #############################################
 # Xojo (formerly REALbasic and Real Studio)
 
-Builds*
+# Builds*
 *.debug
 *.debug.app
 Debug*.exe
@@ -6197,3 +6197,5 @@ __pycache__/
 !/.kiro/steering/
 /.kiro/steering/analysis*
 /.kiro/steering/execute*
+# Educational Purposed configurations
+/.kiro/steering/edu-*
