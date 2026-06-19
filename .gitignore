@@ -1,17 +1,19 @@
-# --- Generated from ./.gitignores on Thu Jun 11 10:40:08 2026 ---
-
+# --- Generated from ./.gitignores on Fri Jun 19 13:05:26 2026 ---
 
 _*
 
 
-
+#############################################
+# A.gitignore
+#############################################
+# Note: git check-ignore -v <ignored_file> can be used to debug which rule is ignoring a file
 #############################################
 # AL.gitignore
 #############################################
 ### AL ###
 #Template for AL projects for Dynamics 365 Business Central
 #launch.json folder
-.vscode/
+.vscode/*
 #Cache folder
 .alcache/
 #Symbols folder
@@ -143,34 +145,65 @@ google-services.json
 #############################################
 # Angular.gitignore
 #############################################
-# Angular specific
+# See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
+
+# Compiled output (Angular specific)
+/dist
 /dist/
-/out-tsc/
+/tmp
 /tmp/
-/coverage/
-/e2e/test-output/
-/.angular/
-.angular/
+/out-tsc
+/out-tsc/
+/bazel-out
 
 # Node modules and dependency files
+/node_modules
 /node_modules/
+yarn-error.log
 /package-lock.json
 /yarn.lock
+
+# Logs
+npm-debug.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
 # Environment files
 /.env
 
-# Angular CLI and build artefacts
-/.angular-cli.json
-/.ng/
+# IDEs and editors
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# Miscellaneous
+/.angular/
+.angular/
+.sass-cache/
+/connect.lock
+/coverage
+/coverage/
+/libpeerconnection.log
+testem.log
+/typings
+__screenshots__/
+/e2e/test-output/
+
+# System files
+.DS_Store
+Thumbs.db
 
 # TypeScript cache
 *.tsbuildinfo
 
-# Logs
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+# Angular CLI and build artefacts
+/.angular-cli.json
+/.ng/
 
 #############################################
 # AppEngine.gitignore
@@ -3138,10 +3171,6 @@ result-*
 #############################################
 # Node.gitignore
 #############################################
-package.json
-package-lock.json
-jest/
-
 # Logs
 logs
 *.log
@@ -5921,14 +5950,6 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 
-# VS Code files for those working on multiple tools
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-!.vscode/*.code-snippets
-
 # Local History for Visual Studio Code
 .history/
 
@@ -6188,9 +6209,10 @@ __pycache__/
 *[cC][uU][rR][sS][oO][rR]*
 # Kiro (AI code assistant)
 *[kK][iI][rR][oO]*
+# Copilot (GitHub's AI code assistant)
+*[cC][oO][pP][iI][lL][oO][tT]*
 
-
-# for project specific specs
+## [Kiro] for project specific specs
 !/.kiro/
 /.kiro/*
 !/.kiro/specs/
@@ -6207,3 +6229,13 @@ __pycache__/
 /.kiro/steering/monitor-*
 # Educational Purposed configurations
 /.kiro/steering/edu-*
+
+## [Visual Studio Code]
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/mcp.json
+!.vscode/*.code-snippets
+.history/*
