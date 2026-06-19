@@ -50,18 +50,34 @@ layer can perform database operations without writing boilerplate SQL.
 
 ---
 
-### Requirement 2: Password Hashing
+### Requirement 2: Password Validation and Hashing
 
-**User Story:** As a security-conscious developer, I want passwords stored as BCrypt hashes, so that plaintext
-credentials are never persisted to the database.
+**User Story:** As a security-conscious developer, I want passwords validated against strength rules and stored as BCrypt hashes, so that only strong passwords are accepted and plaintext credentials are never persisted to the database.
 
 #### Acceptance Criteria
 
 1. WHEN a new `User` is saved during registration, THE `UserService` SHALL store a BCrypt-encoded form of the password in the `password` field rather than the plaintext value.
 2. WHEN a login request is received with matching credentials, THE `UserService` SHALL grant access only when the provided plaintext password satisfies BCrypt verification against the stored hash.
-3. WHEN a registration request is received with a plaintext password between 1 and 72 characters (inclusive), THE BCrypt-encoded password stored in the database SHALL satisfy BCrypt verification against that original plaintext.
-4. THE `UserService` SHALL ensure that a plaintext password encoded with BCrypt SHALL NOT satisfy BCrypt verification against the BCrypt hash of any different plaintext password of length 1–72 characters.
+3. WHEN a registration request is received with a plaintext password between 8 and 72 characters (inclusive) that satisfies all strength rules, THE BCrypt-encoded password stored in the database SHALL satisfy BCrypt verification against that original plaintext.
+4. THE `UserService` SHALL ensure that a plaintext password encoded with BCrypt SHALL NOT satisfy BCrypt verification against the BCrypt hash of any different plaintext password of length 8–72 characters.
 5. WHEN a registration request is received with a `password` field that is blank, THE `UserService` SHALL reject the request with an `IllegalArgumentException` before any encoding or database access occurs.
+6. WHEN a registration request is received with a `password` that does not satisfy all of the following strength rules, THE `UserService` SHALL throw an `IllegalArgumentException` with a message listing each violated rule before any encoding or database access occurs:
+   - Minimum 8 characters in length
+   - At least one uppercase letter (`A–Z`)
+   - At least one lowercase letter (`a–z`)
+   - At least one digit (`0–9`)
+   - At least one special character from the set `!@#$%^&*`
+   - No whitespace characters
+7. THE full combined regex pattern that enforces all six strength rules simultaneously SHALL be `^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*])\S{8,}$`.
+8. THE `UserService` SHALL perform password strength validation using a dedicated `PasswordValidator` utility that exposes both an `isValid(String password)` boolean check and a `getViolations(String password)` method returning a `List<String>` of human-readable violation messages.
+9. WHEN `PasswordValidator.getViolations` is called with a password that violates one or more rules, it SHALL return a non-empty list containing one entry per violated rule using the following messages:
+   - `"Password must be at least 8 characters long."`
+   - `"Password must contain at least one uppercase letter."`
+   - `"Password must contain at least one lowercase letter."`
+   - `"Password must contain at least one digit."`
+   - `"Password must contain at least one special character (!@#$%^&*)."`
+   - `"Password must not contain whitespace."`
+10. WHEN `PasswordValidator.getViolations` is called with a password that satisfies all rules, it SHALL return an empty list.
 
 ---
 
