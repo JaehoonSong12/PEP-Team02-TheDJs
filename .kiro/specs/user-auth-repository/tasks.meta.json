@@ -1,0 +1,150 @@
+{
+  "pbtResults": {},
+  "executionHistory": {
+    "2.1 Create `src/test/resources/application-test.properties`": [
+      {
+        "executionId": "b1df5d89-f006-46ee-88be-366890f64ca8",
+        "chatSessionId": "sess_1d07cbb0-9157-4f6d-8293-ac38525054d4",
+        "timestamp": 1781898665394
+      },
+      {
+        "executionId": "b1df5d89-f006-46ee-88be-366890f64ca8",
+        "chatSessionId": "sess_1d07cbb0-9157-4f6d-8293-ac38525054d4",
+        "timestamp": 1781898676269
+      }
+    ],
+    "3.1 Create `dto/RegisterRequest.java`": [
+      {
+        "executionId": "b1df5d89-f006-46ee-88be-366890f64ca8",
+        "chatSessionId": "sess_1d07cbb0-9157-4f6d-8293-ac38525054d4",
+        "timestamp": 1781898665630
+      }
+    ],
+    "3.2 Create `dto/RegisterResponse.java`": [
+      {
+        "executionId": "b1df5d89-f006-46ee-88be-366890f64ca8",
+        "chatSessionId": "sess_1d07cbb0-9157-4f6d-8293-ac38525054d4",
+        "timestamp": 1781898665713
+      }
+    ],
+    "3.3 Create `dto/LoginRequest.java`": [
+      {
+        "executionId": "b1df5d89-f006-46ee-88be-366890f64ca8",
+        "chatSessionId": "sess_1d07cbb0-9157-4f6d-8293-ac38525054d4",
+        "timestamp": 1781898665780
+      }
+    ],
+    "3.4 Create `dto/LoginResponse.java`": [
+      {
+        "executionId": "b1df5d89-f006-46ee-88be-366890f64ca8",
+        "chatSessionId": "sess_1d07cbb0-9157-4f6d-8293-ac38525054d4",
+        "timestamp": 1781898665813
+      }
+    ],
+    "4.1 Create `exception/DuplicateUsernameException.java`": [
+      {
+        "executionId": "b1df5d89-f006-46ee-88be-366890f64ca8",
+        "chatSessionId": "sess_1d07cbb0-9157-4f6d-8293-ac38525054d4",
+        "timestamp": 1781898665848
+      }
+    ],
+    "4.2 Create `exception/InvalidCredentialsException.java`": [
+      {
+        "executionId": "b1df5d89-f006-46ee-88be-366890f64ca8",
+        "chatSessionId": "sess_1d07cbb0-9157-4f6d-8293-ac38525054d4",
+        "timestamp": 1781898665878
+      }
+    ],
+    "5.1 Create `exception/GlobalExceptionHandler.java`": [
+      {
+        "executionId": "b1df5d89-f006-46ee-88be-366890f64ca8",
+        "chatSessionId": "sess_1d07cbb0-9157-4f6d-8293-ac38525054d4",
+        "timestamp": 1781898665924
+      }
+    ],
+    "6.1 Create `repository/UserRepository.java`": [
+      {
+        "executionId": "b1df5d89-f006-46ee-88be-366890f64ca8",
+        "chatSessionId": "sess_1d07cbb0-9157-4f6d-8293-ac38525054d4",
+        "timestamp": 1781898665962
+      }
+    ],
+    "7.1 Create `security/SecurityConfig.java`": [
+      {
+        "executionId": "b1df5d89-f006-46ee-88be-366890f64ca8",
+        "chatSessionId": "sess_1d07cbb0-9157-4f6d-8293-ac38525054d4",
+        "timestamp": 1781898666007
+      }
+    ],
+    "8.1 Create `security/JwtUtil.java`": [
+      {
+        "executionId": "b1df5d89-f006-46ee-88be-366890f64ca8",
+        "chatSessionId": "sess_1d07cbb0-9157-4f6d-8293-ac38525054d4",
+        "timestamp": 1781898666056
+      }
+    ],
+    "9. Add `jwt.secret` property to `application.properties`": [
+      {
+        "executionId": "b1df5d89-f006-46ee-88be-366890f64ca8",
+        "chatSessionId": "sess_1d07cbb0-9157-4f6d-8293-ac38525054d4",
+        "timestamp": 1781898666098
+      }
+    ],
+    "10.1 Implement `service/UserService.java` — fill in the existing empty shell": [
+      {
+        "executionId": "b1df5d89-f006-46ee-88be-366890f64ca8",
+        "chatSessionId": "sess_1d07cbb0-9157-4f6d-8293-ac38525054d4",
+        "timestamp": 1781898666140
+      }
+    ],
+    "11.1 Create `controller/AuthController.java`": [
+      {
+        "executionId": "b1df5d89-f006-46ee-88be-366890f64ca8",
+        "chatSessionId": "sess_1d07cbb0-9157-4f6d-8293-ac38525054d4",
+        "timestamp": 1781898666187
+      }
+    ],
+    "12. Checkpoint — wire check": [
+      {
+        "executionId": "b1df5d89-f006-46ee-88be-366890f64ca8",
+        "chatSessionId": "sess_1d07cbb0-9157-4f6d-8293-ac38525054d4",
+        "timestamp": 1781898666234
+      }
+    ],
+    "13.1 Create `test/.../UserRepositoryTest.java`": [
+      {
+        "executionId": "b1df5d89-f006-46ee-88be-366890f64ca8",
+        "chatSessionId": "sess_1d07cbb0-9157-4f6d-8293-ac38525054d4",
+        "timestamp": 1781898666283
+      }
+    ],
+    "15.1 Create `test/.../UserServiceTest.java` with example-based Mockito tests": [
+      {
+        "executionId": "b1df5d89-f006-46ee-88be-366890f64ca8",
+        "chatSessionId": "sess_1d07cbb0-9157-4f6d-8293-ac38525054d4",
+        "timestamp": 1781898666368
+      }
+    ],
+    "16.1 Create `test/.../JwtUtilTest.java` with example-based tests": [
+      {
+        "executionId": "b1df5d89-f006-46ee-88be-366890f64ca8",
+        "chatSessionId": "sess_1d07cbb0-9157-4f6d-8293-ac38525054d4",
+        "timestamp": 1781898666419
+      }
+    ],
+    "17.1 Create `test/.../AuthControllerTest.java`": [
+      {
+        "executionId": "b1df5d89-f006-46ee-88be-366890f64ca8",
+        "chatSessionId": "sess_1d07cbb0-9157-4f6d-8293-ac38525054d4",
+        "timestamp": 1781898666477
+      }
+    ],
+    "18. Final Checkpoint — full test suite": [
+      {
+        "executionId": "b1df5d89-f006-46ee-88be-366890f64ca8",
+        "chatSessionId": "sess_1d07cbb0-9157-4f6d-8293-ac38525054d4",
+        "timestamp": 1781898666531
+      }
+    ]
+  }
+}
