@@ -1,7 +1,5 @@
 package com.revature.todomanagement.service;
 
-import com.revature.todomanagement.dto.SubtaskRequest;
-import com.revature.todomanagement.dto.SubtaskResponse;
 import com.revature.todomanagement.entity.Subtask;
 import com.revature.todomanagement.entity.Task;
 import com.revature.todomanagement.exception.SubtaskNotFoundException;
@@ -32,22 +30,22 @@ public class SubtaskService {
      *
      * @param userId  the authenticated user's ID
      * @param taskId  the parent task's UUID
-     * @param request payload containing the subtask title (and optional completed flag)
-     * @return the persisted subtask as a response DTO
-     * @throws TaskNotFoundException     if no task with {@code taskId} exists
-     * @throws TaskOwnershipException    if the task belongs to a different user
-     * @throws IllegalArgumentException  if the title is blank
+     * @param subtask subtask to persist (id should be null; taskId will be set here)
+     * @return the persisted subtask
+     * @throws TaskNotFoundException    if no task with {@code taskId} exists
+     * @throws TaskOwnershipException   if the task belongs to a different user
+     * @throws IllegalArgumentException if the title is blank
      */
-    public SubtaskResponse createSubtask(UUID userId, UUID taskId, SubtaskRequest request) {
+    public Subtask createSubtask(UUID userId, UUID taskId, Subtask subtask) {
         verifyTaskOwnership(userId, taskId);
 
-        if (request.getTitle() == null || request.getTitle().isBlank())
+        if (subtask.getTitle() == null || subtask.getTitle().isBlank())
             throw new IllegalArgumentException("Subtask title must not be blank.");
 
-        boolean completed = request.getCompleted() != null && request.getCompleted();
+        subtask.setId(null);
+        subtask.setTaskId(taskId);
 
-        Subtask saved = subtaskRepository.save(new Subtask(null, taskId, request.getTitle(), completed));
-        return toResponse(saved);
+        return subtaskRepository.save(subtask);
     }
 
     // ------------------------------------------------------------------ //
@@ -60,16 +58,12 @@ public class SubtaskService {
      * @param userId the authenticated user's ID
      * @param taskId the parent task's UUID
      * @return list of subtasks belonging to the task (may be empty)
-     * @throws TaskNotFoundException   if no task with {@code taskId} exists
-     * @throws TaskOwnershipException  if the task belongs to a different user
+     * @throws TaskNotFoundException  if no task with {@code taskId} exists
+     * @throws TaskOwnershipException if the task belongs to a different user
      */
-    public List<SubtaskResponse> getSubtasksForTask(UUID userId, UUID taskId) {
+    public List<Subtask> getSubtasksForTask(UUID userId, UUID taskId) {
         verifyTaskOwnership(userId, taskId);
-
-        return subtaskRepository.findAllByTaskId(taskId)
-                .stream()
-                .map(this::toResponse)
-                .toList();
+        return subtaskRepository.findAllByTaskId(taskId);
     }
 
     /**
@@ -79,15 +73,14 @@ public class SubtaskService {
      * @param userId    the authenticated user's ID
      * @param taskId    the parent task's UUID
      * @param subtaskId the subtask's UUID
-     * @return the matching subtask as a response DTO
+     * @return the matching subtask
      * @throws TaskNotFoundException    if no task with {@code taskId} exists
      * @throws TaskOwnershipException   if the task belongs to a different user
      * @throws SubtaskNotFoundException if no subtask with {@code subtaskId} exists under that task
      */
-    public SubtaskResponse getSubtaskById(UUID userId, UUID taskId, UUID subtaskId) {
+    public Subtask getSubtaskById(UUID userId, UUID taskId, UUID subtaskId) {
         verifyTaskOwnership(userId, taskId);
-        Subtask subtask = findSubtaskUnderTask(taskId, subtaskId);
-        return toResponse(subtask);
+        return findSubtaskUnderTask(taskId, subtaskId);
     }
 
     // ------------------------------------------------------------------ //
@@ -96,33 +89,30 @@ public class SubtaskService {
 
     /**
      * Updates a subtask's title and/or completed status.
-     * Only non-null fields in the request are applied (partial update).
      *
      * @param userId    the authenticated user's ID
      * @param taskId    the parent task's UUID
      * @param subtaskId the subtask's UUID
-     * @param request   payload with fields to update
-     * @return the updated subtask as a response DTO
-     * @throws TaskNotFoundException     if no task with {@code taskId} exists
-     * @throws TaskOwnershipException    if the task belongs to a different user
-     * @throws SubtaskNotFoundException  if no subtask with {@code subtaskId} exists under that task
-     * @throws IllegalArgumentException  if an explicit blank title is supplied
+     * @param updates   subtask object carrying the fields to update
+     * @return the updated subtask
+     * @throws TaskNotFoundException    if no task with {@code taskId} exists
+     * @throws TaskOwnershipException   if the task belongs to a different user
+     * @throws SubtaskNotFoundException if no subtask with {@code subtaskId} exists under that task
+     * @throws IllegalArgumentException if an explicit blank title is supplied
      */
-    public SubtaskResponse updateSubtask(UUID userId, UUID taskId, UUID subtaskId, SubtaskRequest request) {
+    public Subtask updateSubtask(UUID userId, UUID taskId, UUID subtaskId, Subtask updates) {
         verifyTaskOwnership(userId, taskId);
-        Subtask subtask = findSubtaskUnderTask(taskId, subtaskId);
+        Subtask existing = findSubtaskUnderTask(taskId, subtaskId);
 
-        if (request.getTitle() != null) {
-            if (request.getTitle().isBlank())
+        if (updates.getTitle() != null) {
+            if (updates.getTitle().isBlank())
                 throw new IllegalArgumentException("Subtask title must not be blank.");
-            subtask.setTitle(request.getTitle());
+            existing.setTitle(updates.getTitle());
         }
 
-        if (request.getCompleted() != null) {
-            subtask.setCompleted(request.getCompleted());
-        }
+        existing.setCompleted(updates.isCompleted());
 
-        return toResponse(subtaskRepository.save(subtask));
+        return subtaskRepository.save(existing);
     }
 
     // ------------------------------------------------------------------ //
@@ -175,15 +165,5 @@ public class SubtaskService {
             throw new SubtaskNotFoundException(subtaskId);
 
         return subtask;
-    }
-
-    /** Maps a {@link Subtask} entity to a {@link SubtaskResponse} DTO. */
-    private SubtaskResponse toResponse(Subtask subtask) {
-        return new SubtaskResponse(
-                subtask.getId(),
-                subtask.getTaskId(),
-                subtask.getTitle(),
-                subtask.isCompleted()
-        );
     }
 }
