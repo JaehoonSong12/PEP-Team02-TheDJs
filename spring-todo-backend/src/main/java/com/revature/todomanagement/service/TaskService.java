@@ -3,6 +3,7 @@ package com.revature.todomanagement.service;
 import com.revature.todomanagement.entity.Task;
 import com.revature.todomanagement.exception.TaskNotFoundException;
 import com.revature.todomanagement.exception.TaskOwnershipException;
+import com.revature.todomanagement.repository.SubtaskRepository;
 import com.revature.todomanagement.repository.TaskRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import java.util.UUID;
 public class TaskService {
 
     private final TaskRepository taskRepository;
+    private final SubtaskRepository subtaskRepository;
 
     // ------------------------------------------------------------------ //
     //  Create                                                              //
@@ -101,6 +103,7 @@ public class TaskService {
 
     /**
      * Deletes a task by ID after verifying ownership.
+     * All subtasks belonging to the task are deleted first.
      *
      * @param userId the authenticated user's ID
      * @param taskId the task's UUID
@@ -109,6 +112,7 @@ public class TaskService {
      */
     public void deleteTask(UUID userId, UUID taskId) {
         Task task = findAndVerifyOwnership(userId, taskId);
+        subtaskRepository.deleteAll(subtaskRepository.findAllByTaskId(taskId));
         taskRepository.delete(task);
     }
 
