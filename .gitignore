@@ -1,5 +1,7 @@
 # --- Generated from ./.gitignores on Tue Jun 23 10:17:24 2026 ---
 
+_* 
+
 #############################################
 # A.gitignore
 #############################################
@@ -6058,86 +6060,6 @@ protected/runtime/*
 !protected/runtime/.gitignore
 protected/data/*.db
 themes/classic/views/
-
-#############################################
-# ZYXcustom.gitignore
-#############################################
-#################### ALL PURPOSE GITIGNORE ####################
-project2305*
-_*
-tmp*/
-remote*/
-VSLive*/
-vscode*/
-pyright*/
-python-lang*/
-*.key
-*.key.pub
-log*/
-playwright*/
-h2/
-
-################################################################
-# General Ignores (Large Media Files & Common File Types)
-################################################################ 
-# Videos (large media files)
-*.mp4
-*.avi
-*.mov
-*.mkv
-
-# Audios (large media files)
-# *.mp3
-# *.wav
-# *.flac
-
-# # Images (large media files)
-# *.jpg
-# *.jpeg
-# *.png
-# *.gif
-
-# Microsoft Office files
-*.docx
-*.xlsx
-*.pptx
-
-################################################################
-# System Specific Ignores
-################################################################
-# Native build files 
-bin/
-obj/
-
-# IDE configurations
-.idea/*
-.vs/*
-.vscode/*
-
-# Binary files
-[Dd]ist/
-[Dd]ists/
-[Bb]uild/
-[Bb]uilds/
-[Bb]in/
-[Ee]xt/
-
-*.exe
-*.dll
-*.lib
-
-# System files
-.DS_Store
-Thumbs.db
-*.lnk
-*.url
-# Cache files
-*.psd
-ref/
-Ruth*.pdf
-.env
-
-
 
 
 
