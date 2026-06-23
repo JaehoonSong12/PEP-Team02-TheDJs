@@ -3,13 +3,11 @@
 ## Overview
 
 This document describes the technical design for the `POST /api/auth/register` endpoint. The
-feature creates a new `User` account: it validates the submitted username and password, hashes
-the password with BCrypt, persists the record to SQLite, and returns HTTP 201 with a
-`RegisterResponse` body.
+feature creates a new `User` account: it validates the submitted username and password,
+persists the record to SQLite, and returns HTTP 201 with an empty body.
 
 The design is scoped to **registration only**. Login, JWT issuance, and Spring Security filter
-chains are handled by the authentication feature. This feature does introduce the
-`BCryptPasswordEncoder` bean and `SecurityConfig`, which the authentication feature will extend.
+chains are handled by the authentication feature.
 
 ### Relationship to Existing Code
 
@@ -20,21 +18,18 @@ chains are handled by the authentication feature. This feature does introduce th
 | `service/UserService.java` | **Exists — do not modify** | Handles both register and login; kept for backward compatibility. New code uses `RegistrationService`. |
 | `controller/TodoController.java` | **Exists — empty stub** | Not involved in this feature |
 | `security/JwtUtil.java` | **Exists — do not modify** | Not involved in this feature |
-| `dto/RegisterRequest.java` | **Create** | Request DTO |
-| `dto/RegisterResponse.java` | **Create** | Response DTO |
 | `service/RegistrationService.java` | **Create** | Registration-only service |
-| `controller/RegistrationController.java` | **Create** | REST controller for `/api/auth/register` |
-| `exception/DuplicateUsernameException.java` | **Create** | Custom runtime exception |
-| `exception/GlobalExceptionHandler.java` | **Create** | `@ControllerAdvice` error mapper |
+| `controller/RegistrationController.java` | **Create** | REST controller for `/api/auth/register` with local exception handlers |
+| `exception/RegistrationFailure.java` | **Create** | Custom runtime exception for all registration validation failures |
 | `security/PasswordValidator.java` | **Create** | Password strength checker |
-| `security/SecurityConfig.java` | **Create** | Exposes `BCryptPasswordEncoder` bean |
 
 ---
 
 ## Architecture
 
 The request travels through three Spring layers. There is no caching layer — every registration
-hits the database exactly once (the duplicate check) and then again for the save.
+hits the database exactly once (the duplicate check) and then again for the save. Exception
+handling is local to the controller — no `@ControllerAdvice` or `GlobalExceptionHandler` is used.
 
 ```mermaid
 sequenceDiagram
@@ -42,72 +37,45 @@ sequenceDiagram
     participant RegistrationController
     participant RegistrationService
     participant PasswordValidator
-    participant PasswordEncoder
     participant UserRepository
-    participant GlobalExceptionHandler
 
     Client->>RegistrationController: POST /api/auth/register {username, password}
-    RegistrationController->>RegistrationService: register(RegisterRequest)
+    RegistrationController->>RegistrationService: registerUser(User)
 
     Note over RegistrationService: 1. Validate username not blank
     Note over RegistrationService: 2. Validate username length 5-18
     Note over RegistrationService: 3. Validate password not blank
     RegistrationService->>PasswordValidator: getViolations(password)
     PasswordValidator-->>RegistrationService: List<String> violations
-    Note over RegistrationService: 4. If violations non-empty → throw IllegalArgumentException
+    Note over RegistrationService: 4. If violations non-empty → throw RegistrationFailure
     RegistrationService->>UserRepository: existsByUsername(username)
     UserRepository-->>RegistrationService: boolean
-    Note over RegistrationService: 5. If true → throw DuplicateUsernameException
-    RegistrationService->>PasswordEncoder: encode(password)
-    PasswordEncoder-->>RegistrationService: hashedPassword
-    RegistrationService->>UserRepository: save(new User(null, username, hashedPassword))
+    Note over RegistrationService: 5. If true → throw RegistrationFailure
+    RegistrationService->>UserRepository: save(User)
     UserRepository-->>RegistrationService: savedUser (with generated UUID)
-    RegistrationService-->>RegistrationController: RegisterResponse(userId, username)
-    RegistrationController-->>Client: HTTP 201 RegisterResponse
+    Note over RegistrationService: 6. Return void (success)
+    RegistrationController-->>Client: HTTP 201 (empty body)
 
-    alt IllegalArgumentException
-        GlobalExceptionHandler-->>Client: HTTP 400 {status:400, message:...}
+    alt RegistrationFailure
+        RegistrationController-->>Client: HTTP 400 "plain text error message"
     end
-    alt DuplicateUsernameException
-        GlobalExceptionHandler-->>Client: HTTP 409 {status:409, message:...}
+    alt DataIntegrityViolationException
+        RegistrationController-->>Client: HTTP 409 "Could not complete registration: data conflict"
     end
-    alt Unhandled Exception
-        GlobalExceptionHandler-->>Client: HTTP 500 {status:500, message:"Internal server error."}
+    alt DataAccessResourceFailureException
+        RegistrationController-->>Client: HTTP 503 "Service temporarily unavailable, please try again later"
+    end
+    alt QueryTimeoutException
+        RegistrationController-->>Client: HTTP 503 "Request timed out, please try again later"
+    end
+    alt DataAccessException (catch-all)
+        RegistrationController-->>Client: HTTP 500 "An unexpected error occurred during registration"
     end
 ```
 
 ---
 
 ## Components and Interfaces
-
-### `dto/RegisterRequest.java`
-
-A plain Java record (or Lombok `@Data` class) carrying the inbound payload.
-
-```java
-package com.revature.todomanagement.dto;
-
-// Lombok @Data + @NoArgsConstructor + @AllArgsConstructor
-// Fields: String username, String password
-```
-
-No Jakarta Bean Validation annotations are used — all validation is performed explicitly in
-`RegistrationService` so that error messages are fully controlled.
-
----
-
-### `dto/RegisterResponse.java`
-
-Carries the outbound payload on success. Contains no password field.
-
-```java
-package com.revature.todomanagement.dto;
-
-// Lombok @Data + @NoArgsConstructor + @AllArgsConstructor
-// Fields: UUID userId, String username
-```
-
----
 
 ### `security/PasswordValidator.java`
 
@@ -153,21 +121,20 @@ Contains all business logic for user registration. Dependencies are injected via
 package com.revature.todomanagement.service;
 
 // @Service @RequiredArgsConstructor
-// Dependencies: UserRepository, PasswordEncoder, PasswordValidator
-// public RegisterResponse register(RegisterRequest request)
+// Dependencies: UserRepository, PasswordValidator
+// public void registerUser(User user)
 ```
 
 Validation order (throws immediately on first failure, except password-strength which collects
 all violations first):
 
-1. `username` blank → `IllegalArgumentException("Username must not be blank.")`
-2. `username` length < 5 or > 18 → `IllegalArgumentException("Username must be between 5 and 18 characters.")`
-3. `password` blank → `IllegalArgumentException("Password must not be blank.")`
-4. `passwordValidator.getViolations(password)` non-empty → `IllegalArgumentException` whose message is all violations joined by `"\n"`
-5. `userRepository.existsByUsername(username)` → `DuplicateUsernameException`
-6. `passwordEncoder.encode(password)` → encoded string
-7. `userRepository.save(new User(null, username, encodedPassword))` → saved `User`
-8. Return `new RegisterResponse(savedUser.getId(), savedUser.getUsername())`
+1. `username` blank → `RegistrationFailure("Username must not be blank.")`
+2. `username` length < 5 or > 18 → `RegistrationFailure("Username must be between 5 and 18 characters.")`
+3. `password` blank → `RegistrationFailure("Password must not be blank.")`
+4. `passwordValidator.getViolations(password)` non-empty → `RegistrationFailure` whose message is all violations joined by `"\n"`
+5. `userRepository.existsByUsername(username)` → `RegistrationFailure("Username '<username>' is already taken.")`
+6. `userRepository.save(user)` → persisted
+7. Return (void — no return value)
 
 `UserRepository` is **never accessed** before steps 1–4 pass.
 
@@ -175,75 +142,48 @@ all violations first):
 
 ### `controller/RegistrationController.java`
 
-A thin HTTP adapter. Contains no business logic.
+A thin HTTP adapter with local exception handlers. Contains no business logic. Uses `@Slf4j`
+for logging data access exceptions.
 
 ```java
 package com.revature.todomanagement.controller;
 
-// @RestController @RequestMapping("/api/auth") @RequiredArgsConstructor
-// POST /api/auth/register → ResponseEntity<RegisterResponse>
-// @ResponseStatus(HttpStatus.CREATED) on the method, or return ResponseEntity.status(201).body(...)
+// @RestController @RequestMapping("/api/auth") @RequiredArgsConstructor @Slf4j
+// POST /api/auth/register → ResponseEntity<Void>
+// Accepts @RequestBody User user
+// Returns ResponseEntity.status(HttpStatus.CREATED).build() on success (empty body)
 ```
 
-Returns `ResponseEntity<RegisterResponse>` with HTTP 201 on success. All error cases are handled
-by `GlobalExceptionHandler` — the controller does not catch exceptions.
+Returns `ResponseEntity<Void>` with HTTP 201 and null body on success. All error cases are handled
+by local `@ExceptionHandler` methods within this controller.
 
----
+#### Local Exception Handlers
 
-### `exception/DuplicateUsernameException.java`
-
-```java
-package com.revature.todomanagement.exception;
-
-// public class DuplicateUsernameException extends RuntimeException
-// Constructor: public DuplicateUsernameException(String username)
-// Message: "Username '" + username + "' is already taken."
-```
-
----
-
-### `exception/GlobalExceptionHandler.java`
-
-A `@RestControllerAdvice` class mapping exceptions to structured JSON error bodies.
-
-```java
-package com.revature.todomanagement.exception;
-
-// @RestControllerAdvice
-```
-
-| Exception | HTTP Status | Response body |
+| Exception | HTTP Status | Response body (plain text) |
 |---|---|---|
-| `IllegalArgumentException` | 400 | `{"status": 400, "message": "<exception message>"}` |
-| `DuplicateUsernameException` | 409 | `{"status": 409, "message": "<exception message>"}` |
-| `Exception` (catch-all) | 500 | `{"status": 500, "message": "Internal server error."}` |
+| `RegistrationFailure` | 400 | Exception message string |
+| `DataIntegrityViolationException` | 409 | `"Could not complete registration: data conflict"` |
+| `DataAccessResourceFailureException` | 503 | `"Service temporarily unavailable, please try again later"` |
+| `QueryTimeoutException` | 503 | `"Request timed out, please try again later"` |
+| `DataAccessException` (catch-all) | 500 | `"An unexpected error occurred during registration"` |
 
-All responses set `Content-Type: application/json`.
-
-The error body is a simple inner record or separate `ErrorResponse` DTO:
-
-```java
-// record ErrorResponse(int status, String message) {}
-```
+All error responses return `ResponseEntity<String>` with `Content-Type: text/plain`.
+The `@Slf4j` logger logs data access exceptions at `warn` or `error` level before returning.
 
 ---
 
-### `security/SecurityConfig.java`
-
-Provides the `BCryptPasswordEncoder` bean. For now it also configures Spring Security to permit
-all requests (so registration works without a JWT). The authentication feature will replace the
-permissive rule with a proper filter chain.
+### `exception/RegistrationFailure.java`
 
 ```java
-package com.revature.todomanagement.security;
+package com.revature.todomanagement.exception;
 
-// @Configuration @EnableWebSecurity
-// @Bean PasswordEncoder passwordEncoder() → new BCryptPasswordEncoder()
-// @Bean SecurityFilterChain — permit all (temporary, overridden by auth feature)
+// public class RegistrationFailure extends RuntimeException
+// Constructor: public RegistrationFailure(String message)
+// Calls super(message)
 ```
 
-> **Rationale**: Declaring `BCryptPasswordEncoder` here rather than inline in `RegistrationService`
-> makes it reusable for the login feature and keeps Spring's dependency injection clean.
+A single custom exception used for ALL registration validation failures. The service throws
+this for blank username, bad length, bad password, and duplicate username scenarios.
 
 ---
 
@@ -255,32 +195,11 @@ package com.revature.todomanagement.security;
 users
 ├── id       UUID   PK, generated
 ├── username TEXT   NOT NULL, UNIQUE
-└── password TEXT   NOT NULL  (BCrypt hash, length ≈ 60 chars)
+└── password TEXT   NOT NULL
 ```
 
 The `User` entity already maps to the `users` table via `@Table(name = "users")`. No schema
 changes are required by this feature.
-
-### `RegisterRequest` DTO
-
-| Field | Type | Notes |
-|---|---|---|
-| `username` | `String` | Submitted by client; trimming is NOT applied — leading/trailing spaces count as characters |
-| `password` | `String` | Submitted by client in plaintext over HTTPS |
-
-### `RegisterResponse` DTO
-
-| Field | Type | Notes |
-|---|---|---|
-| `userId` | `UUID` | Generated by the database on save |
-| `username` | `String` | Echoed back from the saved entity |
-
-### `ErrorResponse` (inline or DTO)
-
-| Field | Type | Notes |
-|---|---|---|
-| `status` | `int` | HTTP status code integer |
-| `message` | `String` | Human-readable error description |
 
 ---
 
@@ -295,8 +214,8 @@ The prework analysis identified the following testable properties among the acce
 ### Property 1: Blank username always rejected
 
 *For any* string that is null, empty, or composed entirely of whitespace characters, calling
-`RegistrationService.register` with that value as the username SHALL throw
-`IllegalArgumentException` with message `"Username must not be blank."` and SHALL NOT invoke
+`RegistrationService.registerUser` with that value as the username SHALL throw
+`RegistrationFailure` with message `"Username must not be blank."` and SHALL NOT invoke
 any method on `UserRepository`.
 
 **Validates: Requirements 2.1**
@@ -306,8 +225,8 @@ any method on `UserRepository`.
 ### Property 2: Out-of-range username always rejected
 
 *For any* string whose length is strictly less than 5 or strictly greater than 18, calling
-`RegistrationService.register` with that value as the username (assuming it is non-blank) SHALL
-throw `IllegalArgumentException` with message
+`RegistrationService.registerUser` with that value as the username (assuming it is non-blank) SHALL
+throw `RegistrationFailure` with message
 `"Username must be between 5 and 18 characters."` and SHALL NOT invoke any method on
 `UserRepository`.
 
@@ -318,19 +237,19 @@ throw `IllegalArgumentException` with message
 ### Property 3: Duplicate username always rejected without persistence
 
 *For any* valid username (non-blank, length 5–18), when `UserRepository.existsByUsername`
-returns `true` for that username, calling `RegistrationService.register` SHALL throw
-`DuplicateUsernameException` and SHALL NOT call `UserRepository.save`.
+returns `true` for that username, calling `RegistrationService.registerUser` SHALL throw
+`RegistrationFailure` and SHALL NOT call `UserRepository.save`.
 
 **Validates: Requirements 2.3**
 
 ---
 
-### Property 4: Blank password always rejected before encoding
+### Property 4: Blank password always rejected before database access
 
 *For any* string that is null, empty, or composed entirely of whitespace characters, calling
-`RegistrationService.register` with that value as the password (assuming a valid username) SHALL
-throw `IllegalArgumentException` with message `"Password must not be blank."` and SHALL NOT
-invoke `PasswordEncoder` or `UserRepository`.
+`RegistrationService.registerUser` with that value as the password (assuming a valid username) SHALL
+throw `RegistrationFailure` with message `"Password must not be blank."` and SHALL NOT
+invoke `UserRepository`.
 
 **Validates: Requirements 3.1**
 
@@ -347,35 +266,22 @@ empty list.
 
 ---
 
-### Property 6: BCrypt encode–then–matches round trip
-
-*For any* valid plaintext password (satisfying all strength rules), encoding it with
-`BCryptPasswordEncoder` to produce a hash and then calling `passwordEncoder.matches(plaintext, hash)`
-SHALL return `true`. Calling `passwordEncoder.matches` with any other plaintext against the same
-hash SHALL return `false`.
-
-**Validates: Requirements 4.2, 4.4**
-
----
-
 ## Error Handling
 
 | Scenario | Thrown by | Caught by | HTTP |
 |---|---|---|---|
-| Blank username | `RegistrationService` | `GlobalExceptionHandler` | 400 |
-| Username too short / too long | `RegistrationService` | `GlobalExceptionHandler` | 400 |
-| Blank password | `RegistrationService` | `GlobalExceptionHandler` | 400 |
-| Password violates strength rules | `RegistrationService` | `GlobalExceptionHandler` | 400 |
-| Duplicate username | `RegistrationService` | `GlobalExceptionHandler` | 409 |
-| `DataAccessException` from save | `UserRepository` (propagated) | `GlobalExceptionHandler` | 500 |
-| Malformed/absent request body | Spring MVC (Jackson) | `GlobalExceptionHandler` | 400 |
-| Any other unhandled exception | anywhere | `GlobalExceptionHandler` | 500 |
+| Blank username | `RegistrationService` | `RegistrationController @ExceptionHandler` | 400 |
+| Username too short / too long | `RegistrationService` | `RegistrationController @ExceptionHandler` | 400 |
+| Blank password | `RegistrationService` | `RegistrationController @ExceptionHandler` | 400 |
+| Password violates strength rules | `RegistrationService` | `RegistrationController @ExceptionHandler` | 400 |
+| Duplicate username | `RegistrationService` | `RegistrationController @ExceptionHandler` | 400 |
+| `DataIntegrityViolationException` from save | `UserRepository` (propagated) | `RegistrationController @ExceptionHandler` | 409 |
+| `DataAccessResourceFailureException` | `UserRepository` (propagated) | `RegistrationController @ExceptionHandler` | 503 |
+| `QueryTimeoutException` | `UserRepository` (propagated) | `RegistrationController @ExceptionHandler` | 503 |
+| `DataAccessException` (catch-all) from save | `UserRepository` (propagated) | `RegistrationController @ExceptionHandler` | 500 |
 
-`HttpMessageNotReadableException` (thrown by Spring when `@RequestBody` cannot be parsed) is a
-subclass of `RuntimeException` and will be caught by the catch-all `Exception` handler if not
-mapped explicitly. To ensure HTTP 400 (not 500) for malformed bodies, add an explicit
-`@ExceptionHandler(HttpMessageNotReadableException.class)` mapping to 400 in
-`GlobalExceptionHandler`.
+All exception handlers are local `@ExceptionHandler` methods inside `RegistrationController`.
+There is no `@ControllerAdvice` or `GlobalExceptionHandler` class.
 
 ---
 
@@ -402,18 +308,17 @@ mapped explicitly. To ensure HTTP 400 (not 500) for malformed bodies, add an exp
 
 | Class | Type | Covers |
 |---|---|---|
-| `RegistrationServiceTest` | Unit | Requirements 2.1–2.4, 3.1, 3.4, 4.1, 4.3, 5.1–5.3, 7.1 |
+| `RegistrationServiceTest` | Unit | Requirements 2.1–2.4, 3.1, 3.4, 4.1–4.3, 6.1 |
 | `PasswordValidatorTest` | Unit + Property | Requirements 3.2, 3.3 (Property 5) |
-| `BCryptRoundTripTest` | Property | Requirements 4.2, 4.4 (Property 6) |
-| `UserRepositoryTest` | `@DataJpaTest` | Requirements 5.4, 5.5 |
-| `RegistrationControllerTest` | `@WebMvcTest` | Requirements 1.1–1.3, 6.1–6.5, 8.8–8.10 |
+| `UserRepositoryTest` | `@DataJpaTest` | Requirements 4.4, 4.5 |
+| `RegistrationControllerTest` | `@WebMvcTest` | Requirements 1.1–1.3, 5.1–5.7, 7.8–7.10 |
 
 ### Unit tests are preferred over property tests for service-layer behavior
 
 Because `RegistrationService` delegates all complex logic to `PasswordValidator` and
 `UserRepository` (which are individually property- and integration-tested), the service unit
-tests use concrete examples with Mockito verification. Property tests live at the validator and
-encoder level where input variation genuinely matters.
+tests use concrete examples with Mockito verification. Property tests live at the validator
+level where input variation genuinely matters.
 
 ### Property test configuration
 
