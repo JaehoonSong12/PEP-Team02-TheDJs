@@ -1,0 +1,73 @@
+{
+  "pbtResults": {},
+  "executionHistory": {
+    "1. Add jqwik dependency and create DTO classes": [
+      {
+        "executionId": "7a06205a-668b-41dd-a37d-b5f8263a7604",
+        "chatSessionId": "sess_91ddb76b-2b5f-4b97-a614-da86ff10092c",
+        "timestamp": 1782231634144
+      },
+      {
+        "executionId": "7a06205a-668b-41dd-a37d-b5f8263a7604",
+        "chatSessionId": "sess_91ddb76b-2b5f-4b97-a614-da86ff10092c",
+        "timestamp": 1782231649765
+      }
+    ],
+    "2.1 Create `security/PasswordValidator.java`": [
+      {
+        "executionId": "7a06205a-668b-41dd-a37d-b5f8263a7604",
+        "chatSessionId": "sess_91ddb76b-2b5f-4b97-a614-da86ff10092c",
+        "timestamp": 1782231634388
+      }
+    ],
+    "2.3 Create `security/SecurityConfig.java`": [
+      {
+        "executionId": "7a06205a-668b-41dd-a37d-b5f8263a7604",
+        "chatSessionId": "sess_91ddb76b-2b5f-4b97-a614-da86ff10092c",
+        "timestamp": 1782231634470
+      }
+    ],
+    "3.1 Create `exception/DuplicateUsernameException.java`": [
+      {
+        "executionId": "7a06205a-668b-41dd-a37d-b5f8263a7604",
+        "chatSessionId": "sess_91ddb76b-2b5f-4b97-a614-da86ff10092c",
+        "timestamp": 1782231634591
+      }
+    ],
+    "3.2 Create `exception/GlobalExceptionHandler.java`": [
+      {
+        "executionId": "7a06205a-668b-41dd-a37d-b5f8263a7604",
+        "chatSessionId": "sess_91ddb76b-2b5f-4b97-a614-da86ff10092c",
+        "timestamp": 1782231634662
+      }
+    ],
+    "4.1 Create `service/RegistrationService.java`": [
+      {
+        "executionId": "7a06205a-668b-41dd-a37d-b5f8263a7604",
+        "chatSessionId": "sess_91ddb76b-2b5f-4b97-a614-da86ff10092c",
+        "timestamp": 1782231634729
+      }
+    ],
+    "5. Checkpoint — compile and run unit tests": [
+      {
+        "executionId": "7a06205a-668b-41dd-a37d-b5f8263a7604",
+        "chatSessionId": "sess_91ddb76b-2b5f-4b97-a614-da86ff10092c",
+        "timestamp": 1782231634800
+      }
+    ],
+    "6.1 Create `controller/RegistrationController.java`": [
+      {
+        "executionId": "7a06205a-668b-41dd-a37d-b5f8263a7604",
+        "chatSessionId": "sess_91ddb76b-2b5f-4b97-a614-da86ff10092c",
+        "timestamp": 1782231634858
+      }
+    ],
+    "9. Final checkpoint — full test suite": [
+      {
+        "executionId": "7a06205a-668b-41dd-a37d-b5f8263a7604",
+        "chatSessionId": "sess_91ddb76b-2b5f-4b97-a614-da86ff10092c",
+        "timestamp": 1782231634917
+      }
+    ]
+  }
+}
