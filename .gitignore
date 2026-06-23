@@ -1,7 +1,6 @@
-# --- Generated from ./.gitignores on Fri Jun 19 13:05:26 2026 ---
+# --- Generated from ./.gitignores on Tue Jun 23 10:17:24 2026 ---
 
-_*
-
+_* 
 
 #############################################
 # A.gitignore
@@ -6062,6 +6061,52 @@ protected/runtime/*
 protected/data/*.db
 themes/classic/views/
 
+
+
+################################################################
+# AI Model Specific Ignores
+################################################################ 
+# Gemini (Google's AI model)
+*[gG][eE][mM][iI][nN][iI]*
+# Cursor IDE
+*[cC][uU][rR][sS][oO][rR]*
+# Copilot (GitHub's AI code assistant)
+*[cC][oO][pP][iI][lL][oO][tT]*
+# Antigravity
+*[aA][nN][tT][iI][gG][rR][aA][vV][iI][tT][yY]*
+# Agents (General)
+*[aA][gG][eE][nN][tT][sS]*
+# Kiro (AI code assistant)
+*[kK][iI][rR][oO]*
+
+## [Kiro] for project specific specs
+!/.kiro/
+/.kiro/*
+!/.kiro/specs/
+!.config.kiro
+!/.kiro/steering/
+# CI/CD convention for personal configurations
+/.kiro/steering/plan-*
+/.kiro/steering/code-*
+/.kiro/steering/build-*
+/.kiro/steering/test-*
+/.kiro/steering/release-*
+/.kiro/steering/deploy-*
+/.kiro/steering/operate-*
+/.kiro/steering/monitor-*
+# Educational Purposed configurations
+/.kiro/steering/edu-*
+
+## [Visual Studio Code]
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/mcp.json
+!.vscode/*.code-snippets
+.history/*
+
 #############################################
 # ZendFramework.gitignore
 #############################################
@@ -6197,45 +6242,3 @@ Backup_*
 __pycache__/
 *.py[cod]
 
-
-
-
-################################################################
-# AI Model Specific Ignores
-################################################################ 
-# Gemini (Google's AI model)
-*[gG][eE][mM][iI][nN][iI]*
-# Cursor IDE
-*[cC][uU][rR][sS][oO][rR]*
-# Kiro (AI code assistant)
-*[kK][iI][rR][oO]*
-# Copilot (GitHub's AI code assistant)
-*[cC][oO][pP][iI][lL][oO][tT]*
-
-## [Kiro] for project specific specs
-!/.kiro/
-/.kiro/*
-!/.kiro/specs/
-!.config.kiro
-!/.kiro/steering/
-# CI/CD convention for personal configurations
-/.kiro/steering/plan-*
-/.kiro/steering/code-*
-/.kiro/steering/build-*
-/.kiro/steering/test-*
-/.kiro/steering/release-*
-/.kiro/steering/deploy-*
-/.kiro/steering/operate-*
-/.kiro/steering/monitor-*
-# Educational Purposed configurations
-/.kiro/steering/edu-*
-
-## [Visual Studio Code]
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-!.vscode/mcp.json
-!.vscode/*.code-snippets
-.history/*

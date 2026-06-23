@@ -1,0 +1,185 @@
+{
+  "pbtResults": {},
+  "executionHistory": {
+    "1. Add jqwik dependency and create DTO classes": [
+      {
+        "executionId": "7a06205a-668b-41dd-a37d-b5f8263a7604",
+        "chatSessionId": "sess_91ddb76b-2b5f-4b97-a614-da86ff10092c",
+        "timestamp": 1782231634144
+      },
+      {
+        "executionId": "7a06205a-668b-41dd-a37d-b5f8263a7604",
+        "chatSessionId": "sess_91ddb76b-2b5f-4b97-a614-da86ff10092c",
+        "timestamp": 1782231649765
+      }
+    ],
+    "2.1 Create `security/PasswordValidator.java`": [
+      {
+        "executionId": "7a06205a-668b-41dd-a37d-b5f8263a7604",
+        "chatSessionId": "sess_91ddb76b-2b5f-4b97-a614-da86ff10092c",
+        "timestamp": 1782231634388
+      },
+      {
+        "executionId": "369fd7cc-f6ec-449e-a71c-ae610dc1a794",
+        "chatSessionId": "sess_0a7d04f5-e4b3-4883-9a40-38dafdf83fc9",
+        "timestamp": 1782239271070
+      },
+      {
+        "executionId": "369fd7cc-f6ec-449e-a71c-ae610dc1a794",
+        "chatSessionId": "sess_0a7d04f5-e4b3-4883-9a40-38dafdf83fc9",
+        "timestamp": 1782239288819
+      },
+      {
+        "executionId": "369fd7cc-f6ec-449e-a71c-ae610dc1a794",
+        "chatSessionId": "sess_0a7d04f5-e4b3-4883-9a40-38dafdf83fc9",
+        "timestamp": 1782239540647
+      }
+    ],
+    "2.3 Create `security/SecurityConfig.java`": [
+      {
+        "executionId": "7a06205a-668b-41dd-a37d-b5f8263a7604",
+        "chatSessionId": "sess_91ddb76b-2b5f-4b97-a614-da86ff10092c",
+        "timestamp": 1782231634470
+      }
+    ],
+    "3.1 Create `exception/DuplicateUsernameException.java`": [
+      {
+        "executionId": "7a06205a-668b-41dd-a37d-b5f8263a7604",
+        "chatSessionId": "sess_91ddb76b-2b5f-4b97-a614-da86ff10092c",
+        "timestamp": 1782231634591
+      }
+    ],
+    "3.2 Create `exception/GlobalExceptionHandler.java`": [
+      {
+        "executionId": "7a06205a-668b-41dd-a37d-b5f8263a7604",
+        "chatSessionId": "sess_91ddb76b-2b5f-4b97-a614-da86ff10092c",
+        "timestamp": 1782231634662
+      }
+    ],
+    "4.1 Create `service/RegistrationService.java`": [
+      {
+        "executionId": "7a06205a-668b-41dd-a37d-b5f8263a7604",
+        "chatSessionId": "sess_91ddb76b-2b5f-4b97-a614-da86ff10092c",
+        "timestamp": 1782231634729
+      },
+      {
+        "executionId": "369fd7cc-f6ec-449e-a71c-ae610dc1a794",
+        "chatSessionId": "sess_0a7d04f5-e4b3-4883-9a40-38dafdf83fc9",
+        "timestamp": 1782239271183
+      },
+      {
+        "executionId": "369fd7cc-f6ec-449e-a71c-ae610dc1a794",
+        "chatSessionId": "sess_0a7d04f5-e4b3-4883-9a40-38dafdf83fc9",
+        "timestamp": 1782239584390
+      },
+      {
+        "executionId": "fe3eae65-4c1e-4d14-8a2e-06830a43af5c",
+        "chatSessionId": "sess_0a7d04f5-e4b3-4883-9a40-38dafdf83fc9",
+        "timestamp": 1782240151032
+      }
+    ],
+    "5. Checkpoint — compile and run unit tests": [
+      {
+        "executionId": "7a06205a-668b-41dd-a37d-b5f8263a7604",
+        "chatSessionId": "sess_91ddb76b-2b5f-4b97-a614-da86ff10092c",
+        "timestamp": 1782231634800
+      },
+      {
+        "executionId": "369fd7cc-f6ec-449e-a71c-ae610dc1a794",
+        "chatSessionId": "sess_0a7d04f5-e4b3-4883-9a40-38dafdf83fc9",
+        "timestamp": 1782239271249
+      },
+      {
+        "executionId": "fe3eae65-4c1e-4d14-8a2e-06830a43af5c",
+        "chatSessionId": "sess_0a7d04f5-e4b3-4883-9a40-38dafdf83fc9",
+        "timestamp": 1782240155364
+      }
+    ],
+    "6.1 Create `controller/RegistrationController.java`": [
+      {
+        "executionId": "7a06205a-668b-41dd-a37d-b5f8263a7604",
+        "chatSessionId": "sess_91ddb76b-2b5f-4b97-a614-da86ff10092c",
+        "timestamp": 1782231634858
+      },
+      {
+        "executionId": "369fd7cc-f6ec-449e-a71c-ae610dc1a794",
+        "chatSessionId": "sess_0a7d04f5-e4b3-4883-9a40-38dafdf83fc9",
+        "timestamp": 1782239271295
+      },
+      {
+        "executionId": "fe3eae65-4c1e-4d14-8a2e-06830a43af5c",
+        "chatSessionId": "sess_0a7d04f5-e4b3-4883-9a40-38dafdf83fc9",
+        "timestamp": 1782240154346
+      }
+    ],
+    "9. Final checkpoint — full test suite": [
+      {
+        "executionId": "7a06205a-668b-41dd-a37d-b5f8263a7604",
+        "chatSessionId": "sess_91ddb76b-2b5f-4b97-a614-da86ff10092c",
+        "timestamp": 1782231634917
+      },
+      {
+        "executionId": "369fd7cc-f6ec-449e-a71c-ae610dc1a794",
+        "chatSessionId": "sess_0a7d04f5-e4b3-4883-9a40-38dafdf83fc9",
+        "timestamp": 1782239271344
+      },
+      {
+        "executionId": "fe3eae65-4c1e-4d14-8a2e-06830a43af5c",
+        "chatSessionId": "sess_0a7d04f5-e4b3-4883-9a40-38dafdf83fc9",
+        "timestamp": 1782240171071
+      }
+    ],
+    "3.1 Create `exception/RegistrationFailure.java`": [
+      {
+        "executionId": "369fd7cc-f6ec-449e-a71c-ae610dc1a794",
+        "chatSessionId": "sess_0a7d04f5-e4b3-4883-9a40-38dafdf83fc9",
+        "timestamp": 1782239271127
+      },
+      {
+        "executionId": "369fd7cc-f6ec-449e-a71c-ae610dc1a794",
+        "chatSessionId": "sess_0a7d04f5-e4b3-4883-9a40-38dafdf83fc9",
+        "timestamp": 1782239289711
+      },
+      {
+        "executionId": "369fd7cc-f6ec-449e-a71c-ae610dc1a794",
+        "chatSessionId": "sess_0a7d04f5-e4b3-4883-9a40-38dafdf83fc9",
+        "timestamp": 1782239541498
+      }
+    ],
+    "2. Implement PasswordValidator": [
+      {
+        "executionId": "369fd7cc-f6ec-449e-a71c-ae610dc1a794",
+        "chatSessionId": "sess_0a7d04f5-e4b3-4883-9a40-38dafdf83fc9",
+        "timestamp": 1782239540717
+      }
+    ],
+    "3. Create custom exception": [
+      {
+        "executionId": "369fd7cc-f6ec-449e-a71c-ae610dc1a794",
+        "chatSessionId": "sess_0a7d04f5-e4b3-4883-9a40-38dafdf83fc9",
+        "timestamp": 1782239541548
+      }
+    ],
+    "1. Add jqwik dependency": [
+      {
+        "executionId": "369fd7cc-f6ec-449e-a71c-ae610dc1a794",
+        "chatSessionId": "sess_0a7d04f5-e4b3-4883-9a40-38dafdf83fc9",
+        "timestamp": 1782239559321
+      }
+    ],
+    "4. Implement RegistrationService": [
+      {
+        "executionId": "fe3eae65-4c1e-4d14-8a2e-06830a43af5c",
+        "chatSessionId": "sess_0a7d04f5-e4b3-4883-9a40-38dafdf83fc9",
+        "timestamp": 1782240151084
+      }
+    ],
+    "6. Implement RegistrationController": [
+      {
+        "executionId": "fe3eae65-4c1e-4d14-8a2e-06830a43af5c",
+        "chatSessionId": "sess_0a7d04f5-e4b3-4883-9a40-38dafdf83fc9",
+        "timestamp": 1782240154418
+      }
+    ]
+  }
+}

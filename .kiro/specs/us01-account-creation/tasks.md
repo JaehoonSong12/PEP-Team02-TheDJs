@@ -15,13 +15,13 @@ All code lives under `spring-todo-backend/src/` in the base package
 
 ## Tasks
 
-- [ ] 1. Add jqwik dependency
+- [x] 1. Add jqwik dependency
   - Add `testImplementation("net.jqwik:jqwik:1.9.3")` to `build.gradle.kts` dependencies block
   - No entity changes needed — `User` entity already exists and is not modified
   - _Requirements: 3.2, 3.3 (property test infrastructure)_
 
-- [ ] 2. Implement PasswordValidator
-  - [ ] 2.1 Create `security/PasswordValidator.java`
+- [x] 2. Implement PasswordValidator
+  - [x] 2.1 Create `security/PasswordValidator.java`
     - Annotate `@Component`
     - Implement `public List<String> getViolations(String password)` that checks each of the seven rules independently and collects violation messages into a `List<String>`
     - Rules and messages match Requirements 3.2 exactly
@@ -37,15 +37,15 @@ All code lives under `spring-todo-backend/src/` in the base package
     - For the valid-password case, generate strings matching all rules; assert violations list is empty
     - Tag: `// Feature: user-registration, Property 5: PasswordValidator rule coverage`
 
-- [ ] 3. Create custom exception
-  - [ ] 3.1 Create `exception/RegistrationFailure.java`
+- [x] 3. Create custom exception
+  - [x] 3.1 Create `exception/RegistrationFailure.java`
     - Extends `RuntimeException`
     - Constructor: `public RegistrationFailure(String message)` that calls `super(message)`
     - This is the single custom exception for ALL registration validation failures (blank username, bad length, bad password, duplicate username)
     - _Requirements: 2.1, 2.2, 2.3, 3.1, 3.4, 5.2_
 
-- [ ] 4. Implement RegistrationService
-  - [ ] 4.1 Create `service/RegistrationService.java`
+- [x] 4. Implement RegistrationService
+  - [x] 4.1 Create `service/RegistrationService.java`
     - Annotate `@Service @RequiredArgsConstructor`
     - Inject: `UserRepository userRepository`, `PasswordValidator passwordValidator`
     - Implement `public void registerUser(User user)` following the seven-step validation and persistence order from Requirements 6.1 exactly:
@@ -73,11 +73,11 @@ All code lives under `spring-todo-backend/src/` in the base package
     - Use `Mockito.verifyNoInteractions(userRepository)` where repo must not be touched
     - _Requirements: 6.1, 6.2, 7.1–7.4_
 
-- [ ] 5. Checkpoint — compile and run unit tests
+- [x] 5. Checkpoint — compile and run unit tests
   - Ensure all tests pass, ask the user if questions arise.
 
-- [ ] 6. Implement RegistrationController
-  - [ ] 6.1 Create `controller/RegistrationController.java`
+- [x] 6. Implement RegistrationController
+  - [x] 6.1 Create `controller/RegistrationController.java`
     - Annotate `@RestController @RequestMapping("/api/auth") @RequiredArgsConstructor @Slf4j`
     - Inject `RegistrationService registrationService`
     - Method: `@PostMapping("/register") public ResponseEntity<Void> register(@RequestBody User user)`
@@ -123,7 +123,7 @@ All code lives under `spring-todo-backend/src/` in the base package
     - These complement the jqwik property tests from task 2.2
     - _Requirements: 3.2, 3.3, 7.5, 7.6_
 
-- [ ] 9. Final checkpoint — full test suite
+- [x] 9. Final checkpoint — full test suite
   - Run `gradlew.bat test` from `spring-todo-backend/`
   - Ensure all tests pass, ask the user if questions arise.
 
