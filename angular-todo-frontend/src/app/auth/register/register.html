@@ -1,0 +1,45 @@
+<div class="register-container">
+  <h2>Register</h2>
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <div class="form-field">
+      <label for="username">Username</label>
+      <input id="username" type="text" formControlName="username" maxlength="50" />
+      @if (registerForm.controls.username.touched && registerForm.controls.username.hasError('required')) {
+        <span class="validation-error">Username is required</span>
+      }
+      @if (registerForm.controls.username.touched && registerForm.controls.username.hasError('maxlength')) {
+        <span class="validation-error">Username must be 50 characters or fewer</span>
+      }
+    </div>
+    <div class="form-field">
+      <label for="password">Password</label>
+      <input id="password" type="password" formControlName="password" maxlength="128" />
+      @if (registerForm.controls.password.touched && registerForm.controls.password.hasError('required')) {
+        <span class="validation-error">Password is required</span>
+      }
+      @if (registerForm.controls.password.touched && registerForm.controls.password.hasError('maxlength')) {
+        <span class="validation-error">Password must be 128 characters or fewer</span>
+      }
+    </div>
+    <div class="form-field">
+      <label for="confirmPassword">Confirm Password</label>
+      <input id="confirmPassword" type="password" formControlName="confirmPassword" />
+      @if (registerForm.controls.confirmPassword.touched && registerForm.controls.confirmPassword.hasError('required')) {
+        <span class="validation-error">Confirm password is required</span>
+      }
+      @if (registerForm.controls.confirmPassword.touched && registerForm.hasError('passwordsMismatch')) {
+        <span class="validation-error">Passwords do not match</span>
+      }
+    </div>
+    @if (errorMessage()) {
+      <div class="error-message" data-testid="error-message">{{ errorMessage() }}</div>
+    }
+    @if (successMessage()) {
+      <div class="success-message">{{ successMessage() }}</div>
+    }
+    <button type="submit" [disabled]="isLoading()">
+      {{ isLoading() ? 'Registering...' : 'Register' }}
+    </button>
+  </form>
+  <p>Already have an account? <a routerLink="/login">Login</a></p>
+</div>

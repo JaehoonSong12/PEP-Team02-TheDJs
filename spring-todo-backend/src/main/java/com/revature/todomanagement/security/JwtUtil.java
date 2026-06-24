@@ -53,6 +53,23 @@ public class JwtUtil {
     }
 
     /**
+     * Extracts the userId claim from a token.
+     * Returns null on any parse failure — never throws.
+     */
+    public String extractUserId(String token) {
+        try {
+            return Jwts.parser()
+                    .verifyWith(key)
+                    .build()
+                    .parseSignedClaims(token)
+                    .getPayload()
+                    .get("userId", String.class);
+        } catch (JwtException | IllegalArgumentException e) {
+            return null;
+        }
+    }
+
+    /**
      * Returns true iff the token is valid, non-expired, and the subject matches the given username.
      */
     public boolean isTokenValid(String token, String username) {

@@ -1,0 +1,545 @@
+{
+  "pbtResults": {},
+  "executionHistory": {
+    "1.1 Implement `GET /todos/{id}/subtasks`": [
+      {
+        "executionId": "d51b3403-8c37-4a75-8ca4-b631303744c2",
+        "chatSessionId": "sess_63a5dc26-5345-4a76-83c3-18ee4c360158",
+        "timestamp": 1782311044200
+      },
+      {
+        "executionId": "d51b3403-8c37-4a75-8ca4-b631303744c2",
+        "chatSessionId": "sess_63a5dc26-5345-4a76-83c3-18ee4c360158",
+        "timestamp": 1782311081785
+      },
+      {
+        "executionId": "d51b3403-8c37-4a75-8ca4-b631303744c2",
+        "chatSessionId": "sess_63a5dc26-5345-4a76-83c3-18ee4c360158",
+        "timestamp": 1782311203030
+      }
+    ],
+    "1.2 Implement `POST /todos/{id}/subtasks`": [
+      {
+        "executionId": "d51b3403-8c37-4a75-8ca4-b631303744c2",
+        "chatSessionId": "sess_63a5dc26-5345-4a76-83c3-18ee4c360158",
+        "timestamp": 1782311044401
+      },
+      {
+        "executionId": "d51b3403-8c37-4a75-8ca4-b631303744c2",
+        "chatSessionId": "sess_63a5dc26-5345-4a76-83c3-18ee4c360158",
+        "timestamp": 1782311082522
+      },
+      {
+        "executionId": "d51b3403-8c37-4a75-8ca4-b631303744c2",
+        "chatSessionId": "sess_63a5dc26-5345-4a76-83c3-18ee4c360158",
+        "timestamp": 1782311203743
+      }
+    ],
+    "1.3 Implement `GET /todos/{id}/subtasks/{subtaskId}`": [
+      {
+        "executionId": "d51b3403-8c37-4a75-8ca4-b631303744c2",
+        "chatSessionId": "sess_63a5dc26-5345-4a76-83c3-18ee4c360158",
+        "timestamp": 1782311044496
+      },
+      {
+        "executionId": "d51b3403-8c37-4a75-8ca4-b631303744c2",
+        "chatSessionId": "sess_63a5dc26-5345-4a76-83c3-18ee4c360158",
+        "timestamp": 1782311083334
+      },
+      {
+        "executionId": "d51b3403-8c37-4a75-8ca4-b631303744c2",
+        "chatSessionId": "sess_63a5dc26-5345-4a76-83c3-18ee4c360158",
+        "timestamp": 1782311204458
+      }
+    ],
+    "1.4 Implement `PUT /todos/{id}/subtasks/{subtaskId}`": [
+      {
+        "executionId": "d51b3403-8c37-4a75-8ca4-b631303744c2",
+        "chatSessionId": "sess_63a5dc26-5345-4a76-83c3-18ee4c360158",
+        "timestamp": 1782311044577
+      },
+      {
+        "executionId": "d51b3403-8c37-4a75-8ca4-b631303744c2",
+        "chatSessionId": "sess_63a5dc26-5345-4a76-83c3-18ee4c360158",
+        "timestamp": 1782311084080
+      },
+      {
+        "executionId": "d51b3403-8c37-4a75-8ca4-b631303744c2",
+        "chatSessionId": "sess_63a5dc26-5345-4a76-83c3-18ee4c360158",
+        "timestamp": 1782311205310
+      }
+    ],
+    "1.5 Implement `DELETE /todos/{id}/subtasks/{subtaskId}`": [
+      {
+        "executionId": "d51b3403-8c37-4a75-8ca4-b631303744c2",
+        "chatSessionId": "sess_63a5dc26-5345-4a76-83c3-18ee4c360158",
+        "timestamp": 1782311044615
+      },
+      {
+        "executionId": "d51b3403-8c37-4a75-8ca4-b631303744c2",
+        "chatSessionId": "sess_63a5dc26-5345-4a76-83c3-18ee4c360158",
+        "timestamp": 1782311084817
+      },
+      {
+        "executionId": "d51b3403-8c37-4a75-8ca4-b631303744c2",
+        "chatSessionId": "sess_63a5dc26-5345-4a76-83c3-18ee4c360158",
+        "timestamp": 1782311206086
+      }
+    ],
+    "1.6 Add controller-local `@ExceptionHandler` methods": [
+      {
+        "executionId": "d51b3403-8c37-4a75-8ca4-b631303744c2",
+        "chatSessionId": "sess_63a5dc26-5345-4a76-83c3-18ee4c360158",
+        "timestamp": 1782311044649
+      },
+      {
+        "executionId": "d51b3403-8c37-4a75-8ca4-b631303744c2",
+        "chatSessionId": "sess_63a5dc26-5345-4a76-83c3-18ee4c360158",
+        "timestamp": 1782311085826
+      },
+      {
+        "executionId": "d51b3403-8c37-4a75-8ca4-b631303744c2",
+        "chatSessionId": "sess_63a5dc26-5345-4a76-83c3-18ee4c360158",
+        "timestamp": 1782311206781
+      }
+    ],
+    "2. Checkpoint — compile check": [
+      {
+        "executionId": "d51b3403-8c37-4a75-8ca4-b631303744c2",
+        "chatSessionId": "sess_63a5dc26-5345-4a76-83c3-18ee4c360158",
+        "timestamp": 1782311044682
+      },
+      {
+        "executionId": "d51b3403-8c37-4a75-8ca4-b631303744c2",
+        "chatSessionId": "sess_63a5dc26-5345-4a76-83c3-18ee4c360158",
+        "timestamp": 1782311210949
+      }
+    ],
+    "3.1 Create subtask — valid title": [
+      {
+        "executionId": "d51b3403-8c37-4a75-8ca4-b631303744c2",
+        "chatSessionId": "sess_63a5dc26-5345-4a76-83c3-18ee4c360158",
+        "timestamp": 1782311044715
+      },
+      {
+        "executionId": "01237e1e-3c5e-4a5e-a974-e69c1189345f",
+        "chatSessionId": "sess_951ffe82-69fd-4b85-ad7f-2e012c46e8a4",
+        "timestamp": 1782311431695
+      },
+      {
+        "executionId": "01237e1e-3c5e-4a5e-a974-e69c1189345f",
+        "chatSessionId": "sess_951ffe82-69fd-4b85-ad7f-2e012c46e8a4",
+        "timestamp": 1782311498570
+      },
+      {
+        "executionId": "01237e1e-3c5e-4a5e-a974-e69c1189345f",
+        "chatSessionId": "sess_951ffe82-69fd-4b85-ad7f-2e012c46e8a4",
+        "timestamp": 1782311630318
+      }
+    ],
+    "3.2 Create subtask — blank title": [
+      {
+        "executionId": "d51b3403-8c37-4a75-8ca4-b631303744c2",
+        "chatSessionId": "sess_63a5dc26-5345-4a76-83c3-18ee4c360158",
+        "timestamp": 1782311044757
+      },
+      {
+        "executionId": "01237e1e-3c5e-4a5e-a974-e69c1189345f",
+        "chatSessionId": "sess_951ffe82-69fd-4b85-ad7f-2e012c46e8a4",
+        "timestamp": 1782311431761
+      },
+      {
+        "executionId": "01237e1e-3c5e-4a5e-a974-e69c1189345f",
+        "chatSessionId": "sess_951ffe82-69fd-4b85-ad7f-2e012c46e8a4",
+        "timestamp": 1782311499278
+      },
+      {
+        "executionId": "01237e1e-3c5e-4a5e-a974-e69c1189345f",
+        "chatSessionId": "sess_951ffe82-69fd-4b85-ad7f-2e012c46e8a4",
+        "timestamp": 1782311630962
+      }
+    ],
+    "3.3 Create subtask — unknown parent task": [
+      {
+        "executionId": "d51b3403-8c37-4a75-8ca4-b631303744c2",
+        "chatSessionId": "sess_63a5dc26-5345-4a76-83c3-18ee4c360158",
+        "timestamp": 1782311044792
+      },
+      {
+        "executionId": "01237e1e-3c5e-4a5e-a974-e69c1189345f",
+        "chatSessionId": "sess_951ffe82-69fd-4b85-ad7f-2e012c46e8a4",
+        "timestamp": 1782311431819
+      },
+      {
+        "executionId": "01237e1e-3c5e-4a5e-a974-e69c1189345f",
+        "chatSessionId": "sess_951ffe82-69fd-4b85-ad7f-2e012c46e8a4",
+        "timestamp": 1782311500075
+      },
+      {
+        "executionId": "01237e1e-3c5e-4a5e-a974-e69c1189345f",
+        "chatSessionId": "sess_951ffe82-69fd-4b85-ad7f-2e012c46e8a4",
+        "timestamp": 1782311631665
+      }
+    ],
+    "3.4 Create subtask — wrong owner": [
+      {
+        "executionId": "d51b3403-8c37-4a75-8ca4-b631303744c2",
+        "chatSessionId": "sess_63a5dc26-5345-4a76-83c3-18ee4c360158",
+        "timestamp": 1782311044829
+      },
+      {
+        "executionId": "01237e1e-3c5e-4a5e-a974-e69c1189345f",
+        "chatSessionId": "sess_951ffe82-69fd-4b85-ad7f-2e012c46e8a4",
+        "timestamp": 1782311431894
+      },
+      {
+        "executionId": "01237e1e-3c5e-4a5e-a974-e69c1189345f",
+        "chatSessionId": "sess_951ffe82-69fd-4b85-ad7f-2e012c46e8a4",
+        "timestamp": 1782311500814
+      },
+      {
+        "executionId": "01237e1e-3c5e-4a5e-a974-e69c1189345f",
+        "chatSessionId": "sess_951ffe82-69fd-4b85-ad7f-2e012c46e8a4",
+        "timestamp": 1782311632358
+      }
+    ],
+    "3.5 List subtasks": [
+      {
+        "executionId": "d51b3403-8c37-4a75-8ca4-b631303744c2",
+        "chatSessionId": "sess_63a5dc26-5345-4a76-83c3-18ee4c360158",
+        "timestamp": 1782311044875
+      },
+      {
+        "executionId": "01237e1e-3c5e-4a5e-a974-e69c1189345f",
+        "chatSessionId": "sess_951ffe82-69fd-4b85-ad7f-2e012c46e8a4",
+        "timestamp": 1782311431953
+      },
+      {
+        "executionId": "01237e1e-3c5e-4a5e-a974-e69c1189345f",
+        "chatSessionId": "sess_951ffe82-69fd-4b85-ad7f-2e012c46e8a4",
+        "timestamp": 1782311501516
+      },
+      {
+        "executionId": "01237e1e-3c5e-4a5e-a974-e69c1189345f",
+        "chatSessionId": "sess_951ffe82-69fd-4b85-ad7f-2e012c46e8a4",
+        "timestamp": 1782311633048
+      }
+    ],
+    "3.6 Get subtask by ID — not found": [
+      {
+        "executionId": "d51b3403-8c37-4a75-8ca4-b631303744c2",
+        "chatSessionId": "sess_63a5dc26-5345-4a76-83c3-18ee4c360158",
+        "timestamp": 1782311044916
+      },
+      {
+        "executionId": "01237e1e-3c5e-4a5e-a974-e69c1189345f",
+        "chatSessionId": "sess_951ffe82-69fd-4b85-ad7f-2e012c46e8a4",
+        "timestamp": 1782311432004
+      },
+      {
+        "executionId": "01237e1e-3c5e-4a5e-a974-e69c1189345f",
+        "chatSessionId": "sess_951ffe82-69fd-4b85-ad7f-2e012c46e8a4",
+        "timestamp": 1782311507438
+      },
+      {
+        "executionId": "01237e1e-3c5e-4a5e-a974-e69c1189345f",
+        "chatSessionId": "sess_951ffe82-69fd-4b85-ad7f-2e012c46e8a4",
+        "timestamp": 1782311635870
+      }
+    ],
+    "3.7 Get subtask by ID — wrong parent task": [
+      {
+        "executionId": "d51b3403-8c37-4a75-8ca4-b631303744c2",
+        "chatSessionId": "sess_63a5dc26-5345-4a76-83c3-18ee4c360158",
+        "timestamp": 1782311044962
+      },
+      {
+        "executionId": "01237e1e-3c5e-4a5e-a974-e69c1189345f",
+        "chatSessionId": "sess_951ffe82-69fd-4b85-ad7f-2e012c46e8a4",
+        "timestamp": 1782311432046
+      },
+      {
+        "executionId": "01237e1e-3c5e-4a5e-a974-e69c1189345f",
+        "chatSessionId": "sess_951ffe82-69fd-4b85-ad7f-2e012c46e8a4",
+        "timestamp": 1782311508220
+      },
+      {
+        "executionId": "01237e1e-3c5e-4a5e-a974-e69c1189345f",
+        "chatSessionId": "sess_951ffe82-69fd-4b85-ad7f-2e012c46e8a4",
+        "timestamp": 1782311636581
+      }
+    ],
+    "3.8 Update subtask — valid fields": [
+      {
+        "executionId": "d51b3403-8c37-4a75-8ca4-b631303744c2",
+        "chatSessionId": "sess_63a5dc26-5345-4a76-83c3-18ee4c360158",
+        "timestamp": 1782311045000
+      },
+      {
+        "executionId": "01237e1e-3c5e-4a5e-a974-e69c1189345f",
+        "chatSessionId": "sess_951ffe82-69fd-4b85-ad7f-2e012c46e8a4",
+        "timestamp": 1782311432085
+      },
+      {
+        "executionId": "01237e1e-3c5e-4a5e-a974-e69c1189345f",
+        "chatSessionId": "sess_951ffe82-69fd-4b85-ad7f-2e012c46e8a4",
+        "timestamp": 1782311508899
+      },
+      {
+        "executionId": "01237e1e-3c5e-4a5e-a974-e69c1189345f",
+        "chatSessionId": "sess_951ffe82-69fd-4b85-ad7f-2e012c46e8a4",
+        "timestamp": 1782311637285
+      }
+    ],
+    "3.9 Update subtask — blank title": [
+      {
+        "executionId": "d51b3403-8c37-4a75-8ca4-b631303744c2",
+        "chatSessionId": "sess_63a5dc26-5345-4a76-83c3-18ee4c360158",
+        "timestamp": 1782311045045
+      },
+      {
+        "executionId": "01237e1e-3c5e-4a5e-a974-e69c1189345f",
+        "chatSessionId": "sess_951ffe82-69fd-4b85-ad7f-2e012c46e8a4",
+        "timestamp": 1782311432128
+      },
+      {
+        "executionId": "01237e1e-3c5e-4a5e-a974-e69c1189345f",
+        "chatSessionId": "sess_951ffe82-69fd-4b85-ad7f-2e012c46e8a4",
+        "timestamp": 1782311509557
+      },
+      {
+        "executionId": "01237e1e-3c5e-4a5e-a974-e69c1189345f",
+        "chatSessionId": "sess_951ffe82-69fd-4b85-ad7f-2e012c46e8a4",
+        "timestamp": 1782311637943
+      }
+    ],
+    "3.10 Delete subtask — success": [
+      {
+        "executionId": "d51b3403-8c37-4a75-8ca4-b631303744c2",
+        "chatSessionId": "sess_63a5dc26-5345-4a76-83c3-18ee4c360158",
+        "timestamp": 1782311045083
+      },
+      {
+        "executionId": "01237e1e-3c5e-4a5e-a974-e69c1189345f",
+        "chatSessionId": "sess_951ffe82-69fd-4b85-ad7f-2e012c46e8a4",
+        "timestamp": 1782311432169
+      },
+      {
+        "executionId": "01237e1e-3c5e-4a5e-a974-e69c1189345f",
+        "chatSessionId": "sess_951ffe82-69fd-4b85-ad7f-2e012c46e8a4",
+        "timestamp": 1782311510229
+      },
+      {
+        "executionId": "01237e1e-3c5e-4a5e-a974-e69c1189345f",
+        "chatSessionId": "sess_951ffe82-69fd-4b85-ad7f-2e012c46e8a4",
+        "timestamp": 1782311638604
+      }
+    ],
+    "3.11 Delete subtask — unknown parent task": [
+      {
+        "executionId": "d51b3403-8c37-4a75-8ca4-b631303744c2",
+        "chatSessionId": "sess_63a5dc26-5345-4a76-83c3-18ee4c360158",
+        "timestamp": 1782311045124
+      },
+      {
+        "executionId": "01237e1e-3c5e-4a5e-a974-e69c1189345f",
+        "chatSessionId": "sess_951ffe82-69fd-4b85-ad7f-2e012c46e8a4",
+        "timestamp": 1782311432214
+      },
+      {
+        "executionId": "01237e1e-3c5e-4a5e-a974-e69c1189345f",
+        "chatSessionId": "sess_951ffe82-69fd-4b85-ad7f-2e012c46e8a4",
+        "timestamp": 1782311510926
+      },
+      {
+        "executionId": "01237e1e-3c5e-4a5e-a974-e69c1189345f",
+        "chatSessionId": "sess_951ffe82-69fd-4b85-ad7f-2e012c46e8a4",
+        "timestamp": 1782311639283
+      }
+    ],
+    "3.12 Delete subtask — wrong owner": [
+      {
+        "executionId": "d51b3403-8c37-4a75-8ca4-b631303744c2",
+        "chatSessionId": "sess_63a5dc26-5345-4a76-83c3-18ee4c360158",
+        "timestamp": 1782311045173
+      },
+      {
+        "executionId": "01237e1e-3c5e-4a5e-a974-e69c1189345f",
+        "chatSessionId": "sess_951ffe82-69fd-4b85-ad7f-2e012c46e8a4",
+        "timestamp": 1782311432265
+      },
+      {
+        "executionId": "01237e1e-3c5e-4a5e-a974-e69c1189345f",
+        "chatSessionId": "sess_951ffe82-69fd-4b85-ad7f-2e012c46e8a4",
+        "timestamp": 1782311511747
+      },
+      {
+        "executionId": "01237e1e-3c5e-4a5e-a974-e69c1189345f",
+        "chatSessionId": "sess_951ffe82-69fd-4b85-ad7f-2e012c46e8a4",
+        "timestamp": 1782311639997
+      }
+    ],
+    "4.1 GET /todos/{id}/subtasks → HTTP 200, JSON array": [
+      {
+        "executionId": "d51b3403-8c37-4a75-8ca4-b631303744c2",
+        "chatSessionId": "sess_63a5dc26-5345-4a76-83c3-18ee4c360158",
+        "timestamp": 1782311045218
+      },
+      {
+        "executionId": "01237e1e-3c5e-4a5e-a974-e69c1189345f",
+        "chatSessionId": "sess_951ffe82-69fd-4b85-ad7f-2e012c46e8a4",
+        "timestamp": 1782311432324
+      },
+      {
+        "executionId": "01237e1e-3c5e-4a5e-a974-e69c1189345f",
+        "chatSessionId": "sess_951ffe82-69fd-4b85-ad7f-2e012c46e8a4",
+        "timestamp": 1782311644869
+      }
+    ],
+    "4.2 POST /todos/{id}/subtasks — valid body → HTTP 200": [
+      {
+        "executionId": "d51b3403-8c37-4a75-8ca4-b631303744c2",
+        "chatSessionId": "sess_63a5dc26-5345-4a76-83c3-18ee4c360158",
+        "timestamp": 1782311045262
+      },
+      {
+        "executionId": "01237e1e-3c5e-4a5e-a974-e69c1189345f",
+        "chatSessionId": "sess_951ffe82-69fd-4b85-ad7f-2e012c46e8a4",
+        "timestamp": 1782311432361
+      },
+      {
+        "executionId": "01237e1e-3c5e-4a5e-a974-e69c1189345f",
+        "chatSessionId": "sess_951ffe82-69fd-4b85-ad7f-2e012c46e8a4",
+        "timestamp": 1782311645631
+      }
+    ],
+    "4.3 POST /todos/{id}/subtasks — blank title → HTTP 400": [
+      {
+        "executionId": "d51b3403-8c37-4a75-8ca4-b631303744c2",
+        "chatSessionId": "sess_63a5dc26-5345-4a76-83c3-18ee4c360158",
+        "timestamp": 1782311045309
+      },
+      {
+        "executionId": "01237e1e-3c5e-4a5e-a974-e69c1189345f",
+        "chatSessionId": "sess_951ffe82-69fd-4b85-ad7f-2e012c46e8a4",
+        "timestamp": 1782311432404
+      },
+      {
+        "executionId": "01237e1e-3c5e-4a5e-a974-e69c1189345f",
+        "chatSessionId": "sess_951ffe82-69fd-4b85-ad7f-2e012c46e8a4",
+        "timestamp": 1782311646379
+      }
+    ],
+    "4.4 GET /todos/{id}/subtasks/{subtaskId} — not found → HTTP 404": [
+      {
+        "executionId": "d51b3403-8c37-4a75-8ca4-b631303744c2",
+        "chatSessionId": "sess_63a5dc26-5345-4a76-83c3-18ee4c360158",
+        "timestamp": 1782311045360
+      },
+      {
+        "executionId": "01237e1e-3c5e-4a5e-a974-e69c1189345f",
+        "chatSessionId": "sess_951ffe82-69fd-4b85-ad7f-2e012c46e8a4",
+        "timestamp": 1782311432440
+      },
+      {
+        "executionId": "01237e1e-3c5e-4a5e-a974-e69c1189345f",
+        "chatSessionId": "sess_951ffe82-69fd-4b85-ad7f-2e012c46e8a4",
+        "timestamp": 1782311647135
+      }
+    ],
+    "4.5 GET /todos/{id}/subtasks — unknown parent task → HTTP 404": [
+      {
+        "executionId": "d51b3403-8c37-4a75-8ca4-b631303744c2",
+        "chatSessionId": "sess_63a5dc26-5345-4a76-83c3-18ee4c360158",
+        "timestamp": 1782311045416
+      },
+      {
+        "executionId": "01237e1e-3c5e-4a5e-a974-e69c1189345f",
+        "chatSessionId": "sess_951ffe82-69fd-4b85-ad7f-2e012c46e8a4",
+        "timestamp": 1782311432478
+      },
+      {
+        "executionId": "01237e1e-3c5e-4a5e-a974-e69c1189345f",
+        "chatSessionId": "sess_951ffe82-69fd-4b85-ad7f-2e012c46e8a4",
+        "timestamp": 1782311647889
+      }
+    ],
+    "4.6 GET /todos/{id}/subtasks — wrong owner → HTTP 403": [
+      {
+        "executionId": "d51b3403-8c37-4a75-8ca4-b631303744c2",
+        "chatSessionId": "sess_63a5dc26-5345-4a76-83c3-18ee4c360158",
+        "timestamp": 1782311045453
+      },
+      {
+        "executionId": "01237e1e-3c5e-4a5e-a974-e69c1189345f",
+        "chatSessionId": "sess_951ffe82-69fd-4b85-ad7f-2e012c46e8a4",
+        "timestamp": 1782311432525
+      },
+      {
+        "executionId": "01237e1e-3c5e-4a5e-a974-e69c1189345f",
+        "chatSessionId": "sess_951ffe82-69fd-4b85-ad7f-2e012c46e8a4",
+        "timestamp": 1782311648663
+      }
+    ],
+    "4.7 PUT /todos/{id}/subtasks/{subtaskId} — valid body → HTTP 200": [
+      {
+        "executionId": "d51b3403-8c37-4a75-8ca4-b631303744c2",
+        "chatSessionId": "sess_63a5dc26-5345-4a76-83c3-18ee4c360158",
+        "timestamp": 1782311045490
+      },
+      {
+        "executionId": "01237e1e-3c5e-4a5e-a974-e69c1189345f",
+        "chatSessionId": "sess_951ffe82-69fd-4b85-ad7f-2e012c46e8a4",
+        "timestamp": 1782311432561
+      },
+      {
+        "executionId": "01237e1e-3c5e-4a5e-a974-e69c1189345f",
+        "chatSessionId": "sess_951ffe82-69fd-4b85-ad7f-2e012c46e8a4",
+        "timestamp": 1782311649457
+      }
+    ],
+    "4.8 DELETE /todos/{id}/subtasks/{subtaskId} → HTTP 204": [
+      {
+        "executionId": "d51b3403-8c37-4a75-8ca4-b631303744c2",
+        "chatSessionId": "sess_63a5dc26-5345-4a76-83c3-18ee4c360158",
+        "timestamp": 1782311045527
+      },
+      {
+        "executionId": "01237e1e-3c5e-4a5e-a974-e69c1189345f",
+        "chatSessionId": "sess_951ffe82-69fd-4b85-ad7f-2e012c46e8a4",
+        "timestamp": 1782311432608
+      },
+      {
+        "executionId": "01237e1e-3c5e-4a5e-a974-e69c1189345f",
+        "chatSessionId": "sess_951ffe82-69fd-4b85-ad7f-2e012c46e8a4",
+        "timestamp": 1782311650294
+      }
+    ],
+    "5. Final checkpoint — full test suite": [
+      {
+        "executionId": "d51b3403-8c37-4a75-8ca4-b631303744c2",
+        "chatSessionId": "sess_63a5dc26-5345-4a76-83c3-18ee4c360158",
+        "timestamp": 1782311045568
+      },
+      {
+        "executionId": "01237e1e-3c5e-4a5e-a974-e69c1189345f",
+        "chatSessionId": "sess_951ffe82-69fd-4b85-ad7f-2e012c46e8a4",
+        "timestamp": 1782311432656
+      }
+    ],
+    "1. Create `SubtaskController` in the `controller/` package": [
+      {
+        "executionId": "d51b3403-8c37-4a75-8ca4-b631303744c2",
+        "chatSessionId": "sess_63a5dc26-5345-4a76-83c3-18ee4c360158",
+        "timestamp": 1782311206818
+      }
+    ],
+    "3. Write `SubtaskServiceTest`": [
+      {
+        "executionId": "01237e1e-3c5e-4a5e-a974-e69c1189345f",
+        "chatSessionId": "sess_951ffe82-69fd-4b85-ad7f-2e012c46e8a4",
+        "timestamp": 1782311640040
+      }
+    ]
+  }
+}

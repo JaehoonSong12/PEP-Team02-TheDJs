@@ -13,11 +13,11 @@ All code lives under `angular-todo-frontend/src/app/` in the Angular project.
 
 ## Tasks
 
-- [ ] 1. Create TypeScript model interfaces
-  - [ ] 1.1 Create `models/task.model.ts`
+- [x] 1. Create TypeScript model interfaces
+  - [x] 1.1 Create `models/task.model.ts`
     - Export `Task` interface with fields: `id: string`, `userId: string`, `title: string`, `completed: boolean`
     - _Requirements: 11.1_
-  - [ ] 1.2 Create `models/subtask.model.ts`
+  - [x] 1.2 Create `models/subtask.model.ts`
     - Export `Subtask` interface with fields: `id: string`, `taskId: string`, `title: string`, `completed: boolean`
     - _Requirements: 11.2_
 

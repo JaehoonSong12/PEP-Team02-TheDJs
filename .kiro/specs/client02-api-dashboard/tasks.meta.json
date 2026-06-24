@@ -1,0 +1,213 @@
+{
+  "pbtResults": {},
+  "executionHistory": {
+    "1.1 Create `models/task.model.ts`": [
+      {
+        "executionId": "d9d33c52-67da-4fbd-bc93-f2c4e8d1ef2e",
+        "chatSessionId": "sess_9f592843-86e0-4634-b24a-54728033e2a1",
+        "timestamp": 1782321895742
+      },
+      {
+        "executionId": "d9d33c52-67da-4fbd-bc93-f2c4e8d1ef2e",
+        "chatSessionId": "sess_9f592843-86e0-4634-b24a-54728033e2a1",
+        "timestamp": 1782321928091
+      },
+      {
+        "executionId": "d9d33c52-67da-4fbd-bc93-f2c4e8d1ef2e",
+        "chatSessionId": "sess_9f592843-86e0-4634-b24a-54728033e2a1",
+        "timestamp": 1782322008840
+      }
+    ],
+    "1.2 Create `models/subtask.model.ts`": [
+      {
+        "executionId": "d9d33c52-67da-4fbd-bc93-f2c4e8d1ef2e",
+        "chatSessionId": "sess_9f592843-86e0-4634-b24a-54728033e2a1",
+        "timestamp": 1782321895823
+      },
+      {
+        "executionId": "d9d33c52-67da-4fbd-bc93-f2c4e8d1ef2e",
+        "chatSessionId": "sess_9f592843-86e0-4634-b24a-54728033e2a1",
+        "timestamp": 1782321928957
+      },
+      {
+        "executionId": "d9d33c52-67da-4fbd-bc93-f2c4e8d1ef2e",
+        "chatSessionId": "sess_9f592843-86e0-4634-b24a-54728033e2a1",
+        "timestamp": 1782322009698
+      }
+    ],
+    "2.1 Create `services/task.service.ts`": [
+      {
+        "executionId": "d9d33c52-67da-4fbd-bc93-f2c4e8d1ef2e",
+        "chatSessionId": "sess_9f592843-86e0-4634-b24a-54728033e2a1",
+        "timestamp": 1782321895890
+      },
+      {
+        "executionId": "d9d33c52-67da-4fbd-bc93-f2c4e8d1ef2e",
+        "chatSessionId": "sess_9f592843-86e0-4634-b24a-54728033e2a1",
+        "timestamp": 1782322014780
+      }
+    ],
+    "2.2 Create `services/subtask.service.ts`": [
+      {
+        "executionId": "d9d33c52-67da-4fbd-bc93-f2c4e8d1ef2e",
+        "chatSessionId": "sess_9f592843-86e0-4634-b24a-54728033e2a1",
+        "timestamp": 1782321895926
+      },
+      {
+        "executionId": "d9d33c52-67da-4fbd-bc93-f2c4e8d1ef2e",
+        "chatSessionId": "sess_9f592843-86e0-4634-b24a-54728033e2a1",
+        "timestamp": 1782322015618
+      }
+    ],
+    "3.1 Create `interceptors/auth.interceptor.ts`": [
+      {
+        "executionId": "d9d33c52-67da-4fbd-bc93-f2c4e8d1ef2e",
+        "chatSessionId": "sess_9f592843-86e0-4634-b24a-54728033e2a1",
+        "timestamp": 1782321895965
+      },
+      {
+        "executionId": "d9d33c52-67da-4fbd-bc93-f2c4e8d1ef2e",
+        "chatSessionId": "sess_9f592843-86e0-4634-b24a-54728033e2a1",
+        "timestamp": 1782322016518
+      }
+    ],
+    "4.1 Create `guards/auth.guard.ts`": [
+      {
+        "executionId": "d9d33c52-67da-4fbd-bc93-f2c4e8d1ef2e",
+        "chatSessionId": "sess_9f592843-86e0-4634-b24a-54728033e2a1",
+        "timestamp": 1782321896000
+      },
+      {
+        "executionId": "d9d33c52-67da-4fbd-bc93-f2c4e8d1ef2e",
+        "chatSessionId": "sess_9f592843-86e0-4634-b24a-54728033e2a1",
+        "timestamp": 1782322017385
+      }
+    ],
+    "5.1 Update `app.config.ts`": [
+      {
+        "executionId": "d9d33c52-67da-4fbd-bc93-f2c4e8d1ef2e",
+        "chatSessionId": "sess_9f592843-86e0-4634-b24a-54728033e2a1",
+        "timestamp": 1782321896058
+      }
+    ],
+    "5.2 Update `app.routes.ts`": [
+      {
+        "executionId": "d9d33c52-67da-4fbd-bc93-f2c4e8d1ef2e",
+        "chatSessionId": "sess_9f592843-86e0-4634-b24a-54728033e2a1",
+        "timestamp": 1782321896087
+      }
+    ],
+    "6.1 Create `dashboard/dashboard.component.ts`": [
+      {
+        "executionId": "d9d33c52-67da-4fbd-bc93-f2c4e8d1ef2e",
+        "chatSessionId": "sess_9f592843-86e0-4634-b24a-54728033e2a1",
+        "timestamp": 1782321896118
+      }
+    ],
+    "6.2 Implement task creation logic": [
+      {
+        "executionId": "d9d33c52-67da-4fbd-bc93-f2c4e8d1ef2e",
+        "chatSessionId": "sess_9f592843-86e0-4634-b24a-54728033e2a1",
+        "timestamp": 1782321896148
+      }
+    ],
+    "6.3 Implement task update logic": [
+      {
+        "executionId": "d9d33c52-67da-4fbd-bc93-f2c4e8d1ef2e",
+        "chatSessionId": "sess_9f592843-86e0-4634-b24a-54728033e2a1",
+        "timestamp": 1782321896180
+      }
+    ],
+    "6.4 Implement task deletion logic": [
+      {
+        "executionId": "d9d33c52-67da-4fbd-bc93-f2c4e8d1ef2e",
+        "chatSessionId": "sess_9f592843-86e0-4634-b24a-54728033e2a1",
+        "timestamp": 1782321896213
+      }
+    ],
+    "6.5 Implement subtask expand/collapse and listing": [
+      {
+        "executionId": "d9d33c52-67da-4fbd-bc93-f2c4e8d1ef2e",
+        "chatSessionId": "sess_9f592843-86e0-4634-b24a-54728033e2a1",
+        "timestamp": 1782321896246
+      }
+    ],
+    "6.6 Implement subtask creation logic": [
+      {
+        "executionId": "d9d33c52-67da-4fbd-bc93-f2c4e8d1ef2e",
+        "chatSessionId": "sess_9f592843-86e0-4634-b24a-54728033e2a1",
+        "timestamp": 1782321896297
+      }
+    ],
+    "6.7 Implement subtask update logic": [
+      {
+        "executionId": "d9d33c52-67da-4fbd-bc93-f2c4e8d1ef2e",
+        "chatSessionId": "sess_9f592843-86e0-4634-b24a-54728033e2a1",
+        "timestamp": 1782321896326
+      }
+    ],
+    "6.8 Implement subtask deletion logic": [
+      {
+        "executionId": "d9d33c52-67da-4fbd-bc93-f2c4e8d1ef2e",
+        "chatSessionId": "sess_9f592843-86e0-4634-b24a-54728033e2a1",
+        "timestamp": 1782321896357
+      }
+    ],
+    "6.9 Implement logout": [
+      {
+        "executionId": "d9d33c52-67da-4fbd-bc93-f2c4e8d1ef2e",
+        "chatSessionId": "sess_9f592843-86e0-4634-b24a-54728033e2a1",
+        "timestamp": 1782321896383
+      }
+    ],
+    "6.10 Handle 401 globally": [
+      {
+        "executionId": "d9d33c52-67da-4fbd-bc93-f2c4e8d1ef2e",
+        "chatSessionId": "sess_9f592843-86e0-4634-b24a-54728033e2a1",
+        "timestamp": 1782321896415
+      }
+    ],
+    "7.1 Create `dashboard/dashboard.component.html`": [
+      {
+        "executionId": "d9d33c52-67da-4fbd-bc93-f2c4e8d1ef2e",
+        "chatSessionId": "sess_9f592843-86e0-4634-b24a-54728033e2a1",
+        "timestamp": 1782321896451
+      }
+    ],
+    "7.2 Create `dashboard/dashboard.component.css`": [
+      {
+        "executionId": "d9d33c52-67da-4fbd-bc93-f2c4e8d1ef2e",
+        "chatSessionId": "sess_9f592843-86e0-4634-b24a-54728033e2a1",
+        "timestamp": 1782321896480
+      }
+    ],
+    "8. Checkpoint — compile and verify": [
+      {
+        "executionId": "d9d33c52-67da-4fbd-bc93-f2c4e8d1ef2e",
+        "chatSessionId": "sess_9f592843-86e0-4634-b24a-54728033e2a1",
+        "timestamp": 1782321896512
+      }
+    ],
+    "9.1 Ensure LoginComponent stores token and navigates to dashboard": [
+      {
+        "executionId": "d9d33c52-67da-4fbd-bc93-f2c4e8d1ef2e",
+        "chatSessionId": "sess_9f592843-86e0-4634-b24a-54728033e2a1",
+        "timestamp": 1782321896545
+      }
+    ],
+    "9.2 Verify end-to-end flow": [
+      {
+        "executionId": "d9d33c52-67da-4fbd-bc93-f2c4e8d1ef2e",
+        "chatSessionId": "sess_9f592843-86e0-4634-b24a-54728033e2a1",
+        "timestamp": 1782321896577
+      }
+    ],
+    "1. Create TypeScript model interfaces": [
+      {
+        "executionId": "d9d33c52-67da-4fbd-bc93-f2c4e8d1ef2e",
+        "chatSessionId": "sess_9f592843-86e0-4634-b24a-54728033e2a1",
+        "timestamp": 1782322009747
+      }
+    ]
+  }
+}

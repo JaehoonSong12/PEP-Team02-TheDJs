@@ -4,14 +4,14 @@
 
 This feature implements the Subtask Organization vertical slice for the Todo Management Application.
 It covers the HTTP layer (`SubtaskController`), business logic (`SubtaskService`), exception classes,
-and global exception handling — all within the existing Spring Boot 4.1.0 / Spring Data JPA stack.
+and controller-local exception handling — all within the existing Spring Boot 4.1.0 / Spring Data JPA stack.
 
 The public endpoints delivered are:
-- `GET /api/todos/{id}/subtasks`               — list all subtasks for a task
-- `POST /api/todos/{id}/subtasks`              — create a new subtask under a task
-- `GET /api/todos/{id}/subtasks/{subtaskId}`   — retrieve a single subtask
-- `PUT /api/todos/{id}/subtasks/{subtaskId}`   — update a subtask's title and/or completed status
-- `DELETE /api/todos/{id}/subtasks/{subtaskId}` — delete a subtask
+- `GET /todos/{id}/subtasks`               — list all subtasks for a task
+- `POST /todos/{id}/subtasks`              — create a new subtask under a task
+- `GET /todos/{id}/subtasks/{subtaskId}`   — retrieve a single subtask
+- `PUT /todos/{id}/subtasks/{subtaskId}`   — update a subtask's title and/or completed status
+- `DELETE /todos/{id}/subtasks/{subtaskId}` — delete a subtask
 
 All subtask operations first verify that the parent task exists and belongs to the authenticated user.
 
@@ -19,7 +19,7 @@ All subtask operations first verify that the parent task exists and belongs to t
 
 ## Glossary
 
-- **SubtaskController**: The Spring `@RestController` that handles requests to `/api/todos/{id}/subtasks`.
+- **SubtaskController**: The Spring `@RestController` that handles requests to `/todos/{id}/subtasks`.
 - **SubtaskService**: The existing Spring `@Service` class containing all business logic for subtask CRUD.
 - **SubtaskRepository**: The Spring Data JPA interface for `Subtask` persistence operations.
 - **TaskRepository**: Used by `SubtaskService` to verify parent task existence and ownership.
@@ -27,7 +27,7 @@ All subtask operations first verify that the parent task exists and belongs to t
 - **SubtaskNotFoundException**: Custom exception thrown when a subtask ID does not exist or does not belong to the given parent task.
 - **TaskNotFoundException**: Custom exception thrown when the parent task ID does not exist.
 - **TaskOwnershipException**: Custom exception thrown when the authenticated user does not own the parent task.
-- **GlobalExceptionHandler**: A `@ControllerAdvice` class that maps exceptions to HTTP error responses.
+- **Controller-local `@ExceptionHandler`**: Methods defined directly inside `SubtaskController` that map exceptions to HTTP error responses (consistent with `TodoController` and `LoginController`).
 - **userId**: The UUID of the authenticated user, extracted from the JWT and passed to the service layer.
 - **taskId**: The UUID of the parent task, extracted from the URL path variable `{id}`.
 - **blank**: A string that is `null`, empty (`""`), or contains only whitespace.
@@ -42,7 +42,7 @@ All subtask operations first verify that the parent task exists and belongs to t
 
 #### Acceptance Criteria
 
-1. WHEN a `GET /api/todos/{id}/subtasks` request is received, THE `SubtaskController` SHALL delegate to `SubtaskService.getSubtasksForTask(userId, taskId)` and return HTTP 200 with a JSON array of subtasks.
+1. WHEN a `GET /todos/{id}/subtasks` request is received, THE `SubtaskController` SHALL delegate to `SubtaskService.getSubtasksForTask(userId, taskId)` and return HTTP 200 with a JSON array of subtasks.
 2. WHEN `SubtaskService.getSubtasksForTask` is called, THE `SubtaskService` SHALL verify the parent task exists and belongs to the authenticated user before querying subtasks.
 3. WHEN the parent task has no subtasks, THE `SubtaskController` SHALL return HTTP 200 with an empty JSON array.
 4. WHEN the parent task does not exist, THE `SubtaskService` SHALL throw `TaskNotFoundException`.
@@ -56,10 +56,10 @@ All subtask operations first verify that the parent task exists and belongs to t
 
 #### Acceptance Criteria
 
-1. WHEN a `POST /api/todos/{id}/subtasks` request is received with a valid JSON body containing a non-blank `title`, THE `SubtaskController` SHALL delegate to `SubtaskService.createSubtask(userId, taskId, subtask)` and return HTTP 200 with the persisted `Subtask` as the response body.
+1. WHEN a `POST /todos/{id}/subtasks` request is received with a valid JSON body containing a non-blank `title`, THE `SubtaskController` SHALL delegate to `SubtaskService.createSubtask(userId, taskId, subtask)` and return HTTP 200 with the persisted `Subtask` as the response body.
 2. WHEN `SubtaskService.createSubtask` is called with a non-blank `title`, THE `SubtaskService` SHALL set `id` to `null`, set `taskId` to the provided value, persist via `SubtaskRepository`, and return the saved `Subtask`.
 3. WHEN `SubtaskService.createSubtask` is called with a blank `title`, THE `SubtaskService` SHALL throw an `IllegalArgumentException` before any database access occurs.
-4. IF an `IllegalArgumentException` is thrown, THEN THE `GlobalExceptionHandler` SHALL return HTTP 400 with body `{"status": 400, "message": "..."}`.
+4. IF an `IllegalArgumentException` is thrown, THEN THE `SubtaskController` `@ExceptionHandler` SHALL return HTTP 400 with body `{"status": 400, "message": "..."}`.
 5. WHEN the parent task does not exist, THE `SubtaskService` SHALL throw `TaskNotFoundException` before attempting to persist.
 6. WHEN the parent task belongs to a different user, THE `SubtaskService` SHALL throw `TaskOwnershipException` before attempting to persist.
 7. WHEN the `completed` field is omitted, THE `SubtaskService` SHALL default it to `false`.
@@ -72,10 +72,10 @@ All subtask operations first verify that the parent task exists and belongs to t
 
 #### Acceptance Criteria
 
-1. WHEN a `GET /api/todos/{id}/subtasks/{subtaskId}` request is received, THE `SubtaskController` SHALL delegate to `SubtaskService.getSubtaskById(userId, taskId, subtaskId)` and return HTTP 200 with the matching `Subtask`.
+1. WHEN a `GET /todos/{id}/subtasks/{subtaskId}` request is received, THE `SubtaskController` SHALL delegate to `SubtaskService.getSubtaskById(userId, taskId, subtaskId)` and return HTTP 200 with the matching `Subtask`.
 2. WHEN `SubtaskService.getSubtaskById` is called with a non-existent subtask ID, THE `SubtaskService` SHALL throw `SubtaskNotFoundException`.
 3. WHEN `SubtaskService.getSubtaskById` is called with a subtask ID that belongs to a different parent task, THE `SubtaskService` SHALL throw `SubtaskNotFoundException`.
-4. IF a `SubtaskNotFoundException` is thrown, THEN THE `GlobalExceptionHandler` SHALL return HTTP 404 with body `{"status": 404, "message": "..."}`.
+4. IF a `SubtaskNotFoundException` is thrown, THEN THE `SubtaskController` `@ExceptionHandler` SHALL return HTTP 404 with body `{"status": 404, "message": "..."}`.
 5. WHEN the parent task does not exist, THE `SubtaskService` SHALL throw `TaskNotFoundException`.
 6. WHEN the parent task belongs to a different user, THE `SubtaskService` SHALL throw `TaskOwnershipException`.
 
@@ -87,7 +87,7 @@ All subtask operations first verify that the parent task exists and belongs to t
 
 #### Acceptance Criteria
 
-1. WHEN a `PUT /api/todos/{id}/subtasks/{subtaskId}` request is received with a valid JSON body, THE `SubtaskController` SHALL delegate to `SubtaskService.updateSubtask(userId, taskId, subtaskId, updates)` and return HTTP 200 with the updated `Subtask`.
+1. WHEN a `PUT /todos/{id}/subtasks/{subtaskId}` request is received with a valid JSON body, THE `SubtaskController` SHALL delegate to `SubtaskService.updateSubtask(userId, taskId, subtaskId, updates)` and return HTTP 200 with the updated `Subtask`.
 2. WHEN `SubtaskService.updateSubtask` is called with a non-null `title`, THE `SubtaskService` SHALL update the subtask's title to that value.
 3. WHEN `SubtaskService.updateSubtask` is called with an explicit blank `title`, THE `SubtaskService` SHALL throw an `IllegalArgumentException` before persisting.
 4. WHEN `SubtaskService.updateSubtask` is called, THE `SubtaskService` SHALL apply the `completed` value from the update object.
@@ -103,7 +103,7 @@ All subtask operations first verify that the parent task exists and belongs to t
 
 #### Acceptance Criteria
 
-1. WHEN a `DELETE /api/todos/{id}/subtasks/{subtaskId}` request is received, THE `SubtaskController` SHALL delegate to `SubtaskService.deleteSubtask(userId, taskId, subtaskId)` and return HTTP 204 with no response body.
+1. WHEN a `DELETE /todos/{id}/subtasks/{subtaskId}` request is received, THE `SubtaskController` SHALL delegate to `SubtaskService.deleteSubtask(userId, taskId, subtaskId)` and return HTTP 204 with no response body.
 2. WHEN `SubtaskService.deleteSubtask` is called with a valid owned task and existing subtask, THE `SubtaskService` SHALL delete the subtask and return without error.
 3. WHEN `SubtaskService.deleteSubtask` is called with a non-existent subtask ID, THE `SubtaskService` SHALL throw `SubtaskNotFoundException`.
 4. WHEN the parent task does not exist, THE `SubtaskService` SHALL throw `TaskNotFoundException`.
@@ -123,14 +123,14 @@ All subtask operations first verify that the parent task exists and belongs to t
 
 ---
 
-### Requirement 7: Global Exception Handling
+### Requirement 7: Controller-Local Exception Handling
 
-**User Story:** As a developer, I want subtask-related exceptions mapped to consistent HTTP responses.
+**User Story:** As a developer, I want subtask-related exceptions mapped to consistent HTTP responses via `@ExceptionHandler` methods inside `SubtaskController`.
 
 #### Acceptance Criteria
 
-1. WHEN a `TaskNotFoundException` is handled, THE `GlobalExceptionHandler` SHALL return HTTP 404 with a JSON body containing `"status": 404` and a non-empty `"message"` string.
-2. WHEN a `TaskOwnershipException` is handled, THE `GlobalExceptionHandler` SHALL return HTTP 403 with a JSON body containing `"status": 403` and a non-empty `"message"` string.
-3. WHEN a `SubtaskNotFoundException` is handled, THE `GlobalExceptionHandler` SHALL return HTTP 404 with a JSON body containing `"status": 404` and a non-empty `"message"` string.
-4. WHEN an `IllegalArgumentException` is handled, THE `GlobalExceptionHandler` SHALL return HTTP 400 with a JSON body containing `"status": 400` and a non-empty `"message"` string.
-5. THE `GlobalExceptionHandler` SHALL set `Content-Type: application/json` on all error responses.
+1. WHEN a `TaskNotFoundException` is handled, THE `SubtaskController` `@ExceptionHandler` SHALL return HTTP 404 with a JSON body containing `"status": 404` and a non-empty `"message"` string.
+2. WHEN a `TaskOwnershipException` is handled, THE `SubtaskController` `@ExceptionHandler` SHALL return HTTP 403 with a JSON body containing `"status": 403` and a non-empty `"message"` string.
+3. WHEN a `SubtaskNotFoundException` is handled, THE `SubtaskController` `@ExceptionHandler` SHALL return HTTP 404 with a JSON body containing `"status": 404` and a non-empty `"message"` string.
+4. WHEN an `IllegalArgumentException` is handled, THE `SubtaskController` `@ExceptionHandler` SHALL return HTTP 400 with a JSON body containing `"status": 400` and a non-empty `"message"` string.
+5. THE `SubtaskController` `@ExceptionHandler` methods SHALL set `Content-Type: application/json` on all error responses.
