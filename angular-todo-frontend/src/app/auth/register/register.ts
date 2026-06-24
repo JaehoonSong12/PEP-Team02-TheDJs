@@ -1,5 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AuthService } from '../auth';
@@ -19,11 +19,21 @@ export class Register {
   readonly registerForm = this.fb.nonNullable.group({
     username: ['', [Validators.required, Validators.maxLength(50)]],
     password: ['', [Validators.required, Validators.maxLength(128)]],
-  });
+    confirmPassword: ['', [Validators.required]],
+  }, { validators: [this.passwordsMatchValidator] });
 
   readonly errorMessage = signal<string | null>(null);
   readonly successMessage = signal<string | null>(null);
   readonly isLoading = signal(false);
+
+  private passwordsMatchValidator(control: AbstractControl): ValidationErrors | null {
+    const password = control.get('password');
+    const confirmPassword = control.get('confirmPassword');
+    if (password && confirmPassword && password.value !== confirmPassword.value) {
+      return { passwordsMismatch: true };
+    }
+    return null;
+  }
 
   onSubmit(): void {
     if (this.registerForm.invalid) {

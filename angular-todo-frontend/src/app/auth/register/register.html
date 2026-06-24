@@ -21,6 +21,16 @@
         <span class="validation-error">Password must be 128 characters or fewer</span>
       }
     </div>
+    <div class="form-field">
+      <label for="confirmPassword">Confirm Password</label>
+      <input id="confirmPassword" type="password" formControlName="confirmPassword" />
+      @if (registerForm.controls.confirmPassword.touched && registerForm.controls.confirmPassword.hasError('required')) {
+        <span class="validation-error">Confirm password is required</span>
+      }
+      @if (registerForm.controls.confirmPassword.touched && registerForm.hasError('passwordsMismatch')) {
+        <span class="validation-error">Passwords do not match</span>
+      }
+    </div>
     @if (errorMessage()) {
       <div class="error-message" data-testid="error-message">{{ errorMessage() }}</div>
     }
