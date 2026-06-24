@@ -26,5 +26,5 @@ public class Task {
     private String title;
 
     @Column(nullable = false)
-    private boolean completed = false;
+    private Boolean completed = false;
 }
