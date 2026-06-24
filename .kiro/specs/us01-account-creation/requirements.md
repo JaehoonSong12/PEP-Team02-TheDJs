@@ -19,7 +19,7 @@ by a separate feature.
 - **RegistrationService**: The Spring `@Service` class that contains all business logic for user registration.
 - **UserRepository**: The Spring Data JPA interface that provides persistence operations for `User` entities.
 - **PasswordValidator**: A utility component that checks a plaintext password against all strength rules and returns a list of violation messages.
-- **User**: The JPA entity (`entity/User.java`) with fields `UUID userId`, `String username`, `String password`.
+- **User**: The JPA entity (`entity/User.java`) with fields `UUID id`, `String username`, `String password`.
 - **RegistrationFailure**: A custom `RuntimeException` thrown by `RegistrationService` when any registration validation fails (blank username, bad length, bad password, duplicate username).
 - **blank**: A string that is either `null`, empty (`""`), or contains only whitespace characters.
 - **special character**: Any character from the set `!@#$%^&*`.
