@@ -110,9 +110,7 @@ public class SubtaskService {
             existing.setTitle(updates.getTitle());
         }
 
-        if (updates.getCompleted() != null) {
-            existing.setCompleted(updates.getCompleted());
-        }
+        existing.setCompleted(updates.isCompleted());
 
         return subtaskRepository.save(existing);
     }

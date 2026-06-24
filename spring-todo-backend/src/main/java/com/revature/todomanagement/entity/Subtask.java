@@ -26,5 +26,5 @@ public class Subtask {
     private String title;
 
     @Column(nullable = false)
-    private Boolean completed = false;
+    private boolean completed = false;
 }
