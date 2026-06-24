@@ -6250,3 +6250,5 @@ __pycache__/
 
 # jqwik property-based testing database
 .jqwik-database
+
+*.jqwik-databas
