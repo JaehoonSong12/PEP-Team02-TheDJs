@@ -6246,3 +6246,7 @@ __pycache__/
 
 # Allow Angular model files (overrides *.mod* rule from Fortran section)
 !*.model.ts
+
+
+# jqwik property-based testing database
+.jqwik-database
