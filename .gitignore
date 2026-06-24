@@ -6242,3 +6242,7 @@ Backup_*
 __pycache__/
 *.py[cod]
 
+
+
+# Allow Angular model files (overrides *.mod* rule from Fortran section)
+!*.model.ts
