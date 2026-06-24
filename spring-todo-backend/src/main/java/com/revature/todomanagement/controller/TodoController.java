@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/todos")
+@RequestMapping("/api/todos")
 @RequiredArgsConstructor
 public class TodoController {
 

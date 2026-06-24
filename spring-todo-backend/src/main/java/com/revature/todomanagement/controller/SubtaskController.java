@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/todos/{id}/subtasks")
+@RequestMapping("/api/todos/{id}/subtasks")
 @RequiredArgsConstructor
 public class SubtaskController {
 

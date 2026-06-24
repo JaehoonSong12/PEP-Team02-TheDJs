@@ -1,0 +1,139 @@
+<div class="dashboard-container">
+  <!-- Header -->
+  <header class="dashboard-header">
+    <h1>Todo Dashboard</h1>
+    <button class="btn btn-logout" (click)="logout()">Logout</button>
+  </header>
+
+  <!-- Error message -->
+  @if (errorMessage()) {
+    <div class="error-message" role="alert">
+      {{ errorMessage() }}
+      <button class="btn-dismiss" (click)="errorMessage.set('')" aria-label="Dismiss error">&times;</button>
+    </div>
+  }
+
+  <!-- Create task form -->
+  <form class="create-task-form" (ngSubmit)="createTask()">
+    <input
+      type="text"
+      class="input-field"
+      placeholder="Enter new task title..."
+      [ngModel]="newTaskTitle()"
+      (ngModelChange)="newTaskTitle.set($event)"
+      name="newTaskTitle"
+      aria-label="New task title"
+    />
+    <button type="submit" class="btn btn-primary">Add Task</button>
+  </form>
+
+  <!-- Task list -->
+  @if (tasks().length === 0) {
+    <p class="empty-state">No tasks yet. Create one to get started!</p>
+  } @else {
+    <ul class="task-list">
+      @for (task of tasks(); track task.id) {
+        <li class="task-item" [class.completed]="task.completed">
+          <div class="task-row">
+            <!-- Completed checkbox -->
+            <input
+              type="checkbox"
+              [checked]="task.completed"
+              (change)="toggleTaskCompleted(task)"
+              [attr.aria-label]="'Mark ' + task.title + ' as ' + (task.completed ? 'incomplete' : 'complete')"
+            />
+
+            <!-- Task title (view/edit mode) -->
+            @if (editingTaskId() === task.id) {
+              <input
+                type="text"
+                class="input-field edit-input"
+                [ngModel]="editingTaskTitle()"
+                (ngModelChange)="editingTaskTitle.set($event)"
+                name="editTaskTitle"
+                aria-label="Edit task title"
+              />
+              <button class="btn btn-save" (click)="saveEditTask(task)">Save</button>
+              <button class="btn btn-cancel" (click)="cancelEditTask()">Cancel</button>
+            } @else {
+              <span class="task-title" (dblclick)="startEditTask(task)">{{ task.title }}</span>
+              <button class="btn btn-edit" (click)="startEditTask(task)" aria-label="Edit task">Edit</button>
+            }
+
+            <!-- Delete button -->
+            <button class="btn btn-delete" (click)="deleteTask(task.id)" aria-label="Delete task">Delete</button>
+
+            <!-- Expand/collapse toggle -->
+            <button
+              class="btn btn-expand"
+              (click)="toggleExpand(task.id)"
+              [attr.aria-label]="isExpanded(task.id) ? 'Collapse subtasks' : 'Expand subtasks'"
+            >
+              {{ isExpanded(task.id) ? '▼' : '▶' }}
+            </button>
+          </div>
+
+          <!-- Subtask section (expanded) -->
+          @if (isExpanded(task.id)) {
+            <div class="subtask-section">
+              <!-- Create subtask form -->
+              <form class="create-subtask-form" (ngSubmit)="createSubtask(task.id)">
+                <input
+                  type="text"
+                  class="input-field subtask-input"
+                  placeholder="New subtask..."
+                  [ngModel]="getNewSubtaskTitle(task.id)"
+                  (ngModelChange)="setNewSubtaskTitle(task.id, $event)"
+                  [name]="'newSubtask_' + task.id"
+                  aria-label="New subtask title"
+                />
+                <button type="submit" class="btn btn-primary btn-sm">Add Subtask</button>
+              </form>
+
+              <!-- Subtask list -->
+              @if (getSubtasks(task.id).length === 0) {
+                <p class="empty-subtasks">No subtasks</p>
+              } @else {
+                <ul class="subtask-list">
+                  @for (subtask of getSubtasks(task.id); track subtask.id) {
+                    <li class="subtask-item" [class.completed]="subtask.completed">
+                      <div class="subtask-row">
+                        <!-- Completed checkbox -->
+                        <input
+                          type="checkbox"
+                          [checked]="subtask.completed"
+                          (change)="toggleSubtaskCompleted(task.id, subtask)"
+                          [attr.aria-label]="'Mark ' + subtask.title + ' as ' + (subtask.completed ? 'incomplete' : 'complete')"
+                        />
+
+                        <!-- Subtask title (view/edit mode) -->
+                        @if (editingSubtaskId() === subtask.id) {
+                          <input
+                            type="text"
+                            class="input-field edit-input"
+                            [ngModel]="editingSubtaskTitle()"
+                            (ngModelChange)="editingSubtaskTitle.set($event)"
+                            [name]="'editSubtask_' + subtask.id"
+                            aria-label="Edit subtask title"
+                          />
+                          <button class="btn btn-save btn-sm" (click)="saveEditSubtask(task.id, subtask)">Save</button>
+                          <button class="btn btn-cancel btn-sm" (click)="cancelEditSubtask()">Cancel</button>
+                        } @else {
+                          <span class="subtask-title" (dblclick)="startEditSubtask(subtask)">{{ subtask.title }}</span>
+                          <button class="btn btn-edit btn-sm" (click)="startEditSubtask(subtask)" aria-label="Edit subtask">Edit</button>
+                        }
+
+                        <!-- Delete subtask button -->
+                        <button class="btn btn-delete btn-sm" (click)="deleteSubtask(task.id, subtask.id)" aria-label="Delete subtask">Delete</button>
+                      </div>
+                    </li>
+                  }
+                </ul>
+              }
+            </div>
+          }
+        </li>
+      }
+    </ul>
+  }
+</div>

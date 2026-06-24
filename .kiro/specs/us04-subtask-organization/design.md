@@ -10,11 +10,11 @@ Five public endpoints are exposed:
 
 | Method | Path | Purpose |
 |--------|------|---------|
-| GET | `/api/todos/{id}/subtasks` | List all subtasks for the given task |
-| POST | `/api/todos/{id}/subtasks` | Create a new subtask under the given task |
-| GET | `/api/todos/{id}/subtasks/{subtaskId}` | Retrieve a single subtask by ID |
-| PUT | `/api/todos/{id}/subtasks/{subtaskId}` | Update a subtask's title and/or completed status |
-| DELETE | `/api/todos/{id}/subtasks/{subtaskId}` | Delete a subtask |
+| GET | `/todos/{id}/subtasks` | List all subtasks for the given task |
+| POST | `/todos/{id}/subtasks` | Create a new subtask under the given task |
+| GET | `/todos/{id}/subtasks/{subtaskId}` | Retrieve a single subtask by ID |
+| PUT | `/todos/{id}/subtasks/{subtaskId}` | Update a subtask's title and/or completed status |
+| DELETE | `/todos/{id}/subtasks/{subtaskId}` | Delete a subtask |
 
 Every operation first verifies that the parent task exists and belongs to the authenticated user.
 
@@ -34,22 +34,21 @@ Service (SubtaskService)
 Database (SQLite via Hibernate / H2 in tests)
 ```
 
-Cross-cutting concerns are handled by:
-- **GlobalExceptionHandler** (`@ControllerAdvice`) — maps domain exceptions to HTTP status codes
+Exception handling is done via **controller-local `@ExceptionHandler` methods** inside `SubtaskController` — consistent with `TodoController` and `LoginController`.
 
 ```mermaid
 graph TD
-    Client -->|GET /api/todos/:id/subtasks| SC[SubtaskController]
-    Client -->|POST /api/todos/:id/subtasks| SC
-    Client -->|GET /api/todos/:id/subtasks/:sid| SC
-    Client -->|PUT /api/todos/:id/subtasks/:sid| SC
-    Client -->|DELETE /api/todos/:id/subtasks/:sid| SC
+    Client -->|GET /todos/:id/subtasks| SC[SubtaskController]
+    Client -->|POST /todos/:id/subtasks| SC
+    Client -->|GET /todos/:id/subtasks/:sid| SC
+    Client -->|PUT /todos/:id/subtasks/:sid| SC
+    Client -->|DELETE /todos/:id/subtasks/:sid| SC
     SC --> SS[SubtaskService]
     SS --> SR[SubtaskRepository]
     SS --> TR[TaskRepository]
     SR --> DB[(SQLite / H2)]
     TR --> DB
-    SC --> GEH[GlobalExceptionHandler]
+    SC -->|@ExceptionHandler| SC
 ```
 
 ---
@@ -61,7 +60,7 @@ graph TD
 ```
 com.revature.todomanagement
 ├── controller/
-│   └── SubtaskController.java           ← new
+│   └── SubtaskController.java           ← new (includes @ExceptionHandler methods)
 ├── service/
 │   └── SubtaskService.java              ← already implemented
 ├── repository/
@@ -73,27 +72,30 @@ com.revature.todomanagement
 └── exception/
     ├── SubtaskNotFoundException.java    ← already implemented
     ├── TaskNotFoundException.java       ← already implemented
-    ├── TaskOwnershipException.java      ← already implemented
-    └── GlobalExceptionHandler.java      ← extend with subtask handler
+    └── TaskOwnershipException.java      ← already implemented
 ```
 
 ### Class Signatures
 
-#### `SubtaskController`
+#### `SubtaskController` (includes local `@ExceptionHandler` methods)
 ```java
 package com.revature.todomanagement.controller;
 
 import com.revature.todomanagement.entity.Subtask;
+import com.revature.todomanagement.exception.SubtaskNotFoundException;
+import com.revature.todomanagement.exception.TaskNotFoundException;
+import com.revature.todomanagement.exception.TaskOwnershipException;
 import com.revature.todomanagement.service.SubtaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/todos/{id}/subtasks")
+@RequestMapping("/todos/{id}/subtasks")
 @RequiredArgsConstructor
 public class SubtaskController {
 
@@ -123,6 +125,24 @@ public class SubtaskController {
     public ResponseEntity<Void> deleteSubtask(@RequestAttribute UUID userId,
                                               @PathVariable UUID id,
                                               @PathVariable UUID subtaskId);
+
+    // ---- Exception Handlers (controller-local) ----
+
+    @ExceptionHandler(SubtaskNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleSubtaskNotFound(SubtaskNotFoundException ex);
+    // → HTTP 404, body: {"status": 404, "message": "..."}
+
+    @ExceptionHandler(TaskNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleTaskNotFound(TaskNotFoundException ex);
+    // → HTTP 404, body: {"status": 404, "message": "..."}
+
+    @ExceptionHandler(TaskOwnershipException.class)
+    public ResponseEntity<Map<String, Object>> handleTaskOwnership(TaskOwnershipException ex);
+    // → HTTP 403, body: {"status": 403, "message": "..."}
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<Map<String, Object>> handleIllegalArgument(IllegalArgumentException ex);
+    // → HTTP 400, body: {"status": 400, "message": "..."}
 }
 ```
 
@@ -133,13 +153,6 @@ public List<Subtask> getSubtasksForTask(UUID userId, UUID taskId);
 public Subtask getSubtaskById(UUID userId, UUID taskId, UUID subtaskId);
 public Subtask updateSubtask(UUID userId, UUID taskId, UUID subtaskId, Subtask updates);
 public void deleteSubtask(UUID userId, UUID taskId, UUID subtaskId);
-```
-
-#### `GlobalExceptionHandler` (add to existing handler)
-```java
-@ExceptionHandler(SubtaskNotFoundException.class)
-public ResponseEntity<Map<String, Object>> handleSubtaskNotFound(SubtaskNotFoundException ex);
-// → HTTP 404, body: {"status": 404, "message": "..."}
 ```
 
 ---
@@ -158,12 +171,12 @@ subtasks
 
 ### Wire Formats
 
-**POST /api/todos/{id}/subtasks — Request**
+**POST /todos/{id}/subtasks — Request**
 ```json
 { "title": "Write unit tests", "completed": false }
 ```
 
-**POST /api/todos/{id}/subtasks — Response (HTTP 200)**
+**POST /todos/{id}/subtasks — Response (HTTP 200)**
 ```json
 {
   "id": "770a9600-a41d-63f6-c938-668877662222",
@@ -173,7 +186,7 @@ subtasks
 }
 ```
 
-**GET /api/todos/{id}/subtasks — Response (HTTP 200)**
+**GET /todos/{id}/subtasks — Response (HTTP 200)**
 ```json
 [
   {
@@ -185,12 +198,12 @@ subtasks
 ]
 ```
 
-**PUT /api/todos/{id}/subtasks/{subtaskId} — Request**
+**PUT /todos/{id}/subtasks/{subtaskId} — Request**
 ```json
 { "title": "Write unit tests", "completed": true }
 ```
 
-**DELETE /api/todos/{id}/subtasks/{subtaskId} — Response**
+**DELETE /todos/{id}/subtasks/{subtaskId} — Response**
 ```
 HTTP 204 No Content
 ```
@@ -214,7 +227,7 @@ sequenceDiagram
     participant TR as TaskRepository
     participant SR as SubtaskRepository
 
-    C->>SC: POST /api/todos/{id}/subtasks {title, completed}
+    C->>SC: POST /todos/{id}/subtasks {title, completed}
     SC->>SS: createSubtask(userId, taskId, subtask)
     SS->>TR: findById(taskId)
     TR-->>SS: Task
@@ -237,7 +250,7 @@ sequenceDiagram
     participant TR as TaskRepository
     participant SR as SubtaskRepository
 
-    C->>SC: DELETE /api/todos/{id}/subtasks/{subtaskId}
+    C->>SC: DELETE /todos/{id}/subtasks/{subtaskId}
     SC->>SS: deleteSubtask(userId, taskId, subtaskId)
     SS->>TR: findById(taskId)
     TR-->>SS: Task
@@ -257,14 +270,13 @@ sequenceDiagram
     participant C as Client
     participant SC as SubtaskController
     participant SS as SubtaskService
-    participant GEH as GlobalExceptionHandler
 
-    C->>SC: GET /api/todos/{id}/subtasks
+    C->>SC: GET /todos/{id}/subtasks
     SC->>SS: getSubtasksForTask(userId, taskId)
     SS->>SS: task.userId != userId
     SS-->>SC: throws TaskOwnershipException
-    SC-->>GEH: TaskOwnershipException propagates
-    GEH-->>C: HTTP 403 {status: 403, message: "..."}
+    SC->>SC: @ExceptionHandler catches TaskOwnershipException
+    SC-->>C: HTTP 403 {status: 403, message: "..."}
 ```
 
 ---
@@ -315,7 +327,7 @@ All subtask operations:
 | Test Class | Slice | What it covers |
 |---|---|---|
 | `SubtaskServiceTest` | Plain JUnit 5 + Mockito | CRUD logic, ownership checks, subtask-task association |
-| `SubtaskControllerTest` | `@WebMvcTest` + Mockito | HTTP status codes, exception to response mapping |
+| `SubtaskControllerTest` | `@WebMvcTest` + Mockito | HTTP status codes, controller-local exception handler to response mapping |
 
 ### `SubtaskServiceTest` (key cases)
 - `createSubtask` with valid title → `save` called once, returned subtask has correct `taskId`
@@ -332,11 +344,11 @@ All subtask operations:
 - `deleteSubtask` with wrong owner → `TaskOwnershipException`
 
 ### `SubtaskControllerTest` (key cases)
-- `GET /api/todos/{id}/subtasks` → HTTP 200, JSON array
-- `POST /api/todos/{id}/subtasks` with valid body → HTTP 200
-- `POST /api/todos/{id}/subtasks` with blank title → HTTP 400
-- `GET /api/todos/{id}/subtasks/{subtaskId}` with unknown ID → HTTP 404
-- `PUT /api/todos/{id}/subtasks/{subtaskId}` with valid body → HTTP 200
-- `DELETE /api/todos/{id}/subtasks/{subtaskId}` → HTTP 204
+- `GET /todos/{id}/subtasks` → HTTP 200, JSON array
+- `POST /todos/{id}/subtasks` with valid body → HTTP 200
+- `POST /todos/{id}/subtasks` with blank title → HTTP 400
+- `GET /todos/{id}/subtasks/{subtaskId}` with unknown ID → HTTP 404
+- `PUT /todos/{id}/subtasks/{subtaskId}` with valid body → HTTP 200
+- `DELETE /todos/{id}/subtasks/{subtaskId}` → HTTP 204
 - Any request with unknown parent task → HTTP 404
 - Any request with wrong owner → HTTP 403

@@ -1,0 +1,262 @@
+{
+  "pbtResults": {},
+  "executionHistory": {
+    "1.1 Install fast-check and scaffold auth files via Angular CLI": [
+      {
+        "executionId": "92173bee-4ad0-47e6-be85-c7e64ff69b99",
+        "chatSessionId": "sess_16a0626e-246e-4309-968a-98c7bc248d71",
+        "timestamp": 1782315275235
+      },
+      {
+        "executionId": "92173bee-4ad0-47e6-be85-c7e64ff69b99",
+        "chatSessionId": "sess_16a0626e-246e-4309-968a-98c7bc248d71",
+        "timestamp": 1782315295801
+      },
+      {
+        "executionId": "86121fbe-12fe-4197-aeb3-fb1be28d17b4",
+        "chatSessionId": "sess_16a0626e-246e-4309-968a-98c7bc248d71",
+        "timestamp": 1782315619765
+      },
+      {
+        "executionId": "86121fbe-12fe-4197-aeb3-fb1be28d17b4",
+        "chatSessionId": "sess_16a0626e-246e-4309-968a-98c7bc248d71",
+        "timestamp": 1782315773787
+      }
+    ],
+    "1.2 Implement AuthService with signal state and localStorage persistence": [
+      {
+        "executionId": "92173bee-4ad0-47e6-be85-c7e64ff69b99",
+        "chatSessionId": "sess_16a0626e-246e-4309-968a-98c7bc248d71",
+        "timestamp": 1782315275311
+      },
+      {
+        "executionId": "86121fbe-12fe-4197-aeb3-fb1be28d17b4",
+        "chatSessionId": "sess_16a0626e-246e-4309-968a-98c7bc248d71",
+        "timestamp": 1782315777134
+      },
+      {
+        "executionId": "3c9cd1de-e504-463e-b656-86eb81dfff9f",
+        "chatSessionId": "sess_16a0626e-246e-4309-968a-98c7bc248d71",
+        "timestamp": 1782317738788
+      }
+    ],
+    "1.3 Implement error mapping utility function": [
+      {
+        "executionId": "92173bee-4ad0-47e6-be85-c7e64ff69b99",
+        "chatSessionId": "sess_16a0626e-246e-4309-968a-98c7bc248d71",
+        "timestamp": 1782315275356
+      },
+      {
+        "executionId": "86121fbe-12fe-4197-aeb3-fb1be28d17b4",
+        "chatSessionId": "sess_16a0626e-246e-4309-968a-98c7bc248d71",
+        "timestamp": 1782315777981
+      },
+      {
+        "executionId": "3c9cd1de-e504-463e-b656-86eb81dfff9f",
+        "chatSessionId": "sess_16a0626e-246e-4309-968a-98c7bc248d71",
+        "timestamp": 1782317739610
+      }
+    ],
+    "2.1 Implement authInterceptor function": [
+      {
+        "executionId": "92173bee-4ad0-47e6-be85-c7e64ff69b99",
+        "chatSessionId": "sess_16a0626e-246e-4309-968a-98c7bc248d71",
+        "timestamp": 1782315275403
+      },
+      {
+        "executionId": "3c9cd1de-e504-463e-b656-86eb81dfff9f",
+        "chatSessionId": "sess_16a0626e-246e-4309-968a-98c7bc248d71",
+        "timestamp": 1782317744341
+      },
+      {
+        "executionId": "8c9a2219-aa40-489c-a1c6-f96d89e84627",
+        "chatSessionId": "sess_16a0626e-246e-4309-968a-98c7bc248d71",
+        "timestamp": 1782318602565
+      },
+      {
+        "executionId": "8c9a2219-aa40-489c-a1c6-f96d89e84627",
+        "chatSessionId": "sess_16a0626e-246e-4309-968a-98c7bc248d71",
+        "timestamp": 1782318619316
+      }
+    ],
+    "2.2 Implement authGuard function": [
+      {
+        "executionId": "92173bee-4ad0-47e6-be85-c7e64ff69b99",
+        "chatSessionId": "sess_16a0626e-246e-4309-968a-98c7bc248d71",
+        "timestamp": 1782315275447
+      },
+      {
+        "executionId": "3c9cd1de-e504-463e-b656-86eb81dfff9f",
+        "chatSessionId": "sess_16a0626e-246e-4309-968a-98c7bc248d71",
+        "timestamp": 1782317745228
+      },
+      {
+        "executionId": "8c9a2219-aa40-489c-a1c6-f96d89e84627",
+        "chatSessionId": "sess_16a0626e-246e-4309-968a-98c7bc248d71",
+        "timestamp": 1782318603492
+      },
+      {
+        "executionId": "8c9a2219-aa40-489c-a1c6-f96d89e84627",
+        "chatSessionId": "sess_16a0626e-246e-4309-968a-98c7bc248d71",
+        "timestamp": 1782318620112
+      }
+    ],
+    "2.3 Configure app.routes.ts with all routes": [
+      {
+        "executionId": "92173bee-4ad0-47e6-be85-c7e64ff69b99",
+        "chatSessionId": "sess_16a0626e-246e-4309-968a-98c7bc248d71",
+        "timestamp": 1782315275509
+      },
+      {
+        "executionId": "8c9a2219-aa40-489c-a1c6-f96d89e84627",
+        "chatSessionId": "sess_16a0626e-246e-4309-968a-98c7bc248d71",
+        "timestamp": 1782318625169
+      },
+      {
+        "executionId": "8c9a2219-aa40-489c-a1c6-f96d89e84627",
+        "chatSessionId": "sess_16a0626e-246e-4309-968a-98c7bc248d71",
+        "timestamp": 1782318720282
+      }
+    ],
+    "2.4 Configure app.config.ts with HttpClient and interceptor": [
+      {
+        "executionId": "92173bee-4ad0-47e6-be85-c7e64ff69b99",
+        "chatSessionId": "sess_16a0626e-246e-4309-968a-98c7bc248d71",
+        "timestamp": 1782315275545
+      },
+      {
+        "executionId": "8c9a2219-aa40-489c-a1c6-f96d89e84627",
+        "chatSessionId": "sess_16a0626e-246e-4309-968a-98c7bc248d71",
+        "timestamp": 1782318626116
+      },
+      {
+        "executionId": "8c9a2219-aa40-489c-a1c6-f96d89e84627",
+        "chatSessionId": "sess_16a0626e-246e-4309-968a-98c7bc248d71",
+        "timestamp": 1782318721203
+      }
+    ],
+    "3.1 Implement LoginComponent with reactive form and error handling": [
+      {
+        "executionId": "92173bee-4ad0-47e6-be85-c7e64ff69b99",
+        "chatSessionId": "sess_16a0626e-246e-4309-968a-98c7bc248d71",
+        "timestamp": 1782315275581
+      },
+      {
+        "executionId": "8c9a2219-aa40-489c-a1c6-f96d89e84627",
+        "chatSessionId": "sess_16a0626e-246e-4309-968a-98c7bc248d71",
+        "timestamp": 1782318725558
+      }
+    ],
+    "3.2 Create LoginComponent HTML template": [
+      {
+        "executionId": "92173bee-4ad0-47e6-be85-c7e64ff69b99",
+        "chatSessionId": "sess_16a0626e-246e-4309-968a-98c7bc248d71",
+        "timestamp": 1782315275619
+      }
+    ],
+    "3.3 Implement RegisterComponent with reactive form and error handling": [
+      {
+        "executionId": "92173bee-4ad0-47e6-be85-c7e64ff69b99",
+        "chatSessionId": "sess_16a0626e-246e-4309-968a-98c7bc248d71",
+        "timestamp": 1782315275657
+      },
+      {
+        "executionId": "8c9a2219-aa40-489c-a1c6-f96d89e84627",
+        "chatSessionId": "sess_16a0626e-246e-4309-968a-98c7bc248d71",
+        "timestamp": 1782318726470
+      }
+    ],
+    "3.4 Create RegisterComponent HTML template": [
+      {
+        "executionId": "92173bee-4ad0-47e6-be85-c7e64ff69b99",
+        "chatSessionId": "sess_16a0626e-246e-4309-968a-98c7bc248d71",
+        "timestamp": 1782315275697
+      }
+    ],
+    "3.5 Create DashboardComponent placeholder": [
+      {
+        "executionId": "92173bee-4ad0-47e6-be85-c7e64ff69b99",
+        "chatSessionId": "sess_16a0626e-246e-4309-968a-98c7bc248d71",
+        "timestamp": 1782315275732
+      },
+      {
+        "executionId": "3c9cd1de-e504-463e-b656-86eb81dfff9f",
+        "chatSessionId": "sess_16a0626e-246e-4309-968a-98c7bc248d71",
+        "timestamp": 1782317746175
+      },
+      {
+        "executionId": "8c9a2219-aa40-489c-a1c6-f96d89e84627",
+        "chatSessionId": "sess_16a0626e-246e-4309-968a-98c7bc248d71",
+        "timestamp": 1782318604353
+      },
+      {
+        "executionId": "8c9a2219-aa40-489c-a1c6-f96d89e84627",
+        "chatSessionId": "sess_16a0626e-246e-4309-968a-98c7bc248d71",
+        "timestamp": 1782318621046
+      }
+    ],
+    "4. Checkpoint - Verify application compiles and routes work": [
+      {
+        "executionId": "92173bee-4ad0-47e6-be85-c7e64ff69b99",
+        "chatSessionId": "sess_16a0626e-246e-4309-968a-98c7bc248d71",
+        "timestamp": 1782315275774
+      }
+    ],
+    "5.1 Write AuthService unit tests": [
+      {
+        "executionId": "92173bee-4ad0-47e6-be85-c7e64ff69b99",
+        "chatSessionId": "sess_16a0626e-246e-4309-968a-98c7bc248d71",
+        "timestamp": 1782315275819
+      }
+    ],
+    "5.4 Write Auth Interceptor unit tests": [
+      {
+        "executionId": "92173bee-4ad0-47e6-be85-c7e64ff69b99",
+        "chatSessionId": "sess_16a0626e-246e-4309-968a-98c7bc248d71",
+        "timestamp": 1782315275860
+      }
+    ],
+    "5.6 Write Auth Guard unit tests": [
+      {
+        "executionId": "92173bee-4ad0-47e6-be85-c7e64ff69b99",
+        "chatSessionId": "sess_16a0626e-246e-4309-968a-98c7bc248d71",
+        "timestamp": 1782315275898
+      }
+    ],
+    "6.1 Write LoginComponent unit tests": [
+      {
+        "executionId": "92173bee-4ad0-47e6-be85-c7e64ff69b99",
+        "chatSessionId": "sess_16a0626e-246e-4309-968a-98c7bc248d71",
+        "timestamp": 1782315275931
+      }
+    ],
+    "6.2 Write RegisterComponent unit tests": [
+      {
+        "executionId": "92173bee-4ad0-47e6-be85-c7e64ff69b99",
+        "chatSessionId": "sess_16a0626e-246e-4309-968a-98c7bc248d71",
+        "timestamp": 1782315275970
+      }
+    ],
+    "7. Final checkpoint - Ensure all tests pass": [
+      {
+        "executionId": "92173bee-4ad0-47e6-be85-c7e64ff69b99",
+        "chatSessionId": "sess_16a0626e-246e-4309-968a-98c7bc248d71",
+        "timestamp": 1782315276007
+      }
+    ],
+    "1. Set up project structure, dependencies, and core auth service": [
+      {
+        "executionId": "3c9cd1de-e504-463e-b656-86eb81dfff9f",
+        "chatSessionId": "sess_16a0626e-246e-4309-968a-98c7bc248d71",
+        "timestamp": 1782317739646
+      }
+    ],
+    "2. Implement interceptor, guard, and routing configuration": [
+      {
+        "executionId": "8c9a2219-aa40-489c-a1c6-f96d89e84627",
+        "chatSessionId": "sess_16a0626e-246e-4309-968a-98c7bc248d71",
+        "timestamp": 1782318721237
+      }
+    ]
+  }
+}

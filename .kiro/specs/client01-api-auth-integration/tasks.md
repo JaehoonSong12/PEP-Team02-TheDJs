@@ -6,14 +6,14 @@ This plan implements the Angular frontend authentication and API integration lay
 
 ## Tasks
 
-- [ ] 1. Set up project structure, dependencies, and core auth service
-  - [ ] 1.1 Install fast-check and scaffold auth files via Angular CLI
+- [x] 1. Set up project structure, dependencies, and core auth service
+  - [x] 1.1 Install fast-check and scaffold auth files via Angular CLI
     - Run `ng generate service auth/auth`, `ng generate interceptor auth/auth`, `ng generate guard auth/auth`
     - Run `ng generate component auth/login`, `ng generate component auth/register`, `ng generate component dashboard`
     - Install `fast-check` as a dev dependency: `npm install --save-dev fast-check`
     - _Requirements: 1.1, 2.1, 3.1, 4.1, 5.1_
 
-  - [ ] 1.2 Implement AuthService with signal state and localStorage persistence
+  - [x] 1.2 Implement AuthService with signal state and localStorage persistence
     - Create `WritableSignal<string | null>` for token, expose read-only `token` signal and computed `isAuthenticated` signal
     - Implement constructor logic to read `auth_token` from localStorage on initialization
     - Implement `login(username, password)` method: POST to `http://localhost:8080/api/auth/login`, observe full response, extract Bearer token from Authorization header, store in signal + localStorage, return `Observable<void>`
@@ -22,26 +22,26 @@ This plan implements the Angular frontend authentication and API integration lay
     - Use `inject(HttpClient)` and `inject(Router)`
     - _Requirements: 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 1.10_
 
-  - [ ] 1.3 Implement error mapping utility function
+  - [x] 1.3 Implement error mapping utility function
     - Create `auth/error-mapping.ts` with `mapHttpError(error: HttpErrorResponse, context: 'login' | 'register'): string`
     - Map status 0 → network error message, 400 → response body (truncated to 256 chars), 401 (login) → "Invalid credentials", 409 (register) → "Username is already taken", 500/503 → server error message, other → generic message per context
     - _Requirements: 7.1, 7.3, 7.4, 7.5_
 
-- [ ] 2. Implement interceptor, guard, and routing configuration
-  - [ ] 2.1 Implement authInterceptor function
+- [x] 2. Implement interceptor, guard, and routing configuration
+  - [x] 2.1 Implement authInterceptor function
     - Inject `AuthService`, read `token()` signal
     - If token is non-null/non-empty AND request URL contains `/api/`, clone request with `Authorization: Bearer <token>` header
     - Add 401 error handling: catch 401 from non-auth endpoints (`/api/` but not `/api/auth/`), call `authService.logout()`, re-throw
     - Otherwise forward original request unchanged
     - _Requirements: 2.2, 2.3, 2.4, 2.6, 7.2_
 
-  - [ ] 2.2 Implement authGuard function
+  - [x] 2.2 Implement authGuard function
     - Inject `AuthService` and `Router`
     - If `isAuthenticated()` returns true, return `true` synchronously
     - If false, return `router.createUrlTree(['/login'])`
     - _Requirements: 3.2, 3.3, 3.4, 3.5_
 
-  - [ ] 2.3 Configure app.routes.ts with all routes
+  - [x] 2.3 Configure app.routes.ts with all routes
     - Add route `login` → lazy-load LoginComponent
     - Add route `register` → lazy-load RegisterComponent
     - Add route `dashboard` → lazy-load DashboardComponent with `canActivate: [authGuard]`
@@ -49,7 +49,7 @@ This plan implements the Angular frontend authentication and API integration lay
     - Add wildcard route `**` → redirectTo `/login` (last position)
     - _Requirements: 6.1, 6.2, 6.3, 6.4, 6.5, 6.6_
 
-  - [ ] 2.4 Configure app.config.ts with HttpClient and interceptor
+  - [x] 2.4 Configure app.config.ts with HttpClient and interceptor
     - Add `provideHttpClient(withInterceptors([authInterceptor]))` to providers
     - Retain existing `provideRouter(routes)` and `provideBrowserGlobalErrorListeners()`
     - _Requirements: 2.5, 6.7, 6.8_
@@ -84,7 +84,7 @@ This plan implements the Angular frontend authentication and API integration lay
     - Add RouterLink to login page
     - _Requirements: 5.2, 5.7, 5.8, 7.6_
 
-  - [ ] 3.5 Create DashboardComponent placeholder
+  - [x] 3.5 Create DashboardComponent placeholder
     - Standalone component with inline template: `<h1>Dashboard</h1><p>Welcome! Your tasks will appear here.</p>`
     - _Requirements: 6.3_
 

@@ -1,0 +1,192 @@
+{
+  "pbtResults": {},
+  "executionHistory": {
+    "1. Create `GlobalExceptionHandler` in the `exception/` package": [
+      {
+        "executionId": "f7fc6e40-456b-411b-8fab-174a5a9435cf",
+        "chatSessionId": "sess_dcef111f-5112-4192-b0dd-5786b92c90b6",
+        "timestamp": 1782306990726
+      },
+      {
+        "executionId": "f7fc6e40-456b-411b-8fab-174a5a9435cf",
+        "chatSessionId": "sess_dcef111f-5112-4192-b0dd-5786b92c90b6",
+        "timestamp": 1782307018800
+      }
+    ],
+    "2.1 Implement `POST /api/todos`": [
+      {
+        "executionId": "f7fc6e40-456b-411b-8fab-174a5a9435cf",
+        "chatSessionId": "sess_dcef111f-5112-4192-b0dd-5786b92c90b6",
+        "timestamp": 1782306990937
+      }
+    ],
+    "2.2 Implement `GET /api/todos`": [
+      {
+        "executionId": "f7fc6e40-456b-411b-8fab-174a5a9435cf",
+        "chatSessionId": "sess_dcef111f-5112-4192-b0dd-5786b92c90b6",
+        "timestamp": 1782306990990
+      }
+    ],
+    "2.3 Implement `GET /api/todos/{id}`": [
+      {
+        "executionId": "f7fc6e40-456b-411b-8fab-174a5a9435cf",
+        "chatSessionId": "sess_dcef111f-5112-4192-b0dd-5786b92c90b6",
+        "timestamp": 1782306991060
+      }
+    ],
+    "2.4 Implement `PUT /api/todos/{id}`": [
+      {
+        "executionId": "f7fc6e40-456b-411b-8fab-174a5a9435cf",
+        "chatSessionId": "sess_dcef111f-5112-4192-b0dd-5786b92c90b6",
+        "timestamp": 1782306991098
+      }
+    ],
+    "2.5 Implement `DELETE /api/todos/{id}`": [
+      {
+        "executionId": "f7fc6e40-456b-411b-8fab-174a5a9435cf",
+        "chatSessionId": "sess_dcef111f-5112-4192-b0dd-5786b92c90b6",
+        "timestamp": 1782306991123
+      }
+    ],
+    "3. Checkpoint — compile check": [
+      {
+        "executionId": "f7fc6e40-456b-411b-8fab-174a5a9435cf",
+        "chatSessionId": "sess_dcef111f-5112-4192-b0dd-5786b92c90b6",
+        "timestamp": 1782306991154
+      }
+    ],
+    "4.1 Create task — valid title": [
+      {
+        "executionId": "f7fc6e40-456b-411b-8fab-174a5a9435cf",
+        "chatSessionId": "sess_dcef111f-5112-4192-b0dd-5786b92c90b6",
+        "timestamp": 1782306991183
+      }
+    ],
+    "4.2 Create task — blank title": [
+      {
+        "executionId": "f7fc6e40-456b-411b-8fab-174a5a9435cf",
+        "chatSessionId": "sess_dcef111f-5112-4192-b0dd-5786b92c90b6",
+        "timestamp": 1782306991215
+      }
+    ],
+    "4.3 List tasks": [
+      {
+        "executionId": "f7fc6e40-456b-411b-8fab-174a5a9435cf",
+        "chatSessionId": "sess_dcef111f-5112-4192-b0dd-5786b92c90b6",
+        "timestamp": 1782306991243
+      }
+    ],
+    "4.4 Get task by ID — not found": [
+      {
+        "executionId": "f7fc6e40-456b-411b-8fab-174a5a9435cf",
+        "chatSessionId": "sess_dcef111f-5112-4192-b0dd-5786b92c90b6",
+        "timestamp": 1782306991278
+      }
+    ],
+    "4.5 Get task by ID — wrong owner": [
+      {
+        "executionId": "f7fc6e40-456b-411b-8fab-174a5a9435cf",
+        "chatSessionId": "sess_dcef111f-5112-4192-b0dd-5786b92c90b6",
+        "timestamp": 1782306991314
+      }
+    ],
+    "4.6 Update task — valid fields": [
+      {
+        "executionId": "f7fc6e40-456b-411b-8fab-174a5a9435cf",
+        "chatSessionId": "sess_dcef111f-5112-4192-b0dd-5786b92c90b6",
+        "timestamp": 1782306991365
+      }
+    ],
+    "4.7 Update task — blank title": [
+      {
+        "executionId": "f7fc6e40-456b-411b-8fab-174a5a9435cf",
+        "chatSessionId": "sess_dcef111f-5112-4192-b0dd-5786b92c90b6",
+        "timestamp": 1782306991395
+      }
+    ],
+    "4.8 Delete task — cascade": [
+      {
+        "executionId": "f7fc6e40-456b-411b-8fab-174a5a9435cf",
+        "chatSessionId": "sess_dcef111f-5112-4192-b0dd-5786b92c90b6",
+        "timestamp": 1782306991423
+      }
+    ],
+    "4.9 Delete task — not found": [
+      {
+        "executionId": "f7fc6e40-456b-411b-8fab-174a5a9435cf",
+        "chatSessionId": "sess_dcef111f-5112-4192-b0dd-5786b92c90b6",
+        "timestamp": 1782306991453
+      }
+    ],
+    "4.10 Delete task — wrong owner": [
+      {
+        "executionId": "f7fc6e40-456b-411b-8fab-174a5a9435cf",
+        "chatSessionId": "sess_dcef111f-5112-4192-b0dd-5786b92c90b6",
+        "timestamp": 1782306991483
+      }
+    ],
+    "5.1 POST /api/todos — valid body → HTTP 200": [
+      {
+        "executionId": "f7fc6e40-456b-411b-8fab-174a5a9435cf",
+        "chatSessionId": "sess_dcef111f-5112-4192-b0dd-5786b92c90b6",
+        "timestamp": 1782306991513
+      }
+    ],
+    "5.2 POST /api/todos — blank title → HTTP 400": [
+      {
+        "executionId": "f7fc6e40-456b-411b-8fab-174a5a9435cf",
+        "chatSessionId": "sess_dcef111f-5112-4192-b0dd-5786b92c90b6",
+        "timestamp": 1782306991545
+      }
+    ],
+    "5.3 GET /api/todos → HTTP 200, JSON array": [
+      {
+        "executionId": "f7fc6e40-456b-411b-8fab-174a5a9435cf",
+        "chatSessionId": "sess_dcef111f-5112-4192-b0dd-5786b92c90b6",
+        "timestamp": 1782306991574
+      }
+    ],
+    "5.4 GET /api/todos/{id} — not found → HTTP 404": [
+      {
+        "executionId": "f7fc6e40-456b-411b-8fab-174a5a9435cf",
+        "chatSessionId": "sess_dcef111f-5112-4192-b0dd-5786b92c90b6",
+        "timestamp": 1782306991608
+      }
+    ],
+    "5.5 GET /api/todos/{id} — wrong owner → HTTP 403": [
+      {
+        "executionId": "f7fc6e40-456b-411b-8fab-174a5a9435cf",
+        "chatSessionId": "sess_dcef111f-5112-4192-b0dd-5786b92c90b6",
+        "timestamp": 1782306991637
+      }
+    ],
+    "5.6 PUT /api/todos/{id} — valid body → HTTP 200": [
+      {
+        "executionId": "f7fc6e40-456b-411b-8fab-174a5a9435cf",
+        "chatSessionId": "sess_dcef111f-5112-4192-b0dd-5786b92c90b6",
+        "timestamp": 1782306991670
+      }
+    ],
+    "5.7 DELETE /api/todos/{id} → HTTP 204": [
+      {
+        "executionId": "f7fc6e40-456b-411b-8fab-174a5a9435cf",
+        "chatSessionId": "sess_dcef111f-5112-4192-b0dd-5786b92c90b6",
+        "timestamp": 1782306991703
+      }
+    ],
+    "6. Final checkpoint — full test suite": [
+      {
+        "executionId": "f7fc6e40-456b-411b-8fab-174a5a9435cf",
+        "chatSessionId": "sess_dcef111f-5112-4192-b0dd-5786b92c90b6",
+        "timestamp": 1782306991747
+      }
+    ],
+    "2. Implement `TodoController` in the `controller/` package": [
+      {
+        "executionId": "2b2e5a08-a45d-431d-96f0-3d5cdf24653b",
+        "chatSessionId": "sess_dcef111f-5112-4192-b0dd-5786b92c90b6",
+        "timestamp": 1782307120598
+      }
+    ]
+  }
+}
