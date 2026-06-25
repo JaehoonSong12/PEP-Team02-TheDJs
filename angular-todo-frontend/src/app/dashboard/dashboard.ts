@@ -238,7 +238,7 @@ export class DashboardComponent implements OnInit {
     }
 
     this.errorMessage.set('');
-    this.subtaskService.updateSubtask(taskId, subtask.id, { title }).subscribe({
+    this.subtaskService.updateSubtask(taskId, subtask.id, { title, completed: subtask.completed }).subscribe({
       next: (updated) => {
         this.subtasksByTaskId.update((map) => {
           const newMap = new Map(map);
