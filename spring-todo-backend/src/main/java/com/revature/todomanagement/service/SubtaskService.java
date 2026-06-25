@@ -37,7 +37,10 @@ public class SubtaskService {
      * @throws IllegalArgumentException if the title is blank
      */
     public Subtask createSubtask(UUID userId, UUID taskId, Subtask subtask) {
-        verifyTaskOwnership(userId, taskId);
+        Task task = verifyTaskOwnership(userId, taskId);
+
+        if (Boolean.TRUE.equals(task.getCompleted()))
+            throw new IllegalArgumentException("Cannot add subtasks to a completed task.");
 
         if (subtask.getTitle() == null || subtask.getTitle().isBlank())
             throw new IllegalArgumentException("Subtask title must not be blank.");
@@ -101,7 +104,11 @@ public class SubtaskService {
      * @throws IllegalArgumentException if an explicit blank title is supplied
      */
     public Subtask updateSubtask(UUID userId, UUID taskId, UUID subtaskId, Subtask updates) {
-        verifyTaskOwnership(userId, taskId);
+        Task task = verifyTaskOwnership(userId, taskId);
+
+        if (Boolean.TRUE.equals(task.getCompleted()))
+            throw new IllegalArgumentException("Cannot edit subtasks of a completed task.");
+
         Subtask existing = findSubtaskUnderTask(taskId, subtaskId);
 
         if (updates.getTitle() != null) {
@@ -144,12 +151,14 @@ public class SubtaskService {
      * Verifies that the task exists and is owned by the given user.
      * Centralises the not-found / ownership check required before any subtask operation.
      */
-    private void verifyTaskOwnership(UUID userId, UUID taskId) {
+    private Task verifyTaskOwnership(UUID userId, UUID taskId) {
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new TaskNotFoundException(taskId));
 
         if (!task.getUserId().equals(userId))
             throw new TaskOwnershipException(taskId, userId);
+
+        return task;
     }
 
     /**
