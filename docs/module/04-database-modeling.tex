@@ -6,17 +6,17 @@
 \textbf{Entity} & \textbf{Table} & \textbf{Purpose} \\
 \midrule
 User    & \texttt{users}    & Account credentials and identity \\
-Todo    & \texttt{todos}    & Primary task items owned by a user \\
-Subtask & \texttt{subtasks} & Nested items belonging to one todo \\
+Task    & \texttt{tasks}    & Primary task items owned by a user \\
+Subtask & \texttt{subtasks} & Nested items belonging to one task \\
 \bottomrule
 \end{tabularx}
 
 \subsubsection{Entity Relationship Diagram}
 Figure~\ref{fig:erd} shows a compact \textbf{Crow's Foot} (IE) style ERD.
-Each \texttt{todo} references exactly one \texttt{user} (\texttt{user\_id});
-each \texttt{user} owns zero or more \texttt{todos}.
-Each \texttt{subtask} references exactly one \texttt{todo} (\texttt{todo\_id});
-each \texttt{todo} has zero or more \texttt{subtasks}.
+Each \texttt{task} references exactly one \texttt{user} (\texttt{user\_id});
+each \texttt{user} owns zero or more \texttt{tasks}.
+Each \texttt{subtask} references exactly one \texttt{task} (\texttt{task\_id});
+each \texttt{task} has zero or more \texttt{subtasks}.
 
 \begin{figure}[htbp]
   \centering
@@ -39,32 +39,26 @@ each \texttt{todo} has zero or more \texttt{subtasks}.
        \setlength{\extrarowheight}{2.5pt}%
        \renewcommand{\arraystretch}{1.18}%
        \begin{tabular}{@{\hspace{3pt}}p{8mm}!{\color{gray!55}\vrule width 0.35pt}@{\hspace{4pt}}p{4.45cm}@{\hspace{3pt}}}
-        \textbf{PK} & \texttt{id}\hfill\texttt{INTEGER}\\
+        \textbf{PK} & \texttt{id}\hfill\texttt{UUID}\\
         \arrayrulecolor{gray!55}\hline\arrayrulecolor{black}
          & \texttt{username}\hfill\texttt{TEXT UNIQUE}\\
-         & \texttt{email}\hfill\texttt{TEXT UNIQUE}\\
-         & \texttt{password\_hash}\hfill\texttt{TEXT}\\
-         & \texttt{created\_at}\hfill\texttt{TEXT}\\
-         & \texttt{updated\_at}\hfill\texttt{TEXT}\\
+         & \texttt{password}\hfill\texttt{TEXT}\\
        \end{tabular}%
       }
     };
 
     \node[entity, right=3.1cm of User] (Todo) {
-      \textbf{Todo} {\footnotesize(\texttt{todos})}
+      \textbf{Task} {\footnotesize(\texttt{tasks})}
       \nodepart{two}
       {\setlength{\tabcolsep}{2pt}%
        \setlength{\extrarowheight}{2.5pt}%
        \renewcommand{\arraystretch}{1.18}%
        \begin{tabular}{@{\hspace{3pt}}p{8mm}!{\color{gray!55}\vrule width 0.35pt}@{\hspace{4pt}}p{4.45cm}@{\hspace{3pt}}}
-        \textbf{PK} & \texttt{id}\hfill\texttt{INTEGER}\\
+        \textbf{PK} & \texttt{id}\hfill\texttt{UUID}\\
         \arrayrulecolor{gray!55}\hline\arrayrulecolor{black}
-        \textbf{FK} & \texttt{user\_id}\hfill\texttt{INTEGER}\\
+        \textbf{FK} & \texttt{user\_id}\hfill\texttt{UUID}\\
          & \texttt{title}\hfill\texttt{TEXT}\\
-         & \texttt{description}\hfill\texttt{TEXT}\\
-         & \texttt{completed}\hfill\texttt{INTEGER}\\
-         & \texttt{created\_at}\hfill\texttt{TEXT}\\
-         & \texttt{updated\_at}\hfill\texttt{TEXT}\\
+         & \texttt{completed}\hfill\texttt{BOOLEAN}\\
        \end{tabular}%
       }
     };
@@ -76,13 +70,11 @@ each \texttt{todo} has zero or more \texttt{subtasks}.
        \setlength{\extrarowheight}{2.5pt}%
        \renewcommand{\arraystretch}{1.18}%
        \begin{tabular}{@{\hspace{3pt}}p{8mm}!{\color{gray!55}\vrule width 0.35pt}@{\hspace{4pt}}p{4.45cm}@{\hspace{3pt}}}
-        \textbf{PK} & \texttt{id}\hfill\texttt{INTEGER}\\
+        \textbf{PK} & \texttt{id}\hfill\texttt{UUID}\\
         \arrayrulecolor{gray!55}\hline\arrayrulecolor{black}
-        \textbf{FK} & \texttt{todo\_id}\hfill\texttt{INTEGER}\\
+        \textbf{FK} & \texttt{task\_id}\hfill\texttt{UUID}\\
          & \texttt{title}\hfill\texttt{TEXT}\\
-         & \texttt{completed}\hfill\texttt{INTEGER}\\
-         & \texttt{created\_at}\hfill\texttt{TEXT}\\
-         & \texttt{updated\_at}\hfill\texttt{TEXT}\\
+         & \texttt{completed}\hfill\texttt{BOOLEAN}\\
        \end{tabular}%
       }
     };
@@ -136,38 +128,29 @@ entity to its SQLite columns, types, and constraints.
     \toprule
     \textbf{Table} & \textbf{Column} & \textbf{Type} & \textbf{Constraints / Notes} \\
     \midrule
-    \texttt{users} & \texttt{id}             & \texttt{INTEGER} & \texttt{PRIMARY KEY}, \texttt{AUTOINCREMENT} \\
+    \texttt{users} & \texttt{id}             & \texttt{UUID}    & \texttt{PRIMARY KEY}, auto-generated (\texttt{GenerationType.UUID}) \\
     \texttt{users} & \texttt{username}       & \texttt{TEXT}    & \texttt{NOT NULL}, \texttt{UNIQUE} \\
-    \texttt{users} & \texttt{email}          & \texttt{TEXT}    & \texttt{NOT NULL}, \texttt{UNIQUE} \\
-    \texttt{users} & \texttt{password\_hash} & \texttt{TEXT}    & \texttt{NOT NULL} \\
-    \texttt{users} & \texttt{created\_at}    & \texttt{TEXT}    & \texttt{NOT NULL}; ISO-8601 timestamp \\
-    \texttt{users} & \texttt{updated\_at}    & \texttt{TEXT}    & \texttt{NOT NULL}; ISO-8601 timestamp \\
+    \texttt{users} & \texttt{password}       & \texttt{TEXT}    & \texttt{NOT NULL} \\
     \midrule
-    \texttt{todos} & \texttt{id}             & \texttt{INTEGER} & \texttt{PRIMARY KEY}, \texttt{AUTOINCREMENT} \\
-    \texttt{todos} & \texttt{user\_id}       & \texttt{INTEGER} & \texttt{NOT NULL}; \texttt{REFERENCES} \texttt{users(id)}, \texttt{ON DELETE CASCADE} \\
-    \texttt{todos} & \texttt{title}          & \texttt{TEXT}    & \texttt{NOT NULL} \\
-    \texttt{todos} & \texttt{description}    & \texttt{TEXT}    & Optional \\
-    \texttt{todos} & \texttt{completed}      & \texttt{INTEGER} & \texttt{NOT NULL}, \texttt{DEFAULT} \texttt{0} (\texttt{0} = false, \texttt{1} = true) \\
-    \texttt{todos} & \texttt{created\_at}    & \texttt{TEXT}    & \texttt{NOT NULL}; ISO-8601 timestamp \\
-    \texttt{todos} & \texttt{updated\_at}    & \texttt{TEXT}    & \texttt{NOT NULL}; ISO-8601 timestamp \\
+    \texttt{tasks} & \texttt{id}             & \texttt{UUID}    & \texttt{PRIMARY KEY}, auto-generated (\texttt{GenerationType.UUID}) \\
+    \texttt{tasks} & \texttt{user\_id}       & \texttt{UUID}    & \texttt{NOT NULL}; \texttt{REFERENCES} \texttt{users(id)} \\
+    \texttt{tasks} & \texttt{title}          & \texttt{TEXT}    & \texttt{NOT NULL} \\
+    \texttt{tasks} & \texttt{completed}      & \texttt{BOOLEAN} & \texttt{NOT NULL}, \texttt{DEFAULT} \texttt{false} \\
     \midrule
-    \texttt{subtasks} & \texttt{id}          & \texttt{INTEGER} & \texttt{PRIMARY KEY}, \texttt{AUTOINCREMENT} \\
-    \texttt{subtasks} & \texttt{todo\_id}    & \texttt{INTEGER} & \texttt{NOT NULL}; \texttt{REFERENCES} \texttt{todos(id)}, \texttt{ON DELETE CASCADE} \\
+    \texttt{subtasks} & \texttt{id}          & \texttt{UUID}    & \texttt{PRIMARY KEY}, auto-generated (\texttt{GenerationType.UUID}) \\
+    \texttt{subtasks} & \texttt{task\_id}    & \texttt{UUID}    & \texttt{NOT NULL}; \texttt{REFERENCES} \texttt{tasks(id)} \\
     \texttt{subtasks} & \texttt{title}       & \texttt{TEXT}    & \texttt{NOT NULL} \\
-    \texttt{subtasks} & \texttt{completed}   & \texttt{INTEGER} & \texttt{NOT NULL}, \texttt{DEFAULT} \texttt{0} \\
-    \texttt{subtasks} & \texttt{created\_at} & \texttt{TEXT}    & \texttt{NOT NULL}; ISO-8601 timestamp \\
-    \texttt{subtasks} & \texttt{updated\_at} & \texttt{TEXT}    & \texttt{NOT NULL}; ISO-8601 timestamp \\
+    \texttt{subtasks} & \texttt{completed}   & \texttt{BOOLEAN} & \texttt{NOT NULL}, \texttt{DEFAULT} \texttt{false} \\
     \bottomrule
   \end{tabularx}
 \end{table}
 
 \subsubsection{Integrity Rules}
 \begin{itemize}
-  \item \texttt{users.username} and \texttt{users.email} must be unique.
-  \item Every \texttt{todo} must reference a valid \texttt{user\_id}.
-  \item Every \texttt{subtask} must reference a valid \texttt{todo\_id}.
-  \item Deleting a user cascades to their todos and subtasks.
-  \item Deleting a todo cascades to its subtasks.
+  \item \texttt{users.username} must be unique.
+  \item Every \texttt{task} must reference a valid \texttt{user\_id}.
+  \item Every \texttt{subtask} must reference a valid \texttt{task\_id}.
+  \item Deleting a task cascade-deletes its subtasks (enforced in service layer).
 \end{itemize}
 
 \newpage

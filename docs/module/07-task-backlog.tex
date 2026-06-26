@@ -1,6 +1,8 @@
 \subsection{Task Backlog}\label{sec:task-backlog}
 Use GitHub Issues and Github Project to track actionable items. Phase~1 completed \textbf{11 June 2026};
-Phase~2 completed \textbf{12 June 2026}. Session summaries below record how each phase was closed out.
+Phase~2 completed \textbf{12 June 2026}; Phase~3 completed \textbf{22 June 2026};
+Phase~4 completed \textbf{25 June 2026}; Phase~5 ready \textbf{26 June 2026}.
+Session summaries below record how each phase was closed out.
 
 \subsubsection{Session Summary --- 10 June 2026}
 \begin{tabularx}{\textwidth}{@{} l X @{}}
@@ -65,13 +67,130 @@ Phase~2 completed \textbf{12 June 2026}. Session summaries below record how each
   \toprule
   \textbf{Item} & \textbf{Status} & \textbf{Notes} \\
   \midrule
-  System Architecture (Appendix~\ref{sec:architecture}) & Complete & Data flow documented in \texttt{discussions/phase-2-deliverables.md}; 12 June 2026. \\
-  Security Planning (Appendix~\ref{sec:security-planning}) & Complete & JJWT and auth approach agreed; 12 June 2026. \\
+  System Architecture (Appendix~A) & Complete & Data flow documented in \texttt{discussions/phase-2-deliverables.md}; 12 June 2026. \\
+  Security Planning (Appendix~A) & Complete & JJWT and auth approach agreed; 12 June 2026. \\
   UI Wireframing (Section~\ref{sec:wireframes})   & Complete & Four wireframes under \texttt{docs/Wireframes/}; 12 June 2026. \\
-  Component Design (Appendix~\ref{sec:component-design}) & Complete & Routes, component tree, and services agreed; 12 June 2026. \\
+  Component Design (Appendix~A) & Complete & Routes, component tree, and services agreed; 12 June 2026. \\
   LaTeX documentation refactor                   & Complete & Modular \texttt{docs/module/} structure and section intros; 12 June 2026. \\
   API Specification (Section~\ref{sec:api})       & Complete & Finalized for implementation; 12 June 2026. \\
   Database Schema (Section~\ref{sec:database})   & Complete & ERD and data dictionary signed off; 12 June 2026. \\
+  \bottomrule
+\end{tabularx}
+
+\subsubsection{Session Summary --- 16 June 2026}
+\begin{tabularx}{\textwidth}{@{} l X @{}}
+  \toprule
+  \textbf{Activity} & \textbf{Outcome} \\
+  \midrule
+  Spring Boot scaffolding & Kiro-assisted project initialization with Gradle Kotlin DSL, SQLite, JPA.
+    \href{https://github.com/JaehoonSong12/PEP-Team02-TheDJs/issues/46}{\#46} \\
+  Ignore rules and steerings & Configured \texttt{.gitignore} and Kiro steering files for team workflow.
+    \href{https://github.com/JaehoonSong12/PEP-Team02-TheDJs/issues/45}{\#45},
+    \href{https://github.com/JaehoonSong12/PEP-Team02-TheDJs/issues/44}{\#44} \\
+  Password requirements & Daniel Patience documented password validation rules.
+    \href{https://github.com/JaehoonSong12/PEP-Team02-TheDJs/pull/40}{PR~\#40} \\
+  \bottomrule
+\end{tabularx}
+
+\subsubsection{Session Summary --- 19 June 2026}
+\begin{tabularx}{\textwidth}{@{} l X @{}}
+  \toprule
+  \textbf{Activity} & \textbf{Outcome} \\
+  \midrule
+  JPA entities and repositories & Jacqueline Lainhart ran Kiro Phase~3 tasks for entity setup.
+    \href{https://github.com/JaehoonSong12/PEP-Team02-TheDJs/pull/49}{PR~\#49} \\
+  Feature issues created & Opened spec-driven issues for registration, auth, and task CRUD.
+    \href{https://github.com/JaehoonSong12/PEP-Team02-TheDJs/issues/50}{\#50},
+    \href{https://github.com/JaehoonSong12/PEP-Team02-TheDJs/issues/51}{\#51},
+    \href{https://github.com/JaehoonSong12/PEP-Team02-TheDJs/issues/52}{\#52} \\
+  \bottomrule
+\end{tabularx}
+
+\subsubsection{Session Summary --- 22 June 2026}
+\begin{tabularx}{\textwidth}{@{} l X @{}}
+  \toprule
+  \textbf{Activity} & \textbf{Outcome} \\
+  \midrule
+  Registration spec and implementation & Jacqueline Lainhart delivered registration spec and ran tasks.
+    \href{https://github.com/JaehoonSong12/PEP-Team02-TheDJs/pull/55}{PR~\#55},
+    \href{https://github.com/JaehoonSong12/PEP-Team02-TheDJs/issues/11}{\#11 closed} \\
+  Task/Subtask CRUD & Daniel Patience implemented TaskService, SubtaskService, controllers.
+    \href{https://github.com/JaehoonSong12/PEP-Team02-TheDJs/pull/53}{PR~\#53},
+    \href{https://github.com/JaehoonSong12/PEP-Team02-TheDJs/pull/56}{PR~\#56} \\
+  Frontend issue opened & Angular frontend work tracked under single issue.
+    \href{https://github.com/JaehoonSong12/PEP-Team02-TheDJs/issues/54}{\#54} \\
+  \bottomrule
+\end{tabularx}
+
+\subsubsection{Session Summary --- 23 June 2026}
+\begin{tabularx}{\textwidth}{@{} l X @{}}
+  \toprule
+  \textbf{Activity} & \textbf{Outcome} \\
+  \midrule
+  Registration tasks completed & Jacqueline Lainhart fixed DTO/bcrypt issues and ran registration tasks.
+    \href{https://github.com/JaehoonSong12/PEP-Team02-TheDJs/pull/57}{PR~\#57},
+    \href{https://github.com/JaehoonSong12/PEP-Team02-TheDJs/pull/58}{PR~\#58} \\
+  Authentication spec and draft & Jaehoon Song created Kiro spec for US02, drafted auth feature.
+    \href{https://github.com/JaehoonSong12/PEP-Team02-TheDJs/pull/59}{PR~\#59},
+    \href{https://github.com/JaehoonSong12/PEP-Team02-TheDJs/pull/60}{PR~\#60} \\
+  Entity alignment & Daniel Patience renamed userId fields, aligned folder structure.
+    \href{https://github.com/JaehoonSong12/PEP-Team02-TheDJs/pull/61}{PR~\#61} \\
+  Frontend specs & Jaehoon Song added client01 auth-integration spec; Daniel added dashboard specs.
+    \href{https://github.com/JaehoonSong12/PEP-Team02-TheDJs/pull/62}{PR~\#62},
+    \href{https://github.com/JaehoonSong12/PEP-Team02-TheDJs/pull/63}{PR~\#63} \\
+  \bottomrule
+\end{tabularx}
+
+\subsubsection{Session Summary --- 24--25 June 2026}
+\begin{tabularx}{\textwidth}{@{} l X @{}}
+  \toprule
+  \textbf{Activity} & \textbf{Outcome} \\
+  \midrule
+  Full frontend implementation & Jacqueline Lainhart delivered Angular app: auth, dashboard, services.
+    \href{https://github.com/JaehoonSong12/PEP-Team02-TheDJs/pull/64}{PR~\#64} \\
+  Build fixes & Jaehoon Song fixed ignore rules to exclude DB binaries.
+    \href{https://github.com/JaehoonSong12/PEP-Team02-TheDJs/pull/66}{PR~\#66} \\
+  UI/UX polish & Jacqueline Lainhart finalized styling and responsiveness.
+    \href{https://github.com/JaehoonSong12/PEP-Team02-TheDJs/pull/67}{PR~\#67} \\
+  Phase 4 complete & End-to-end workflow verified; all user stories functional. \\
+  \bottomrule
+\end{tabularx}
+
+\subsubsection{Backlog Status --- Phase 3 (complete 22 June 2026)}
+\begin{tabularx}{\textwidth}{@{} l l X @{}}
+  \toprule
+  \textbf{Item} & \textbf{Status} & \textbf{Notes} \\
+  \midrule
+  Project Scaffolding & Complete & Spring Boot 4.1.0, Gradle, SQLite; \href{https://github.com/JaehoonSong12/PEP-Team02-TheDJs/issues/46}{\#46} \\
+  Data Layer          & Complete & User, Task, Subtask JPA entities; \href{https://github.com/JaehoonSong12/PEP-Team02-TheDJs/pull/49}{PR~\#49} \\
+  Security            & Complete & JWT + HandlerInterceptor; \href{https://github.com/JaehoonSong12/PEP-Team02-TheDJs/pull/60}{PR~\#60} \\
+  Business Logic      & Complete & All CRUD services; \href{https://github.com/JaehoonSong12/PEP-Team02-TheDJs/pull/56}{PR~\#56} \\
+  Design Validation   & Complete & 45 curl tests passing; API contract synced 26 June 2026 \\
+  \bottomrule
+\end{tabularx}
+
+\subsubsection{Backlog Status --- Phase 4 (complete 25 June 2026)}
+\begin{tabularx}{\textwidth}{@{} l l X @{}}
+  \toprule
+  \textbf{Item} & \textbf{Status} & \textbf{Notes} \\
+  \midrule
+  Angular Scaffolding & Complete & Angular 22, standalone components; \href{https://github.com/JaehoonSong12/PEP-Team02-TheDJs/issues/54}{\#54} \\
+  Service Layer       & Complete & TaskService, SubtaskService; \href{https://github.com/JaehoonSong12/PEP-Team02-TheDJs/pull/63}{PR~\#63} \\
+  Auth Integration    & Complete & AuthService, interceptor, guard; \href{https://github.com/JaehoonSong12/PEP-Team02-TheDJs/pull/62}{PR~\#62} \\
+  Task Management UI  & Complete & Dashboard with inline edit, subtask expand; \href{https://github.com/JaehoonSong12/PEP-Team02-TheDJs/pull/64}{PR~\#64} \\
+  Design Validation   & Complete & Matches wireframes; \href{https://github.com/JaehoonSong12/PEP-Team02-TheDJs/pull/67}{PR~\#67} \\
+  \bottomrule
+\end{tabularx}
+
+\subsubsection{Backlog Status --- Phase 5 (ready 26 June 2026)}
+\begin{tabularx}{\textwidth}{@{} l l X @{}}
+  \toprule
+  \textbf{Item} & \textbf{Status} & \textbf{Notes} \\
+  \midrule
+  Functional Demo     & Ready & All user stories operational \\
+  Technical Review    & Ready & Data flow, schema, architecture documented \\
+  Build Verification  & Ready & \texttt{gradlew build} and \texttt{ng build} confirmed \\
+  Post-Mortem         & Ready & Agile process and blockers recorded in session summaries above \\
   \bottomrule
 \end{tabularx}
 
