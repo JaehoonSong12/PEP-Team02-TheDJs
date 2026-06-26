@@ -1,29 +1,39 @@
 \subsection{API Contract}\label{sec:api}
-All endpoints must follow RESTful conventions. RESTful endpoints with JSON request/response bodies and expected HTTP status codes.
+All endpoints follow RESTful conventions with JSON request/response bodies and standard HTTP status codes.
 Each exchange shows a raw HTTP request or response trace: status line, headers, a blank line, then the body.
-All paths are relative to the API base URL.
+All paths are relative to the API base URL (\texttt{http://localhost:8080}).
 
-\medskip
+
+\noindent\textbf{Authentication.} Protected endpoints require an \texttt{Authorization: Bearer <token>}
+header. The token is a signed JWT issued by \texttt{POST /api/auth/login}. Requests without a valid
+token receive \texttt{HTTP 401}.
+
+
+\noindent\textbf{Ownership.} Users can only access their own resources. Attempting to read, update,
+or delete another user's task or subtask returns \texttt{HTTP 403 Forbidden}.
+
+
 \noindent\textbf{DELETE responses.} A successful delete returns \texttt{HTTP/1.1 204 No Content} with no
 response body---the server has fulfilled the request and there is no representation to return (RFC~9110).
 Error cases (e.g.\ resource not found) return \texttt{4xx} with a JSON body as documented below.
 
 \subsubsection{Endpoint Summary}
-\begin{tabularx}{\textwidth}{@{} l l X @{}}
+\begin{tabularx}{\textwidth}{@{} l l X l @{}}
   \toprule
-  \textbf{Method} & \textbf{Path} & \textbf{Purpose} \\
+  \textbf{Method} & \textbf{Path} & \textbf{Purpose} & \textbf{Auth} \\
   \midrule
-  \texttt{POST}   & \texttt{/api/auth/register}           & Register a new account \\
-  \texttt{POST}   & \texttt{/api/auth/login}              & Authenticate an existing account \\
-  \texttt{POST}   & \texttt{/api/todos}                   & Create a todo \\
-  \texttt{GET}    & \texttt{/api/todos}                   & List todos for the authenticated user \\
-  \texttt{GET}    & \texttt{/api/todos/\{id\}}            & Retrieve a single todo \\
-  \texttt{PUT}    & \texttt{/api/todos/\{id\}}            & Update a todo \\
-  \texttt{DELETE} & \texttt{/api/todos/\{id\}}            & Delete a todo (cascade subtasks) \\
-  \texttt{GET}    & \texttt{/api/todos/\{id\}}            & Retrieve parent todo (before subtask operations) \\
-  \texttt{POST}   & \texttt{/api/todos/\{id\}/\{subtask\}} & Create a subtask \\
-  \texttt{PUT}    & \texttt{/api/todos/\{id\}/\{subtask\}} & Update a subtask \\
-  \texttt{DELETE} & \texttt{/api/todos/\{id\}/\{subtask\}} & Delete a subtask \\
+  \texttt{POST}   & \texttt{/api/auth/register}                      & Register a new account          & Public \\
+  \texttt{POST}   & \texttt{/api/auth/login}                         & Authenticate, receive JWT       & Public \\
+  \texttt{POST}   & \texttt{/api/todos}                              & Create a todo                   & Bearer \\
+  \texttt{GET}    & \texttt{/api/todos}                              & List todos for authenticated user & Bearer \\
+  \texttt{GET}    & \texttt{/api/todos/\{id\}}                       & Retrieve a single todo          & Bearer \\
+  \texttt{PUT}    & \texttt{/api/todos/\{id\}}                       & Update a todo                   & Bearer \\
+  \texttt{DELETE} & \texttt{/api/todos/\{id\}}                       & Delete a todo (cascade subtasks) & Bearer \\
+  \texttt{GET}    & \texttt{/api/todos/\{id\}/subtasks}              & List subtasks for a todo        & Bearer \\
+  \texttt{POST}   & \texttt{/api/todos/\{id\}/subtasks}              & Create a subtask                & Bearer \\
+  \texttt{GET}    & \texttt{/api/todos/\{id\}/subtasks/\{subtaskId\}} & Retrieve a single subtask       & Bearer \\
+  \texttt{PUT}    & \texttt{/api/todos/\{id\}/subtasks/\{subtaskId\}} & Update a subtask                & Bearer \\
+  \texttt{DELETE} & \texttt{/api/todos/\{id\}/subtasks/\{subtaskId\}} & Delete a subtask                & Bearer \\
   \bottomrule
 \end{tabularx}
 
@@ -38,33 +48,28 @@ POST /api/auth/register HTTP/1.1
 Content-Type: application/json
 
 {
-    "username": "String",
-    "password": "String"
+    "username": "String (5-18 chars)",
+    "password": "String (8+ chars, uppercase, lowercase, digit, special)"
 }
 \end{httplisting}
 \httpmidarrows
 \begin{httplisting}
-HTTP/1.1 200 OK
-Content-Type: application/json
-
-{
-    "accountId": Integer,
-    "username": "String"
-}
-
-HTTP/1.1 409 Conflict
-Content-Type: application/json
-
-{
-    "status": 409
-}
+HTTP/1.1 201 Created
+(empty body)
 
 HTTP/1.1 400 Bad Request
-Content-Type: application/json
+Content-Type: text/plain
 
-{
-    "status": 400
-}
+Username must not be blank.
+Username must be between 5 and 18 characters.
+Password must not be blank.
+Password must contain at least one special character (!@#$%^&*).
+Username 'example' is already taken.
+
+HTTP/1.1 409 Conflict
+Content-Type: text/plain
+
+Could not complete registration: data conflict
 \end{httplisting}
 \end{httpexchange}
 
@@ -91,25 +96,28 @@ Content-Type: application/json
 \httpmidarrows
 \begin{httplisting}
 HTTP/1.1 200 OK
-Content-Type: application/json
-
-{
-    "accountId": Integer,
-    "username": "String"
-}
+Authorization: Bearer <signed-jwt-token>
+Content-Length: 0
+(empty body)
 
 HTTP/1.1 401 Unauthorized
-Content-Type: application/json
+Content-Type: text/plain
 
-{
-    "message": "String"
-}
+Invalid username or password
 \end{httplisting}
 \end{httpexchange}
+
+
+\noindent\textbf{JWT Claims:} The issued token contains \texttt{sub} (username),
+\texttt{userId} (UUID string), \texttt{iat} (issued-at epoch seconds), and
+\texttt{exp} (expiration = iat + 24 hours).
 
 \subsubsection{Task Management}
 Use the resource read, creation, and delete flow templates
 (Figures~\ref{fig:seq-todo-list}, \ref{fig:seq-todo-create}, and \ref{fig:seq-todo-delete}).
+
+All task endpoints require \texttt{Authorization: Bearer <token>}. The authenticated user's
+UUID is extracted from the JWT and used for ownership enforcement.
 
 \textbf{\texttt{POST /api/todos}}
 
@@ -117,10 +125,10 @@ Use the resource read, creation, and delete flow templates
 \begin{httplisting}
 POST /api/todos HTTP/1.1
 Content-Type: application/json
+Authorization: Bearer <token>
 
 {
     "title": "String",
-    "description": "String",
     "completed": boolean
 }
 \end{httplisting}
@@ -130,10 +138,9 @@ HTTP/1.1 200 OK
 Content-Type: application/json
 
 {
-    "todoId": Integer,
-    "accountId": Integer,
+    "id": "UUID",
+    "userId": "UUID",
     "title": "String",
-    "description": "String",
     "completed": boolean
 }
 
@@ -141,16 +148,21 @@ HTTP/1.1 400 Bad Request
 Content-Type: application/json
 
 {
-    "status": 400
+    "status": 400,
+    "message": "Task title must not be blank."
 }
 \end{httplisting}
 \end{httpexchange}
+
+\newpage
+
 
 \textbf{\texttt{GET /api/todos}}
 
 \begin{httpexchange}
 \begin{httplisting}
 GET /api/todos HTTP/1.1
+Authorization: Bearer <token>
 \end{httplisting}
 \httpmidarrows
 \begin{httplisting}
@@ -159,10 +171,9 @@ Content-Type: application/json
 
 [
     {
-        "todoId": Integer,
-        "accountId": Integer,
+        "id": "UUID",
+        "userId": "UUID",
         "title": "String",
-        "description": "String",
         "completed": boolean
     }
 ]
@@ -172,15 +183,13 @@ Content-Type: application/json
 
 
 
-\newpage
-
-
 
 \textbf{\texttt{GET /api/todos/\{id\}}}
 
 \begin{httpexchange}
 \begin{httplisting}
 GET /api/todos/{id} HTTP/1.1
+Authorization: Bearer <token>
 \end{httplisting}
 \httpmidarrows
 \begin{httplisting}
@@ -188,10 +197,9 @@ HTTP/1.1 200 OK
 Content-Type: application/json
 
 {
-    "todoId": Integer,
-    "accountId": Integer,
+    "id": "UUID",
+    "userId": "UUID",
     "title": "String",
-    "description": "String",
     "completed": boolean
 }
 
@@ -199,22 +207,34 @@ HTTP/1.1 404 Not Found
 Content-Type: application/json
 
 {
-    "status": 404
+    "status": 404,
+    "message": "Task not found: <id>"
+}
+
+HTTP/1.1 403 Forbidden
+Content-Type: application/json
+
+{
+    "status": 403,
+    "message": "User <userId> does not own task <taskId>"
 }
 \end{httplisting}
 \end{httpexchange}
 
-\medskip
+
+\newpage
+
+
 \textbf{\texttt{PUT /api/todos/\{id\}}}
 
 \begin{httpexchange}
 \begin{httplisting}
 PUT /api/todos/{id} HTTP/1.1
 Content-Type: application/json
+Authorization: Bearer <token>
 
 {
     "title": "String",
-    "description": "String",
     "completed": boolean
 }
 \end{httplisting}
@@ -224,99 +244,9 @@ HTTP/1.1 200 OK
 Content-Type: application/json
 
 {
-    "todoId": Integer,
-    "accountId": Integer,
+    "id": "UUID",
+    "userId": "UUID",
     "title": "String",
-    "description": "String",
-    "completed": boolean
-}
-
-HTTP/1.1 404 Not Found
-Content-Type: application/json
-
-{
-    "status": 404
-}
-\end{httplisting}
-\end{httpexchange}
-
-\medskip
-\textbf{\texttt{DELETE /api/todos/\{id\}}}
-
-\noindent Deletes the todo and cascades to its subtasks.
-
-\begin{httpexchange}
-\begin{httplisting}
-DELETE /api/todos/{id} HTTP/1.1
-\end{httplisting}
-\httpmidarrows
-\begin{httplisting}
-HTTP/1.1 204 No Content
-
-HTTP/1.1 404 Not Found
-Content-Type: application/json
-
-{
-    "status": 404
-}
-\end{httplisting}
-\end{httpexchange}
-
-\newpage
-
-
-
-\subsubsection{Subtask Organization}
-\textbf{\texttt{GET /api/todos/\{id\}}}
-
-Retrieve the parent todo before subtask operations.
-
-\begin{httpexchange}
-\begin{httplisting}
-GET /api/todos/{id} HTTP/1.1
-\end{httplisting}
-\httpmidarrows
-\begin{httplisting}
-HTTP/1.1 200 OK
-Content-Type: application/json
-
-{
-    "todoId": Integer,
-    "accountId": Integer,
-    "title": "String",
-    "description": "String",
-    "completed": boolean
-}
-\end{httplisting}
-\end{httpexchange}
-
-\medskip
-Use the resource read, creation, and delete flow templates
-(Figures~\ref{fig:seq-subtask-list}, \ref{fig:seq-subtask-create}, and \ref{fig:seq-subtask-delete}).
-
-\textbf{\texttt{POST /api/todos/\{id\}/\{subtask\}}}
-
-\begin{httpexchange}
-\begin{httplisting}
-POST /api/todos/{id}/{subtask} HTTP/1.1
-Content-Type: application/json
-
-{
-    "title": "String",
-    "description": "String",
-    "completed": boolean
-}
-\end{httplisting}
-\httpmidarrows
-\begin{httplisting}
-HTTP/1.1 200 OK
-Content-Type: application/json
-
-{
-    "todoId": Integer,
-    "accountId": Integer,
-    "title": "String",
-    "description": "String",
     "completed": boolean
 }
 
@@ -324,59 +254,37 @@ HTTP/1.1 400 Bad Request
 Content-Type: application/json
 
 {
-    "status": 400
-}
-\end{httplisting}
-\end{httpexchange}
-
-\medskip
-\textbf{\texttt{PUT /api/todos/\{id\}/\{subtask\}}}
-
-\begin{httpexchange}
-\begin{httplisting}
-PUT /api/todos/{id}/{subtask} HTTP/1.1
-Content-Type: application/json
-
-{
-    "title": "String",
-    "description": "String",
-    "completed": boolean
-}
-\end{httplisting}
-\httpmidarrows
-\begin{httplisting}
-HTTP/1.1 200 OK
-Content-Type: application/json
-
-{
-    "todoId": Integer,
-    "accountId": Integer,
-    "title": "String",
-    "description": "String",
-    "completed": boolean
+    "status": 400,
+    "message": "Task title must not be blank."
 }
 
 HTTP/1.1 404 Not Found
 Content-Type: application/json
 
 {
-    "status": 404
+    "status": 404,
+    "message": "Task not found: <id>"
+}
+
+HTTP/1.1 403 Forbidden
+Content-Type: application/json
+
+{
+    "status": 403,
+    "message": "User <userId> does not own task <taskId>"
 }
 \end{httplisting}
 \end{httpexchange}
 
-\newpage
 
+\textbf{\texttt{DELETE /api/todos/\{id\}}}
 
-
-\textbf{\texttt{DELETE /api/todos/\{id\}/\{subtask\}}}
-
-Removes one subtask from the parent todo. On success the server responds with
-\texttt{204 No Content} and an empty body; no row count or deleted entity is returned.
+\noindent Deletes the todo and cascade-deletes all its subtasks first.
 
 \begin{httpexchange}
 \begin{httplisting}
-DELETE /api/todos/{id}/{subtask} HTTP/1.1
+DELETE /api/todos/{id} HTTP/1.1
+Authorization: Bearer <token>
 \end{httplisting}
 \httpmidarrows
 \begin{httplisting}
@@ -386,9 +294,256 @@ HTTP/1.1 404 Not Found
 Content-Type: application/json
 
 {
-    "status": 404
+    "status": 404,
+    "message": "Task not found: <id>"
+}
+
+HTTP/1.1 403 Forbidden
+Content-Type: application/json
+
+{
+    "status": 403,
+    "message": "User <userId> does not own task <taskId>"
 }
 \end{httplisting}
 \end{httpexchange}
+
+
+
+
+\newpage
+
+
+
+\subsubsection{Subtask Organization}
+All subtask endpoints are nested under \texttt{/api/todos/\{id\}/subtasks} and require
+\texttt{Authorization: Bearer <token>}. Every operation first verifies that the parent task
+exists and belongs to the authenticated user.
+
+
+Use the resource read, creation, and delete flow templates
+(Figures~\ref{fig:seq-subtask-list}, \ref{fig:seq-subtask-create}, and \ref{fig:seq-subtask-delete}).
+
+\textbf{\texttt{GET /api/todos/\{id\}/subtasks}}
+
+\begin{httpexchange}
+\begin{httplisting}
+GET /api/todos/{id}/subtasks HTTP/1.1
+Authorization: Bearer <token>
+\end{httplisting}
+\httpmidarrows
+\begin{httplisting}
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+[
+    {
+        "id": "UUID",
+        "taskId": "UUID",
+        "title": "String",
+        "completed": boolean
+    }
+]
+
+HTTP/1.1 404 Not Found
+Content-Type: application/json
+
+{
+    "status": 404,
+    "message": "Task not found: <id>"
+}
+
+HTTP/1.1 403 Forbidden
+Content-Type: application/json
+
+{
+    "status": 403,
+    "message": "User <userId> does not own task <taskId>"
+}
+\end{httplisting}
+\end{httpexchange}
+
+\newpage
+
+
+
+\textbf{\texttt{POST /api/todos/\{id\}/subtasks}}
+
+\begin{httpexchange}
+\begin{httplisting}
+POST /api/todos/{id}/subtasks HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer <token>
+
+{
+    "title": "String",
+    "completed": boolean
+}
+\end{httplisting}
+\httpmidarrows
+\begin{httplisting}
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+    "id": "UUID",
+    "taskId": "UUID",
+    "title": "String",
+    "completed": boolean
+}
+
+HTTP/1.1 400 Bad Request
+Content-Type: application/json
+
+{
+    "status": 400,
+    "message": "Subtask title must not be blank."
+}
+
+{
+    "status": 400,
+    "message": "Cannot add subtasks to a completed task."
+}
+
+HTTP/1.1 404 Not Found
+Content-Type: application/json
+
+{
+    "status": 404,
+    "message": "Task not found: <id>"
+}
+\end{httplisting}
+\end{httpexchange}
+
+
+\textbf{\texttt{GET /api/todos/\{id\}/subtasks/\{subtaskId\}}}
+
+\begin{httpexchange}
+\begin{httplisting}
+GET /api/todos/{id}/subtasks/{subtaskId} HTTP/1.1
+Authorization: Bearer <token>
+\end{httplisting}
+\httpmidarrows
+\begin{httplisting}
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+    "id": "UUID",
+    "taskId": "UUID",
+    "title": "String",
+    "completed": boolean
+}
+
+HTTP/1.1 404 Not Found
+Content-Type: application/json
+
+{
+    "status": 404,
+    "message": "Subtask not found: <subtaskId>"
+}
+\end{httplisting}
+\end{httpexchange}
+
+
+\newpage
+
+
+\textbf{\texttt{PUT /api/todos/\{id\}/subtasks/\{subtaskId\}}}
+
+\begin{httpexchange}
+\begin{httplisting}
+PUT /api/todos/{id}/subtasks/{subtaskId} HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer <token>
+
+{
+    "title": "String",
+    "completed": boolean
+}
+\end{httplisting}
+\httpmidarrows
+\begin{httplisting}
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+    "id": "UUID",
+    "taskId": "UUID",
+    "title": "String",
+    "completed": boolean
+}
+
+HTTP/1.1 400 Bad Request
+Content-Type: application/json
+
+{
+    "status": 400,
+    "message": "Subtask title must not be blank."
+}
+
+HTTP/1.1 404 Not Found
+Content-Type: application/json
+
+{
+    "status": 404,
+    "message": "Subtask not found: <subtaskId>"
+}
+\end{httplisting}
+\end{httpexchange}
+
+
+\textbf{\texttt{DELETE /api/todos/\{id\}/subtasks/\{subtaskId\}}}
+
+Removes one subtask from the parent todo. On success the server responds with
+\texttt{204 No Content} and an empty body; no row count or deleted entity is returned.
+
+\begin{httpexchange}
+\begin{httplisting}
+DELETE /api/todos/{id}/subtasks/{subtaskId} HTTP/1.1
+Authorization: Bearer <token>
+\end{httplisting}
+\httpmidarrows
+\begin{httplisting}
+HTTP/1.1 204 No Content
+
+HTTP/1.1 404 Not Found
+Content-Type: application/json
+
+{
+    "status": 404,
+    "message": "Subtask not found: <subtaskId>"
+}
+\end{httplisting}
+\end{httpexchange}
+
+\newpage
+
+\subsubsection{Common Error Responses}
+
+\begin{tabularx}{\textwidth}{@{} l l X @{}}
+  \toprule
+  \textbf{Status} & \textbf{Content-Type} & \textbf{Meaning} \\
+  \midrule
+  \texttt{400} & \texttt{application/json} or \texttt{text/plain} & Validation failure (blank title, weak password, etc.) \\
+  \texttt{401} & \texttt{text/plain} & Missing, malformed, or expired token \\
+  \texttt{403} & \texttt{application/json} & Authenticated user does not own the requested resource \\
+  \texttt{404} & \texttt{application/json} & Resource (task or subtask) does not exist \\
+  \texttt{409} & \texttt{text/plain} & Data conflict (duplicate username at DB level) \\
+  \texttt{503} & \texttt{text/plain} & Database temporarily unavailable \\
+  \bottomrule
+\end{tabularx}
+
+
+\noindent\textbf{JSON error body format} (for 400, 403, 404 from protected endpoints):
+\begin{lstlisting}[style=json]
+{
+    "status": <http-status-code>,
+    "message": "<human-readable description>"
+}
+\end{lstlisting}
+
+\noindent\textbf{Plain text error body} (for 401, registration 400, 409, 503):
+the response body is a single plain-text string describing the error.
 
 \newpage

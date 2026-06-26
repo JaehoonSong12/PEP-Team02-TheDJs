@@ -29,14 +29,61 @@ As of 11 June 2026, all Phase~1 checkpoints are complete. The team may proceed t
 members have reviewed Sections~\ref{sec:tasks}--\ref{sec:api}.
 
 \subsubsection{Phase 2 Progress}
-Phase~2 is \emph{in progress} as of 12 June 2026. A deliverable counts toward Phase~2 when it meets
-the documentation and collaboration criteria above and is recorded in the task backlog.
+Phase~2 completed 12 June 2026. All deliverables meet the documentation and collaboration criteria
+and are recorded in the task backlog.
 \begin{itemize}
   \item \textbf{UI Wireframing} --- Complete: Login, Register, Dashboard, and navigation flow (Section~\ref{sec:wireframes}).
   \item \textbf{Component Design} --- Complete: routes, component tree, and service layer agreed (Section~\ref{sec:task-backlog}).
   \item \textbf{LaTeX refactor} --- Complete: modular \texttt{docs/module/} layout, section introductions, expanded sequence diagrams.
-  \item \textbf{System Architecture} --- Open: data-flow documentation not yet merged into the main document.
-  \item \textbf{Security Planning} --- Open: JJWT and auth-filter design pending.
+  \item \textbf{System Architecture} --- Complete: data-flow documentation merged.
+  \item \textbf{Security Planning} --- Complete: JJWT and auth-interceptor design agreed.
+\end{itemize}
+
+\subsubsection{Phase 3 Completion}
+Phase~3 (Backend Development) completed 22 June 2026. All checkpoints satisfied:
+\begin{itemize}
+  \item \textbf{Project Scaffolding} --- Spring Boot 4.1.0, Gradle Kotlin DSL, SQLite configured.
+    \href{https://github.com/JaehoonSong12/PEP-Team02-TheDJs/issues/46}{\#46},
+    \href{https://github.com/JaehoonSong12/PEP-Team02-TheDJs/issues/45}{\#45},
+    \href{https://github.com/JaehoonSong12/PEP-Team02-TheDJs/issues/44}{\#44}
+  \item \textbf{Data Layer} --- JPA entities (User, Task, Subtask), repositories with UUID keys.
+    \href{https://github.com/JaehoonSong12/PEP-Team02-TheDJs/pull/49}{PR~\#49}
+  \item \textbf{Security Implementation} --- JWT via JJWT 0.13.0, HandlerInterceptor, PasswordValidator.
+    \href{https://github.com/JaehoonSong12/PEP-Team02-TheDJs/issues/51}{\#51},
+    \href{https://github.com/JaehoonSong12/PEP-Team02-TheDJs/pull/40}{PR~\#40}
+  \item \textbf{Business Logic} --- Registration, login, task CRUD, subtask CRUD with ownership enforcement.
+    \href{https://github.com/JaehoonSong12/PEP-Team02-TheDJs/issues/11}{\#11},
+    \href{https://github.com/JaehoonSong12/PEP-Team02-TheDJs/issues/50}{\#50},
+    \href{https://github.com/JaehoonSong12/PEP-Team02-TheDJs/pull/55}{PR~\#55},
+    \href{https://github.com/JaehoonSong12/PEP-Team02-TheDJs/pull/56}{PR~\#56}
+  \item \textbf{Design Validation} --- All 11 endpoints verified via cURL (45 test cases, all passing).
+\end{itemize}
+
+\subsubsection{Phase 4 Completion}
+Phase~4 (Frontend Development) completed 25 June 2026. All checkpoints satisfied:
+\begin{itemize}
+  \item \textbf{Project Scaffolding} --- Angular 22 standalone components, Vitest, proxy config.
+    \href{https://github.com/JaehoonSong12/PEP-Team02-TheDJs/issues/54}{\#54}
+  \item \textbf{Service Layer} --- TaskService, SubtaskService, AuthService with signal-based state.
+    \href{https://github.com/JaehoonSong12/PEP-Team02-TheDJs/pull/62}{PR~\#62},
+    \href{https://github.com/JaehoonSong12/PEP-Team02-TheDJs/pull/63}{PR~\#63}
+  \item \textbf{Auth Integration} --- Functional interceptor, route guard, login/register components.
+    \href{https://github.com/JaehoonSong12/PEP-Team02-TheDJs/pull/59}{PR~\#59},
+    \href{https://github.com/JaehoonSong12/PEP-Team02-TheDJs/pull/60}{PR~\#60},
+    \href{https://github.com/JaehoonSong12/PEP-Team02-TheDJs/pull/58}{PR~\#58}
+  \item \textbf{Task Management UI} --- Dashboard with inline edit, expand/collapse subtasks, CRUD.
+    \href{https://github.com/JaehoonSong12/PEP-Team02-TheDJs/pull/64}{PR~\#64}
+  \item \textbf{Design Validation} --- UI matches wireframes; end-to-end workflow verified.
+    \href{https://github.com/JaehoonSong12/PEP-Team02-TheDJs/pull/67}{PR~\#67}
+\end{itemize}
+
+\subsubsection{Phase 5 Status}
+Phase~5 (Presentation) is \emph{ready} as of 26 June 2026.
+\begin{itemize}
+  \item \textbf{Functional Demo} --- All user stories operational; happy-path scenarios verified.
+  \item \textbf{Technical Review} --- Data flow, schema design, and architecture documented.
+  \item \textbf{Build Verification} --- Clean build confirmed (\texttt{gradlew build}, \texttt{ng build}).
+  \item \textbf{Post-Mortem} --- Agile process, Git workflow, and blockers documented in project records.
 \end{itemize}
 
 \newpage
