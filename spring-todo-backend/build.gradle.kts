@@ -22,6 +22,8 @@ repositories {
 extra["springModulithVersion"] = "2.1.0-RC1"
 
 dependencies {
+	// Put the REST Assured dependency above JUnit
+	testImplementation("io.rest-assured:rest-assured:6.0.0")
 	implementation("org.springframework.modulith:spring-modulith-starter-core")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa") // [Added dependency] Added as instructed to support Spring Data JPA
 	implementation("org.springframework.boot:spring-boot-starter-webmvc") // [Added dependency] Added as instructed to support Spring Web MVC
