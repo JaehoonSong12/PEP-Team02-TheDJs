@@ -2,16 +2,16 @@
 
 ## Overview
 
-This plan implements a comprehensive JUnit 5 test suite for the Todo Management Spring Boot backend. Tests are organized into service tests (Mockito-only), security tests (Mockito-only), controller tests (@WebMvcTest slice), and property-based tests (jqwik 1.9.3). Each task creates one or more test classes under `src/test/java/com/revature/todomanagement/` in the appropriate sub-package.
+This plan implements a JUnit 5 unit test suite for the Todo Management Spring Boot backend. Tests are organized into service tests (Mockito-only), security tests (Mockito-only), property-based tests (jqwik 1.9.3), and one controller exception-handler edge case. Each task creates one or more test classes under `src/test/java/com/revature/todomanagement/` in the appropriate sub-package. HTTP endpoint behavior (status codes, CRUD operations, error responses) is covered by the separate API integration test suite (test02-api-integration-test).
 
 ## Tasks
 
 - [ ] 1. Set up test package structure and verify jqwik dependency
   - [ ] 1.1 Create test sub-package directories and verify build configuration
-    - Create directories: `src/test/java/com/revature/todomanagement/service/`, `src/test/java/com/revature/todomanagement/security/`, `src/test/java/com/revature/todomanagement/controller/`
+    - Create directories: `src/test/java/com/revature/todomanagement/service/`, `src/test/java/com/revature/todomanagement/security/`
     - Verify `build.gradle.kts` includes jqwik 1.9.3 dependency and JUnit Platform configuration
     - Add jqwik dependency if not already present: `testImplementation("net.jqwik:jqwik:1.9.3")`
-    - _Requirements: 12.3_
+    - _Requirements: 8.2_
 
 - [ ] 2. Implement RegistrationService unit tests
   - [ ] 2.1 Create RegistrationServiceTest with username validation and password validation nested groups
@@ -112,46 +112,10 @@ This plan implements a comprehensive JUnit 5 test suite for the Todo Management 
 - [ ] 9. Checkpoint - Verify security tests pass
   - Ensure all tests pass, ask the user if questions arise.
 
-- [ ] 10. Implement LoginController unit tests
-  - [ ] 10.1 Create LoginControllerTest with POST /api/auth/login tests
-    - Create `src/test/java/com/revature/todomanagement/controller/LoginControllerTest.java`
-    - Use `@WebMvcTest(value = LoginController.class, excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = {WebConfig.class, AuthInterceptor.class}))`
-    - Declare `@MockBean UserService` and `@MockBean JwtUtil`
-    - Implement `@Nested` class `PostLogin` with tests: success returns 200 + empty body + Authorization Bearer header, InvalidCredentialsException returns 401 + message
-    - _Requirements: 7.1, 7.2, 7.3_
-
-- [ ] 11. Implement RegistrationController unit tests
-  - [ ] 11.1 Create RegistrationControllerTest with POST /api/auth/register tests
-    - Create `src/test/java/com/revature/todomanagement/controller/RegistrationControllerTest.java`
-    - Use `@WebMvcTest(value = RegistrationController.class, excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = {WebConfig.class, AuthInterceptor.class}))`
-    - Declare `@MockBean RegistrationService`
-    - Implement `@Nested` class `PostRegister` with tests: success returns 201 + empty body, RegistrationFailure returns 400 + message, DataIntegrityViolationException returns 409 + conflict text
-    - _Requirements: 8.1, 8.2, 8.3, 8.4_
-
-- [ ] 12. Implement TodoController unit tests
-  - [ ] 12.1 Create TodoControllerTest with CRUD and exception handling nested groups
-    - Create `src/test/java/com/revature/todomanagement/controller/TodoControllerTest.java`
-    - Use `@WebMvcTest(value = TodoController.class, excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = {WebConfig.class, AuthInterceptor.class}))`
-    - Declare `@MockBean TaskService`
-    - Implement `@Nested` class `CrudOps` with tests: POST /api/todos returns 200 + Task JSON, GET /api/todos returns 200 + array, GET /api/todos/{id} returns 200 + Task JSON, PUT /api/todos/{id} returns 200 + updated Task JSON, DELETE /api/todos/{id} returns 204 + empty body
-    - Implement `@Nested` class `ExceptionHandling` with tests: TaskNotFoundException returns 404 + JSON {status, message}, TaskOwnershipException returns 403 + JSON {status, message}, IllegalArgumentException returns 400 + JSON {status, message}
-    - Set `requestAttr("userId", uuid)` on all requests
-    - _Requirements: 9.1, 9.2, 9.3, 9.4, 9.5, 9.6, 9.7, 9.8, 9.9_
-
-- [ ] 13. Implement SubtaskController unit tests
-  - [ ] 13.1 Create SubtaskControllerTest with CRUD and exception handling nested groups
-    - Create `src/test/java/com/revature/todomanagement/controller/SubtaskControllerTest.java`
-    - Use `@WebMvcTest(value = SubtaskController.class, excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = {WebConfig.class, AuthInterceptor.class}))`
-    - Declare `@MockBean SubtaskService`
-    - Implement `@Nested` class `CrudOps` with tests: GET /api/todos/{id}/subtasks returns 200 + array, POST /api/todos/{id}/subtasks returns 200 + Subtask JSON, GET /api/todos/{id}/subtasks/{subtaskId} returns 200 + Subtask JSON, PUT /api/todos/{id}/subtasks/{subtaskId} returns 200 + updated Subtask JSON, DELETE /api/todos/{id}/subtasks/{subtaskId} returns 204 + empty body
-    - Implement `@Nested` class `ExceptionHandling` with tests: TaskNotFoundException returns 404, SubtaskNotFoundException returns 404, TaskOwnershipException returns 403, IllegalArgumentException returns 400 — all with JSON {status, message}
-    - Set `requestAttr("userId", uuid)` on all requests
-    - _Requirements: 10.1, 10.2, 10.3, 10.4, 10.5, 10.6, 10.7, 10.8, 10.9, 10.10_
-
-- [ ] 14. Final checkpoint - Ensure all tests pass
+- [ ] 10. Final checkpoint - Ensure all tests pass
   - Ensure all tests pass, ask the user if questions arise.
   - Run `gradlew.bat test` from `spring-todo-backend/` and verify green build
-  - Confirm test count is approximately 75+ example-based tests plus 3 property tests
+  - Confirm test count is approximately 50+ example-based tests plus 3 property tests
 
 ## Notes
 
@@ -160,9 +124,10 @@ This plan implements a comprehensive JUnit 5 test suite for the Todo Management 
 - Checkpoints ensure incremental validation after each test layer
 - Property tests validate universal correctness properties from the design document
 - Unit tests validate specific examples, edge cases, and wiring
-- All test classes use `@DisplayName` and `@Nested` per requirement 12.5 and 12.6
-- Test method naming follows `methodUnderTest_stateOrInput_expectedBehavior` per requirement 12.4
+- All test classes use `@DisplayName` and `@Nested` per requirement 8.4 and 8.5
+- Test method naming follows `methodUnderTest_stateOrInput_expectedBehavior` per requirement 8.3
 - The existing `SubtaskServiceTest.java` in the root test package is not modified
+- HTTP endpoint behavior (status codes, CRUD, error responses) is tested in test02-api-integration-test — not here
 
 ## Task Dependency Graph
 
@@ -172,8 +137,7 @@ This plan implements a comprehensive JUnit 5 test suite for the Todo Management 
     { "id": 0, "tasks": ["1.1"] },
     { "id": 1, "tasks": ["2.1", "3.1", "4.1"] },
     { "id": 2, "tasks": ["2.2", "4.2", "6.1", "7.1", "8.1"] },
-    { "id": 3, "tasks": ["4.3", "6.2", "7.2"] },
-    { "id": 4, "tasks": ["10.1", "11.1", "12.1", "13.1"] }
+    { "id": 3, "tasks": ["4.3", "6.2", "7.2"] }
   ]
 }
 ```

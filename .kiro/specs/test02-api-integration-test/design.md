@@ -145,6 +145,8 @@ spring.datasource.url=jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
 spring.datasource.driver-class-name=org.h2.Driver
 spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
 spring.jpa.hibernate.ddl-auto=create-drop
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
 spring.docker.compose.enabled=false
 jwt.secret=TestSecretKeyThatIsAtLeast32CharactersLong!!
 cors.allowed-origins=http://localhost:4200
@@ -154,6 +156,8 @@ cors.allowed-origins=http://localhost:4200
 
 ```kotlin
 testImplementation("io.rest-assured:rest-assured:6.0.0")
+testImplementation("org.seleniumhq.selenium:selenium-java:4.45.0")
+testImplementation("io.cucumber:cucumber-spring:7.34.4")
 ```
 
 ## Data Models

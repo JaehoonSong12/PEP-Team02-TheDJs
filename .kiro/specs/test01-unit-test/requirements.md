@@ -2,15 +2,13 @@
 
 ## Introduction
 
-This specification defines a comprehensive JUnit 5 unit test suite for the Todo Management Spring Boot backend. The test suite validates business logic, security components, and controller endpoint behavior in complete isolation using Mockito mocks and Spring WebMvc test slices. The suite complements the existing SubtaskServiceTest (12 tests) by covering the remaining service, security, and controller layers.
+This specification defines a JUnit 5 unit test suite for the Todo Management Spring Boot backend. The test suite validates business logic (services), security components (PasswordValidator, JwtUtil, AuthInterceptor), and one controller exception-handler edge case in complete isolation using Mockito mocks. HTTP endpoint behavior (status codes, response bodies, full request lifecycle) is covered separately by the API integration test suite (test02-api-integration-test). This suite complements the existing SubtaskServiceTest (12 tests) by covering the remaining service and security layers.
 
 ## Glossary
 
 - **Test_Suite**: The complete collection of JUnit 5 test classes produced by this feature
 - **Service_Test**: A unit test class that validates business logic using @ExtendWith(MockitoExtension.class) with mocked repository dependencies
 - **Security_Test**: A unit test class that validates security components (PasswordValidator, JwtUtil, AuthInterceptor) in isolation
-- **Controller_Test**: A unit test class that validates REST controller behavior using @WebMvcTest slice with mocked service dependencies
-- **MockMvc**: Spring test utility that simulates HTTP requests against a controller without starting a full server
 - **PasswordValidator**: Component that checks password strength against seven independent rules and returns a list of violation messages
 - **JwtUtil**: Component that generates, parses, and validates JSON Web Tokens using HMAC-SHA256 signing
 - **AuthInterceptor**: Spring HandlerInterceptor that enforces Bearer token authentication on protected endpoints
@@ -121,61 +119,7 @@ This specification defines a comprehensive JUnit 5 unit test suite for the Todo 
 9. WHEN AuthInterceptor rejects a request (criteria 2-5), THE Security_Test SHALL verify that no request attributes are set on the MockHttpServletRequest
 10. THE Security_Test SHALL verify that AuthInterceptor passes the extracted username to isTokenValid as the second argument (correct wiring verification via verify(jwtUtil).isTokenValid(token, extractedUsername))
 
-### Requirement 7: LoginController Unit Tests
-
-**User Story:** As a developer, I want @WebMvcTest slice tests for LoginController, so that I can verify HTTP response codes and the Authorization header on login success and failure.
-
-#### Acceptance Criteria
-
-1. WHEN a POST to /api/auth/login with a JSON body containing username and password succeeds, THE Controller_Test SHALL verify that the response status is 200, the response body is empty, and the Authorization header starts with "Bearer "
-2. WHEN a POST to /api/auth/login triggers InvalidCredentialsException, THE Controller_Test SHALL verify that the response status is 401 and the response body contains the exception message as plain text
-3. THE Controller_Test SHALL mock UserService and JwtUtil as @MockBean dependencies and exclude AuthInterceptor and WebConfig from the slice context
-
-### Requirement 8: RegistrationController Unit Tests
-
-**User Story:** As a developer, I want @WebMvcTest slice tests for RegistrationController, so that I can verify HTTP response codes for registration success, validation failure, and data conflicts.
-
-#### Acceptance Criteria
-
-1. WHEN a POST to /api/auth/register with a JSON body containing username and password succeeds, THE Controller_Test SHALL verify that the response status is 201 and the response body is empty
-2. WHEN a POST to /api/auth/register triggers RegistrationFailure, THE Controller_Test SHALL verify that the response status is 400 and the response body contains the exception message as plain text
-3. WHEN a POST to /api/auth/register triggers DataIntegrityViolationException, THE Controller_Test SHALL verify that the response status is 409 and the response body contains a conflict indication as plain text
-4. THE Controller_Test SHALL mock RegistrationService as a @MockBean dependency and exclude AuthInterceptor and WebConfig from the slice context
-
-### Requirement 9: TodoController Unit Tests
-
-**User Story:** As a developer, I want @WebMvcTest slice tests for TodoController, so that I can verify CRUD status codes and exception-to-HTTP-status mapping.
-
-#### Acceptance Criteria
-
-1. WHEN a POST to /api/todos with a JSON Task body and a requestAttr "userId" set to a UUID succeeds, THE Controller_Test SHALL verify that the response status is 200 and the body contains the created Task as JSON
-2. WHEN a GET to /api/todos with a requestAttr "userId" set to a UUID succeeds, THE Controller_Test SHALL verify that the response status is 200 and the body contains a JSON array of Tasks
-3. WHEN a GET to /api/todos/{id} with a requestAttr "userId" set to a UUID succeeds, THE Controller_Test SHALL verify that the response status is 200 and the body contains the Task as JSON
-4. WHEN a PUT to /api/todos/{id} with a JSON Task body and a requestAttr "userId" set to a UUID succeeds, THE Controller_Test SHALL verify that the response status is 200 and the body contains the updated Task as JSON
-5. WHEN a DELETE to /api/todos/{id} with a requestAttr "userId" set to a UUID succeeds, THE Controller_Test SHALL verify that the response status is 204 and the response body is empty
-6. WHEN TaskService throws TaskNotFoundException, THE Controller_Test SHALL verify that the response status is 404 and the body contains a JSON object with "status" and "message" fields
-7. WHEN TaskService throws TaskOwnershipException, THE Controller_Test SHALL verify that the response status is 403 and the body contains a JSON object with "status" and "message" fields
-8. WHEN TaskService throws IllegalArgumentException, THE Controller_Test SHALL verify that the response status is 400 and the body contains a JSON object with "status" and "message" fields
-9. THE Controller_Test SHALL mock TaskService as a @MockBean dependency and exclude AuthInterceptor and WebConfig from the slice context
-
-### Requirement 10: SubtaskController Unit Tests
-
-**User Story:** As a developer, I want @WebMvcTest slice tests for SubtaskController, so that I can verify CRUD status codes and exception-to-HTTP-status mapping for subtask operations.
-
-#### Acceptance Criteria
-
-1. WHEN a GET to /api/todos/{id}/subtasks with a requestAttr "userId" set to a UUID succeeds, THE Controller_Test SHALL verify that the response status is 200 and the body contains a JSON array of Subtasks
-2. WHEN a POST to /api/todos/{id}/subtasks with a JSON Subtask body and a requestAttr "userId" set to a UUID succeeds, THE Controller_Test SHALL verify that the response status is 200 and the body contains the created Subtask as JSON
-3. WHEN a GET to /api/todos/{id}/subtasks/{subtaskId} with a requestAttr "userId" set to a UUID succeeds, THE Controller_Test SHALL verify that the response status is 200 and the body contains the Subtask as JSON
-4. WHEN a PUT to /api/todos/{id}/subtasks/{subtaskId} with a JSON Subtask body and a requestAttr "userId" set to a UUID succeeds, THE Controller_Test SHALL verify that the response status is 200 and the body contains the updated Subtask as JSON
-5. WHEN a DELETE to /api/todos/{id}/subtasks/{subtaskId} with a requestAttr "userId" set to a UUID succeeds, THE Controller_Test SHALL verify that the response status is 204 and the response body is empty
-6. WHEN SubtaskService throws TaskNotFoundException, THE Controller_Test SHALL verify that the response status is 404 and the body contains a JSON object with "status" and "message" fields
-7. WHEN SubtaskService throws SubtaskNotFoundException, THE Controller_Test SHALL verify that the response status is 404 and the body contains a JSON object with "status" and "message" fields
-8. WHEN SubtaskService throws TaskOwnershipException, THE Controller_Test SHALL verify that the response status is 403 and the body contains a JSON object with "status" and "message" fields
-9. WHEN SubtaskService throws IllegalArgumentException, THE Controller_Test SHALL verify that the response status is 400 and the body contains a JSON object with "status" and "message" fields
-10. THE Controller_Test SHALL mock SubtaskService as a @MockBean dependency and exclude AuthInterceptor and WebConfig from the slice context
-
-### Requirement 11: TaskService Ownership Property Test
+### Requirement 7: TaskService Ownership Property Test
 
 **User Story:** As a developer, I want a property-based test for TaskService ownership enforcement, so that I can verify the invariant holds across arbitrary user and task ID combinations.
 
@@ -185,17 +129,16 @@ This specification defines a comprehensive JUnit 5 unit test suite for the Todo 
 2. THE Property_Test SHALL execute a minimum of 100 jqwik tries (the jqwik default) per @Property method
 3. THE Property_Test SHALL use @ExtendWith(MockitoExtension.class) with @Mock TaskRepository and @InjectMocks TaskService, consistent with the project unit-test conventions
 
-### Requirement 12: Test Infrastructure Constraints
+### Requirement 8: Test Infrastructure Constraints
 
 **User Story:** As a developer, I want all unit tests to adhere to project testing conventions, so that the test suite is fast, deterministic, and maintainable.
 
 #### Acceptance Criteria
 
 1. THE Test_Suite SHALL use @ExtendWith(MockitoExtension.class) for all service and security test classes (no Spring context boot)
-2. THE Test_Suite SHALL use @WebMvcTest for all controller test classes with service dependencies declared as @MockBean
-3. THE Test_Suite SHALL place test classes in packages mirroring source packages: com.revature.todomanagement.service, com.revature.todomanagement.security, and com.revature.todomanagement.controller
-4. THE Test_Suite SHALL name test methods using the pattern methodUnderTest_stateOrInput_expectedBehavior
-5. THE Test_Suite SHALL use @Nested classes to group related test contexts within each test class
-6. THE Test_Suite SHALL use @DisplayName annotations to provide human-readable descriptions for test classes and nested groups
-7. THE Test_Suite SHALL use STRICT_STUBS mode (the MockitoExtension default) with no lenient stubs unless a shared @BeforeEach setup configures stubs consumed by only a subset of tests in the class
-8. THE Test_Suite SHALL use @ParameterizedTest with @MethodSource for data-driven validation scenarios in PasswordValidator tests
+2. THE Test_Suite SHALL place test classes in packages mirroring source packages: com.revature.todomanagement.service and com.revature.todomanagement.security
+3. THE Test_Suite SHALL name test methods using the pattern methodUnderTest_stateOrInput_expectedBehavior
+4. THE Test_Suite SHALL use @Nested classes to group related test contexts within each test class
+5. THE Test_Suite SHALL use @DisplayName annotations to provide human-readable descriptions for test classes and nested groups
+6. THE Test_Suite SHALL use STRICT_STUBS mode (the MockitoExtension default) with no lenient stubs unless a shared @BeforeEach setup configures stubs consumed by only a subset of tests in the class
+7. THE Test_Suite SHALL use @ParameterizedTest with @MethodSource for data-driven validation scenarios in PasswordValidator tests

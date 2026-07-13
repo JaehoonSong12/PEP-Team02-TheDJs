@@ -8,11 +8,12 @@ This plan implements a comprehensive REST Assured integration test suite for the
 
 - [ ] 1. Set up test infrastructure and base configuration
   - [ ] 1.1 Create test properties file
-    - Create `src/test/resources/test.properties` with H2 datasource URL (`jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1`), H2 driver class, H2 dialect, `create-drop` DDL auto, disabled Docker Compose, test JWT secret, and CORS allowed origins
+    - Ensure `src/test/resources/test.properties` contains: H2 datasource URL (`jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1`), H2 driver class, H2 dialect, `create-drop` DDL auto, `spring.docker.compose.enabled=false`, `jwt.secret=TestSecretKeyThatIsAtLeast32CharactersLong!!`, and `cors.allowed-origins=http://localhost:4200`
     - _Requirements: 1.1, 10.1_
 
   - [ ] 1.2 Add REST Assured dependency to build.gradle.kts
-    - Add `testImplementation("io.rest-assured:rest-assured:6.0.0")` to the dependencies block
+    - Ensure `testImplementation("io.rest-assured:rest-assured:6.0.0")` is in the dependencies block
+    - Ensure `org.seleniumhq.selenium:selenium-java` and `io.cucumber:cucumber-spring` use `testImplementation` scope (not `implementation`)
     - _Requirements: 1.1_
 
   - [ ] 1.3 Implement BaseIntegrationTest abstract class
@@ -173,9 +174,13 @@ This plan implements a comprehensive REST Assured integration test suite for the
 - Property tests validate universal correctness properties from the design document using jqwik 1.9.3
 - Unit tests validate specific examples and edge cases
 - All test classes extend `BaseIntegrationTest` for consistent configuration
-- Build command: `gradlew.bat test` (Windows)
+- Build command: `gradlew.bat test` (Windows) — runs all tests including unit tests (test01) and E2E (test03)
+- To run ONLY integration tests: `gradlew.bat test --tests "*IT"`
 - Test execution is ordered within classes using `@TestMethodOrder(OrderAnnotation.class)`
 - Dynamic resource IDs are extracted from responses — never hardcoded
+- The `test.properties` file is shared with test03 (E2E Cucumber tests) — ensure no conflicting properties
+- Dependency scope fix: `selenium-java` and `cucumber-spring` should be `testImplementation` (done in task 1.2)
+- **Execution order**: test01 (unit, no Spring context) → test02 (integration, embedded server) → test03 (E2E, requires external frontend)
 
 ## Task Dependency Graph
 
