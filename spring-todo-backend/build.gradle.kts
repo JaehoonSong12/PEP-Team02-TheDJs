@@ -52,6 +52,10 @@ dependencies {
     testImplementation("io.cucumber:cucumber-junit-platform-engine:7.33.0")
     // the sub module that gives us access to the junit test suite feature https://mvnrepository.com/artifact/org.junit.platform/junit-platform-suite
     testImplementation("org.junit.platform:junit-platform-suite:1.14.1")
+	// Source: https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java
+	implementation("org.seleniumhq.selenium:selenium-java:4.45.0")
+	// Source: https://mvnrepository.com/artifact/io.cucumber/cucumber-spring
+	implementation("io.cucumber:cucumber-spring:7.34.4")
 }
 
 dependencyManagement {
@@ -69,3 +73,16 @@ tasks.generateJava {
 tasks.withType<Test> {
 	useJUnitPlatform()
 }
+
+// tasks.test {
+// 	useJUnitPlatform()
+// 	systemProperty("cucumber.junit-platform.naming-strategy", "long")
+// 	//Pass Cucumber tag filter from command line: ./gradlew test -Dtags="@driver"
+// 	systemProperty("cucumber.filter.tags", System.getProperty("tags") ?: "")
+
+// 	// change report output directory: ./gradlew test -DreportDir="my-reports"
+// 	val reportDir = System.getProperty("reportDir")
+// 	if(reportDir != null) {
+// 		reports.html.outputLocation.set(file(reportDir))
+// 	}
+// }

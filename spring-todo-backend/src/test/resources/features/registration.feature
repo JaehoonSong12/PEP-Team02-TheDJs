@@ -14,16 +14,16 @@ Feature: Todo Application Registration
 # Then - this represents your expected end condition, the thing you are validating
 # There are a couple other keywords you can use, such as And, But, and *.
 
-    Scenario: Users can register with valid credentials
+    Background: All users navigate to the registration page
         Given   The user is on the login page
         When    The user clicks the registration link
+
+    Scenario: Users can register with valid credentials
         And     The user enters valid credentials
         And     The user clicks the register button
         Then    The user should be redirected to the login screen
 
     Scenario: Users registers with invalid credentials
-        Given   The user is on the login page
-        When    The user clicks the registration link
         And     The user enters invalid credentials
         And     The user clicks the register button
         Then    The user should be given an error message

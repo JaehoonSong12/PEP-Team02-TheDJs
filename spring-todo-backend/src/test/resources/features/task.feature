@@ -14,14 +14,15 @@ Feature: Todo Application Task Creation
 # Then - this represents your expected end condition, the thing you are validating
 # There are a couple other keywords you can use, such as And, But, and *.
 
-    Scenario:   User creates a new task with a title
+    Background: All Users need to be logged in and on the dashboard
         Given   The user is logged in and on the dashboard
+    
+    Scenario:   User creates a new task with a title 
         When    The user enters "Buy groceries" in the title input field
         And     The user clicks the Add task button
         Then    The task "Buy groceries" should appear in the task list 
 
     Scenario:   User creates a task with an empty title
-        Given   The user is logged in and on the dashboard
         When    The user leaves the task input field empty
         And     The user clicks the Add task button
         Then    The user should be given an error message

@@ -14,14 +14,15 @@ Feature: Todo Application Login
 # Then - this represents your expected end condition, the thing you are validating
 # There are a couple other keywords you can use, such as And, But, and *.
 
-    Scenario:    Users can log in with valid credentials
+    Background: All users need to be on the login page
         Given   The user is on the login page
+
+    Scenario:    Users can log in with valid credentials
         When    The user enters valid login credentials
         And     The user clicks login button
         Then    The user should be redirected to the dashboard page
 
     Scenario:   Users logs in with invalid credentials
-        Given   The user is on the login page
         When    The user enters invalid login credentials
         And     The user clicks login button
         Then    The user should be given an error message

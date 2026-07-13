@@ -14,18 +14,17 @@ Feature: Todo Application Subtask Creation
 # Then - this represents your expected end condition, the thing you are validating
 # There are a couple other keywords you can use, such as And, But, and *.
 
-    Scenario:   User creates a subtask under an existing task with a title
+    Background: All Users must be logged in and already have an existing task
         Given   The user is logged in and on the dashboard
         And     A task "Buy groceries" exists in the task list
         When    The user expands the task "Buy groceries"
+    
+    Scenario:   User creates a subtask under an existing task with a title
         And     The user enters "Get milk" in the subtask title input field
         And     The user clicks the Add subtask button
         Then    The subtask "Get milk" should appear under "Buy groceries"   
 
     Scenario:   User creates a subtask under an existing task without a title
-        Given   The user is logged in and on the dashboard
-        And     A task "Buy groceries" exists in the task list
-        When    The user expands the task "Buy groceries"
         And     The user leaves the subtask title input field empty
         And     The user clicks the Add subtask button
         Then    The user should be given an error message
