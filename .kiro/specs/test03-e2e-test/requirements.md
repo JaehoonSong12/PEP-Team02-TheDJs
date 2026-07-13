@@ -117,7 +117,7 @@ Complete the Cucumber BDD end-to-end testing implementation for the Todo Managem
 2. WHILE the E2E test suite is executing, THE Backend_App SHALL be accessible at `http://localhost:8080`.
 3. THE Test_Runner SHALL use `SpringBootTest.WebEnvironment.DEFINED_PORT` to start the Backend_App on port 8080 during test execution.
 4. THE Step_Definition classes SHALL use `http://localhost:4200` as the base URL for all WebDriver navigation.
-5. WHEN a step definition requires an authenticated user, THE Step_Definition SHALL register a test user with a unique username and a valid password through the UI registration form, then log in through the UI login form, and verify the dashboard is displayed before proceeding with the scenario actions.
+5. WHEN a step definition requires an authenticated user, THE Step_Definition SHALL register a test user with a unique username (minimum 5 characters) and a valid password satisfying all 7 PasswordValidator rules (8+ characters, at least one uppercase, lowercase, digit, special character from `!@#$%^&*`, no whitespace) through the UI registration form — including the confirmPassword field — then log in through the UI login form, and verify the dashboard is displayed before proceeding with the scenario actions.
 6. THE Test_Runner SHALL execute each test scenario against a fresh database state, relying on the `ddl-auto=create-drop` configuration to reset the schema on each backend startup.
 
 ### Requirement 8: Shared Step Definitions

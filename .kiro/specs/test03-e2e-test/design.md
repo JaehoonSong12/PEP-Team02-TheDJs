@@ -80,6 +80,12 @@ graph TD
 
 5. **Feature file discovery fix**: Add `FEATURES_PROPERTY_NAME` pointing to `classpath:features/` so the Cucumber engine finds `.feature` files under `src/test/resources/features/`.
 
+6. **Valid test passwords**: All test users must be registered with passwords satisfying all 7 PasswordValidator rules (8+ chars, uppercase, lowercase, digit, special char from `!@#$%^&*`, no whitespace, max 72 chars). Example: `"TestPass1!"`. The existing `RegistrationSteps` uses `"ValidPassword123"` which lacks a special character — this must be fixed.
+
+7. **ConfirmPassword field**: The registration form (and `RegistrationPom`) includes a `confirmPassword` field. All registration flows in SharedSteps and LoginSteps must populate this field with the same value as the password.
+
+8. **Dependency scope fix**: `selenium-java` and `cucumber-spring` are currently declared as `implementation` in `build.gradle.kts` but should be `testImplementation` since they are only used in tests.
+
 ## Components and Interfaces
 
 ### CucumberRunner (Modified)
@@ -168,6 +174,13 @@ public class CucumberRunner {
 
 **Rationale:** These steps appear in multiple feature files. Defining them in a single class avoids `DuplicateStepDefinitionException`. The existing duplicate in `RegistrationSteps` must be removed.
 
+**Registration in SharedSteps:** The "logged in and on the dashboard" step must:
+1. Navigate to `/login`, click the registration link
+2. Enter a unique username (e.g., `"testuser" + System.currentTimeMillis()`), a valid password (e.g., `"TestPass1!"`) containing a special character, and the same password into the confirmPassword field (the registration form has 3 fields)
+3. Submit the registration form and wait for redirect back to `/login`
+4. Enter the same username and password into the login form and submit
+5. Wait for URL to contain `/dashboard`
+
 ---
 
 ### LoginSteps
@@ -184,7 +197,7 @@ public class CucumberRunner {
 
 **Test user setup:** The Login feature's Background uses shared step "The user is on the login page". The valid login scenario needs a pre-registered user. `LoginSteps` will register a test user in a `@Before("@login")` hook or the valid credentials step will first register the user programmatically through the UI.
 
-**Design decision:** Since the login feature's Background is just "Given The user is on the login page" (handled by SharedSteps), and the valid login step needs credentials that actually exist in the system, the `LoginSteps` class will maintain a test username/password pair. A `@Before` tagged hook or a helper method will register the user through the registration page before the login attempt. This keeps the test self-contained without relying on direct database seeding.
+**Design decision:** Since the login feature's Background is just "Given The user is on the login page" (handled by SharedSteps), and the valid login step needs credentials that actually exist in the system, the `LoginSteps` class will maintain a test username/password pair. A `@Before` tagged hook or a helper method will register the user through the registration page before the login attempt. This keeps the test self-contained without relying on direct database seeding. The password must satisfy all 7 PasswordValidator rules (e.g., `"TestPass1!"` — has uppercase, lowercase, digit, special char, 8+ length, no whitespace). The registration form includes a confirmPassword field that must match the password.
 
 ---
 
@@ -230,10 +243,12 @@ This feature doesn't introduce new persistent data models. The tests interact wi
 
 | Scenario Context | Data Approach |
 |-----------------|---------------|
-| Registration tests | Generate unique usernames with timestamp suffix |
-| Login tests | Register a user first, then log in with those credentials |
+| Registration tests | Generate unique usernames with timestamp suffix; use password `"TestPass1!"` (satisfies all 7 PasswordValidator rules) |
+| Login tests | Register a user first (with confirmPassword matching password), then log in with those credentials |
 | Task tests | Log in (shared step), create tasks through the UI |
 | Subtask tests | Log in (shared step), create parent task, then create subtasks |
+
+**Important:** All test passwords must contain at least one character from `!@#$%^&*` (the special character set enforced by PasswordValidator). The existing `RegistrationSteps` uses `"ValidPassword123"` which does NOT meet this requirement and must be changed to `"ValidPass1!"` or similar.
 
 The `ddl-auto=create-drop` + H2 in-memory database ensures each test execution starts with a clean slate. However, within a single test run, scenarios share the same database state since the backend stays running.
 
@@ -244,6 +259,16 @@ The `ddl-auto=create-drop` + H2 in-memory database ensures each test execution s
 | Step definitions — element presence | 5 seconds | Fast feedback on missing elements |
 | DashboardPom — dynamic elements | 10 seconds | Tasks/subtasks render after API calls complete |
 | URL navigation assertions | 5 seconds | Route transitions should be near-instant |
+
+## Correctness Properties
+
+*A property is a characteristic or behavior that should hold true across all valid executions of a system.*
+
+### Property 1: Scenario isolation via fresh WebDriver
+
+*For any* Cucumber scenario in the suite, the `@Before` hook SHALL create a new FirefoxDriver instance and the `@After` hook SHALL quit it, ensuring no browser state (cookies, session storage, DOM state) leaks between scenarios regardless of pass/fail outcome.
+
+**Validates: Requirements 6.3, 6.5**
 
 ## Error Handling
 

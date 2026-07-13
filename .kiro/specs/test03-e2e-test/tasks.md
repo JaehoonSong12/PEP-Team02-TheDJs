@@ -6,25 +6,35 @@ Complete the Cucumber BDD end-to-end testing infrastructure by fixing the test r
 
 ## Tasks
 
-- [ ] 1. Fix CucumberRunner configuration and create SharedSteps
+- [ ] 1. Fix CucumberRunner configuration, fix dependencies, and create SharedSteps
   - [ ] 1.1 Add FEATURES_PROPERTY_NAME to CucumberRunner and clean up @SelectPackages
     - Import `FEATURES_PROPERTY_NAME` from `io.cucumber.junit.platform.engine.Constants`
     - Add `@ConfigurationParameter(key = FEATURES_PROPERTY_NAME, value = "classpath:features/")` annotation
     - Change `@SelectPackages({"features", "com.revature.todomanagement.cucumber"})` to `@SelectPackages("com.revature.todomanagement.cucumber")`
     - _Requirements: 6.1, 6.2, 6.3, 6.4, 6.5, 6.6, 6.7_
 
-  - [ ] 1.2 Create SharedSteps.java with shared step definitions
+  - [ ] 1.2 Fix dependency scopes in build.gradle.kts
+    - Ensure `org.seleniumhq.selenium:selenium-java` uses `testImplementation` scope
+    - Ensure `io.cucumber:cucumber-spring` uses `testImplementation` scope
+    - _Requirements: 7.1_
+
+  - [ ] 1.3 Ensure test.properties contains all required properties
+    - Ensure `src/test/resources/test.properties` contains: `spring.docker.compose.enabled=false`, `jwt.secret=TestSecretKeyThatIsAtLeast32CharactersLong!!`, `cors.allowed-origins=http://localhost:4200`, plus H2 datasource configuration
+    - _Requirements: 7.1, 7.6_
+
+  - [ ] 1.4 Create SharedSteps.java with shared step definitions
     - Create `src/test/java/com/revature/todomanagement/cucumber/steps/SharedSteps.java`
     - Implement `@Given("The user is on the login page")` — navigates to `http://localhost:4200/login`
     - Implement `@Then("The user should be given an error message")` — waits 5s for `[data-testid='error-message']` or `.error-message`, asserts text not empty
-    - Implement `@Given("The user is logged in and on the dashboard")` — registers a unique test user via UI, logs in, waits for `/dashboard` URL
+    - Implement `@Given("The user is logged in and on the dashboard")` — registers a unique test user via UI (using RegistrationPom with username+timestamp, password `"TestPass1!"`, confirm password `"TestPass1!"`), logs in via LoginPom, waits for `/dashboard` URL
     - Access WebDriver via `CucumberRunner.driver`
     - _Requirements: 8.1, 8.2, 8.3, 8.4, 7.4, 7.5_
 
-  - [ ] 1.3 Refactor RegistrationSteps.java to remove duplicate step definitions
-    - Remove `the_user_is_on_the_login_page()` method (moved to SharedSteps)
-    - Remove `the_user_should_be_given_an_error_message()` method (moved to SharedSteps)
-    - Ensure remaining registration-specific steps still compile and reference correct POMs
+  - [ ] 1.5 Refactor RegistrationSteps.java to remove duplicate step definitions and fix password
+    - Ensure the step `"The user is on the login page"` is defined only in SharedSteps (remove from RegistrationSteps if present)
+    - Ensure the step `"The user should be given an error message"` is defined only in SharedSteps (remove from RegistrationSteps if present)
+    - Ensure valid credential steps use a password satisfying all 7 PasswordValidator rules (e.g., `"ValidPass1!"` — must contain a special char from `!@#$%^&*`)
+    - Ensure remaining registration-specific steps compile and reference correct POMs
     - _Requirements: 8.1, 8.4_
 
 - [ ] 2. Create Page Object Model classes
@@ -65,9 +75,9 @@ Complete the Cucumber BDD end-to-end testing infrastructure by fixing the test r
     - Create `src/test/java/com/revature/todomanagement/cucumber/steps/LoginSteps.java`
     - Access WebDriver via `CucumberRunner.driver`
     - Instantiate LoginPom when needed
-    - Implement helper method to register a test user via the UI (navigate to register page, enter unique credentials, submit, wait for redirect to login)
+    - Implement helper method to register a test user via the UI (navigate to register page, enter unique username + password `"TestPass1!"` + confirm password `"TestPass1!"` into all 3 fields using RegistrationPom, submit, wait for redirect to login)
     - Implement `@When("The user enters valid login credentials")` — registers a test user first, then enters those credentials via LoginPom
-    - Implement `@When("The user enters invalid login credentials")` — enters non-existent username/password via LoginPom
+    - Implement `@When("The user enters invalid login credentials")` — enters non-existent username and password `"BadPass1!"` via LoginPom
     - Implement `@When("The user clicks login button")` — calls LoginPom.clickSubmitButton()
     - Implement `@Then("The user should be redirected to the dashboard page")` — WebDriverWait 5s for URL containing `/dashboard`
     - Implement `@Then("The user should remain on the login page")` — asserts URL contains `/login`
@@ -109,18 +119,23 @@ Complete the Cucumber BDD end-to-end testing infrastructure by fixing the test r
 - All step definitions use the shared WebDriver from `CucumberRunner.driver` (static field)
 - SharedSteps eliminates `DuplicateStepDefinitionException` by centralizing reused steps
 - Test users are created via UI registration (no direct DB seeding) for full E2E coverage
+- **All test passwords must contain a special char from `!@#$%^&*`** — e.g., `"TestPass1!"`. The existing `RegistrationSteps` uses `"ValidPassword123"` which fails PasswordValidator and must be fixed.
+- The registration form has 3 fields (username, password, confirmPassword) — confirmPassword must match password
 - WebDriverWait: 5s in step definitions, 10s in DashboardPom for dynamic elements
 - Prerequisites: Angular frontend at localhost:4200, GeckoDriver on PATH, Firefox installed
-- Run tests with `gradlew.bat test` from `spring-todo-backend/`
+- Run tests with `gradlew.bat test` from `spring-todo-backend/` (runs ALL tests including unit and integration)
+- To run ONLY E2E tests: `gradlew.bat test --tests "com.revature.todomanagement.cucumber.*"`
+- To run unit + integration tests WITHOUT E2E: `gradlew.bat test --tests "com.revature.todomanagement.*" --tests "!com.revature.todomanagement.cucumber.*"`
 - No property-based testing applies — this is browser automation E2E testing
+- The `test.properties` file is shared with test02 (integration tests) — do not add properties that conflict with `@SpringBootTest(RANDOM_PORT)` usage
 
 ## Task Dependency Graph
 
 ```json
 {
   "waves": [
-    { "id": 0, "tasks": ["1.1", "2.1", "2.2"] },
-    { "id": 1, "tasks": ["1.2", "1.3"] },
+    { "id": 0, "tasks": ["1.1", "1.2", "1.3", "2.1", "2.2"] },
+    { "id": 1, "tasks": ["1.4", "1.5"] },
     { "id": 2, "tasks": ["4.1"] },
     { "id": 3, "tasks": ["5.1", "6.1"] }
   ]
