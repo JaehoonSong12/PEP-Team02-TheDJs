@@ -53,9 +53,9 @@ dependencies {
     // the sub module that gives us access to the junit test suite feature https://mvnrepository.com/artifact/org.junit.platform/junit-platform-suite
     testImplementation("org.junit.platform:junit-platform-suite:1.14.1")
 	// Source: https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java
-	implementation("org.seleniumhq.selenium:selenium-java:4.45.0")
+	testImplementation("org.seleniumhq.selenium:selenium-java:4.45.0")
 	// Source: https://mvnrepository.com/artifact/io.cucumber/cucumber-spring
-	implementation("io.cucumber:cucumber-spring:7.34.4")
+	testImplementation("io.cucumber:cucumber-spring:7.34.4")
 }
 
 dependencyManagement {

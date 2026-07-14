@@ -6,17 +6,17 @@ This plan implements a comprehensive REST Assured integration test suite for the
 
 ## Tasks
 
-- [ ] 1. Set up test infrastructure and base configuration
-  - [ ] 1.1 Create test properties file
+- [x] 1. Set up test infrastructure and base configuration
+  - [x] 1.1 Create test properties file
     - Ensure `src/test/resources/test.properties` contains: H2 datasource URL (`jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1`), H2 driver class, H2 dialect, `create-drop` DDL auto, `spring.docker.compose.enabled=false`, `jwt.secret=TestSecretKeyThatIsAtLeast32CharactersLong!!`, and `cors.allowed-origins=http://localhost:4200`
     - _Requirements: 1.1, 10.1_
 
-  - [ ] 1.2 Add REST Assured dependency to build.gradle.kts
+  - [x] 1.2 Add REST Assured dependency to build.gradle.kts
     - Ensure `testImplementation("io.rest-assured:rest-assured:6.0.0")` is in the dependencies block
     - Ensure `org.seleniumhq.selenium:selenium-java` and `io.cucumber:cucumber-spring` use `testImplementation` scope (not `implementation`)
     - _Requirements: 1.1_
 
-  - [ ] 1.3 Implement BaseIntegrationTest abstract class
+  - [x] 1.3 Implement BaseIntegrationTest abstract class
     - Create `src/test/java/com/revature/todomanagement/BaseIntegrationTest.java`
     - Annotate with `@SpringBootTest(webEnvironment = RANDOM_PORT)` and `@TestPropertySource(locations = "classpath:test.properties")`
     - Inject random port with `@LocalServerPort`
@@ -25,8 +25,8 @@ This plan implements a comprehensive REST Assured integration test suite for the
     - Implement `getAuthToken(String username, String password)` that POSTs to `/api/auth/register` (asserts 201), POSTs to `/api/auth/login` (asserts 200), extracts `Authorization` header, strips `Bearer ` prefix, and returns the token string
     - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7_
 
-- [ ] 2. Implement registration validation tests
-  - [ ] 2.1 Create RegistrationIT test class
+- [x] 2. Implement registration validation tests
+  - [x] 2.1 Create RegistrationIT test class
     - Create `src/test/java/com/revature/todomanagement/RegistrationIT.java` extending `BaseIntegrationTest`
     - Implement 7 test methods: `blankUsername_returns400`, `shortUsername_returns400`, `longUsername_returns400`, `blankPassword_returns400`, `noSpecialCharPassword_returns400`, `validRegistration_returns201`, `duplicateUsername_returns400`
     - Use `@TestMethodOrder(OrderAnnotation.class)` and `@TestInstance(Lifecycle.PER_CLASS)` for the duplicate username test that depends on prior registration
@@ -40,8 +40,8 @@ This plan implements a comprehensive REST Assured integration test suite for the
     - Assert HTTP 400 with message containing "Password must contain at least one special character"
     - **Validates: Requirements 2.5**
 
-- [ ] 3. Implement authentication tests
-  - [ ] 3.1 Create AuthenticationIT test class
+- [x] 3. Implement authentication tests
+  - [x] 3.1 Create AuthenticationIT test class
     - Create `src/test/java/com/revature/todomanagement/AuthenticationIT.java` extending `BaseIntegrationTest`
     - Use `@TestMethodOrder(OrderAnnotation.class)` and `@TestInstance(Lifecycle.PER_CLASS)` to register a user in setup before login tests
     - Implement test methods: `registerSetupUser_returns201`, `validLogin_returns200WithToken`, `wrongPassword_returns401`, `unknownUsername_returns401`, `emptyCredentials_returns401`
@@ -54,8 +54,8 @@ This plan implements a comprehensive REST Assured integration test suite for the
     - Use jqwik `@Property(tries = 20)` to generate valid username/password pairs, register, login, and verify token format
     - **Validates: Requirements 3.2**
 
-- [ ] 4. Implement auth interceptor tests
-  - [ ] 4.1 Create AuthInterceptorIT test class
+- [x] 4. Implement auth interceptor tests
+  - [x] 4.1 Create AuthInterceptorIT test class
     - Create `src/test/java/com/revature/todomanagement/AuthInterceptorIT.java` extending `BaseIntegrationTest`
     - Implement `noAuthHeader_returns401` — request to `/api/todos` with no Authorization header, assert 401 with "Missing or malformed Authorization header"
     - Implement `invalidSignature_returns401` — craft a JWT signed with a wrong secret using `Jwts.builder()` from JJWT, assert 401 with "Invalid or expired token"
@@ -64,11 +64,11 @@ This plan implements a comprehensive REST Assured integration test suite for the
     - Implement `validToken_proceeds` — use `getAuthToken()` to get a valid token, send request to `/api/todos`, assert response is NOT 401
     - _Requirements: 4.1, 4.2, 4.3, 4.4, 4.5_
 
-- [ ] 5. Checkpoint - Verify base infrastructure and auth tests pass
+- [x] 5. Checkpoint - Verify base infrastructure and auth tests pass
   - Ensure all tests pass, ask the user if questions arise.
 
-- [ ] 6. Implement task CRUD tests
-  - [ ] 6.1 Create TaskCrudIT test class
+- [x] 6. Implement task CRUD tests
+  - [x] 6.1 Create TaskCrudIT test class
     - Create `src/test/java/com/revature/todomanagement/TaskCrudIT.java` extending `BaseIntegrationTest`
     - Use `@TestMethodOrder(OrderAnnotation.class)` and `@TestInstance(Lifecycle.PER_CLASS)` to share created task IDs across ordered tests
     - Acquire token in `@BeforeAll` using `getAuthToken()`
@@ -92,8 +92,8 @@ This plan implements a comprehensive REST Assured integration test suite for the
     - Register two users, create tasks for each, verify GET `/api/todos` for each user returns only their own tasks (all `userId` fields match)
     - **Validates: Requirements 5.3, 7.6**
 
-- [ ] 7. Implement subtask CRUD tests
-  - [ ] 7.1 Create SubtaskCrudIT test class
+- [x] 7. Implement subtask CRUD tests
+  - [x] 7.1 Create SubtaskCrudIT test class
     - Create `src/test/java/com/revature/todomanagement/SubtaskCrudIT.java` extending `BaseIntegrationTest`
     - Use `@TestMethodOrder(OrderAnnotation.class)` and `@TestInstance(Lifecycle.PER_CLASS)`
     - Acquire token and create a parent task in `@BeforeAll`
@@ -111,11 +111,11 @@ This plan implements a comprehensive REST Assured integration test suite for the
     - Use jqwik `@Property(tries = 50)` to generate empty/whitespace-only strings, POST to subtask endpoint, verify HTTP 400 with "Subtask title must not be blank."
     - **Validates: Requirements 6.2**
 
-- [ ] 8. Checkpoint - Verify CRUD tests pass
+- [x] 8. Checkpoint - Verify CRUD tests pass
   - Ensure all tests pass, ask the user if questions arise.
 
-- [ ] 9. Implement ownership enforcement tests
-  - [ ] 9.1 Create OwnershipIT test class
+- [x] 9. Implement ownership enforcement tests
+  - [x] 9.1 Create OwnershipIT test class
     - Create `src/test/java/com/revature/todomanagement/OwnershipIT.java` extending `BaseIntegrationTest`
     - Use `@TestMethodOrder(OrderAnnotation.class)` and `@TestInstance(Lifecycle.PER_CLASS)`
     - In `@BeforeAll`, register User A and User B, acquire tokens for both, create a task as User A
@@ -131,8 +131,8 @@ This plan implements a comprehensive REST Assured integration test suite for the
     - For a task owned by User A, verify all operations (GET, PUT, DELETE, list subtasks) by User B return 403 with "does not own task", and task remains accessible to User A
     - **Validates: Requirements 7.2, 7.3, 7.4, 7.5**
 
-- [ ] 10. Implement cascade delete tests
-  - [ ] 10.1 Create CascadeDeleteIT test class
+- [x] 10. Implement cascade delete tests
+  - [x] 10.1 Create CascadeDeleteIT test class
     - Create `src/test/java/com/revature/todomanagement/CascadeDeleteIT.java` extending `BaseIntegrationTest`
     - Use `@TestMethodOrder(OrderAnnotation.class)` and `@TestInstance(Lifecycle.PER_CLASS)`
     - In setup, authenticate, create a task, and create at least one subtask
@@ -148,8 +148,8 @@ This plan implements a comprehensive REST Assured integration test suite for the
     - Create a task with subtasks, delete the task, verify subtask endpoint returns 404
     - **Validates: Requirements 8.2, 8.3, 8.5**
 
-- [ ] 11. Implement business rule tests
-  - [ ] 11.1 Create BusinessRuleIT test class
+- [x] 11. Implement business rule tests
+  - [x] 11.1 Create BusinessRuleIT test class
     - Create `src/test/java/com/revature/todomanagement/BusinessRuleIT.java` extending `BaseIntegrationTest`
     - Use `@TestMethodOrder(OrderAnnotation.class)` and `@TestInstance(Lifecycle.PER_CLASS)`
     - In setup, authenticate and create a task
@@ -163,7 +163,7 @@ This plan implements a comprehensive REST Assured integration test suite for the
     - Use jqwik to generate valid subtask titles, attempt creation on a completed task, verify HTTP 400 with "Cannot add subtasks to a completed task."
     - **Validates: Requirements 9.2**
 
-- [ ] 12. Final checkpoint - Ensure full test suite passes
+- [x] 12. Final checkpoint - Ensure full test suite passes
   - Ensure all tests pass, ask the user if questions arise.
 
 ## Notes

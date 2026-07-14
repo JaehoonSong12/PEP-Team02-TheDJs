@@ -1,0 +1,258 @@
+{
+  "pbtResults": {},
+  "executionHistory": {
+    "1.1 Create test sub-package directories and verify build configuration": [
+      {
+        "executionId": "500056ed-8c91-4d36-9ed2-9bab0290f3cc",
+        "chatSessionId": "sess_8c2cf872-54c2-4aed-9cab-44d665e250c8",
+        "timestamp": 1783991747136
+      },
+      {
+        "executionId": "500056ed-8c91-4d36-9ed2-9bab0290f3cc",
+        "chatSessionId": "sess_8c2cf872-54c2-4aed-9cab-44d665e250c8",
+        "timestamp": 1783991753989
+      },
+      {
+        "executionId": "500056ed-8c91-4d36-9ed2-9bab0290f3cc",
+        "chatSessionId": "sess_8c2cf872-54c2-4aed-9cab-44d665e250c8",
+        "timestamp": 1783991903643
+      }
+    ],
+    "2.1 Create RegistrationServiceTest with username validation and password validation nested groups": [
+      {
+        "executionId": "500056ed-8c91-4d36-9ed2-9bab0290f3cc",
+        "chatSessionId": "sess_8c2cf872-54c2-4aed-9cab-44d665e250c8",
+        "timestamp": 1783991747199
+      },
+      {
+        "executionId": "500056ed-8c91-4d36-9ed2-9bab0290f3cc",
+        "chatSessionId": "sess_8c2cf872-54c2-4aed-9cab-44d665e250c8",
+        "timestamp": 1783991907613
+      },
+      {
+        "executionId": "500056ed-8c91-4d36-9ed2-9bab0290f3cc",
+        "chatSessionId": "sess_8c2cf872-54c2-4aed-9cab-44d665e250c8",
+        "timestamp": 1783992213681
+      }
+    ],
+    "2.2 Add duplicate checking and persistence nested groups to RegistrationServiceTest": [
+      {
+        "executionId": "500056ed-8c91-4d36-9ed2-9bab0290f3cc",
+        "chatSessionId": "sess_8c2cf872-54c2-4aed-9cab-44d665e250c8",
+        "timestamp": 1783991747254
+      },
+      {
+        "executionId": "500056ed-8c91-4d36-9ed2-9bab0290f3cc",
+        "chatSessionId": "sess_8c2cf872-54c2-4aed-9cab-44d665e250c8",
+        "timestamp": 1783992219007
+      },
+      {
+        "executionId": "500056ed-8c91-4d36-9ed2-9bab0290f3cc",
+        "chatSessionId": "sess_8c2cf872-54c2-4aed-9cab-44d665e250c8",
+        "timestamp": 1783996850491
+      }
+    ],
+    "3.1 Create UserServiceTest with login nested group": [
+      {
+        "executionId": "500056ed-8c91-4d36-9ed2-9bab0290f3cc",
+        "chatSessionId": "sess_8c2cf872-54c2-4aed-9cab-44d665e250c8",
+        "timestamp": 1783991747285
+      },
+      {
+        "executionId": "500056ed-8c91-4d36-9ed2-9bab0290f3cc",
+        "chatSessionId": "sess_8c2cf872-54c2-4aed-9cab-44d665e250c8",
+        "timestamp": 1783991908454
+      },
+      {
+        "executionId": "500056ed-8c91-4d36-9ed2-9bab0290f3cc",
+        "chatSessionId": "sess_8c2cf872-54c2-4aed-9cab-44d665e250c8",
+        "timestamp": 1783992214544
+      }
+    ],
+    "4.1 Create TaskServiceTest with createTask and getTasksForUser nested groups": [
+      {
+        "executionId": "500056ed-8c91-4d36-9ed2-9bab0290f3cc",
+        "chatSessionId": "sess_8c2cf872-54c2-4aed-9cab-44d665e250c8",
+        "timestamp": 1783991747334
+      },
+      {
+        "executionId": "500056ed-8c91-4d36-9ed2-9bab0290f3cc",
+        "chatSessionId": "sess_8c2cf872-54c2-4aed-9cab-44d665e250c8",
+        "timestamp": 1783991909458
+      },
+      {
+        "executionId": "500056ed-8c91-4d36-9ed2-9bab0290f3cc",
+        "chatSessionId": "sess_8c2cf872-54c2-4aed-9cab-44d665e250c8",
+        "timestamp": 1783992215463
+      }
+    ],
+    "4.2 Add getTaskById, updateTask, and deleteTask nested groups to TaskServiceTest": [
+      {
+        "executionId": "500056ed-8c91-4d36-9ed2-9bab0290f3cc",
+        "chatSessionId": "sess_8c2cf872-54c2-4aed-9cab-44d665e250c8",
+        "timestamp": 1783991747356
+      },
+      {
+        "executionId": "500056ed-8c91-4d36-9ed2-9bab0290f3cc",
+        "chatSessionId": "sess_8c2cf872-54c2-4aed-9cab-44d665e250c8",
+        "timestamp": 1783992219882
+      },
+      {
+        "executionId": "500056ed-8c91-4d36-9ed2-9bab0290f3cc",
+        "chatSessionId": "sess_8c2cf872-54c2-4aed-9cab-44d665e250c8",
+        "timestamp": 1783996851380
+      }
+    ],
+    "5. Checkpoint - Verify service tests pass": [
+      {
+        "executionId": "500056ed-8c91-4d36-9ed2-9bab0290f3cc",
+        "chatSessionId": "sess_8c2cf872-54c2-4aed-9cab-44d665e250c8",
+        "timestamp": 1783991747382
+      },
+      {
+        "executionId": "500056ed-8c91-4d36-9ed2-9bab0290f3cc",
+        "chatSessionId": "sess_8c2cf872-54c2-4aed-9cab-44d665e250c8",
+        "timestamp": 1783996884078
+      },
+      {
+        "executionId": "500056ed-8c91-4d36-9ed2-9bab0290f3cc",
+        "chatSessionId": "sess_8c2cf872-54c2-4aed-9cab-44d665e250c8",
+        "timestamp": 1783998008002
+      }
+    ],
+    "6.1 Create PasswordValidatorTest with individual rules and boundary tests": [
+      {
+        "executionId": "500056ed-8c91-4d36-9ed2-9bab0290f3cc",
+        "chatSessionId": "sess_8c2cf872-54c2-4aed-9cab-44d665e250c8",
+        "timestamp": 1783991747412
+      },
+      {
+        "executionId": "500056ed-8c91-4d36-9ed2-9bab0290f3cc",
+        "chatSessionId": "sess_8c2cf872-54c2-4aed-9cab-44d665e250c8",
+        "timestamp": 1783992220752
+      },
+      {
+        "executionId": "500056ed-8c91-4d36-9ed2-9bab0290f3cc",
+        "chatSessionId": "sess_8c2cf872-54c2-4aed-9cab-44d665e250c8",
+        "timestamp": 1783996852346
+      }
+    ],
+    "7.1 Create JwtUtilTest with generateToken, extractUsername, extractUserId, and isTokenValid nested groups": [
+      {
+        "executionId": "500056ed-8c91-4d36-9ed2-9bab0290f3cc",
+        "chatSessionId": "sess_8c2cf872-54c2-4aed-9cab-44d665e250c8",
+        "timestamp": 1783991747440
+      },
+      {
+        "executionId": "500056ed-8c91-4d36-9ed2-9bab0290f3cc",
+        "chatSessionId": "sess_8c2cf872-54c2-4aed-9cab-44d665e250c8",
+        "timestamp": 1783992221682
+      },
+      {
+        "executionId": "500056ed-8c91-4d36-9ed2-9bab0290f3cc",
+        "chatSessionId": "sess_8c2cf872-54c2-4aed-9cab-44d665e250c8",
+        "timestamp": 1783996853284
+      }
+    ],
+    "8.1 Create AuthInterceptorTest with CORS, header validation, token validation, and success nested groups": [
+      {
+        "executionId": "500056ed-8c91-4d36-9ed2-9bab0290f3cc",
+        "chatSessionId": "sess_8c2cf872-54c2-4aed-9cab-44d665e250c8",
+        "timestamp": 1783991747470
+      },
+      {
+        "executionId": "500056ed-8c91-4d36-9ed2-9bab0290f3cc",
+        "chatSessionId": "sess_8c2cf872-54c2-4aed-9cab-44d665e250c8",
+        "timestamp": 1783992222600
+      },
+      {
+        "executionId": "500056ed-8c91-4d36-9ed2-9bab0290f3cc",
+        "chatSessionId": "sess_8c2cf872-54c2-4aed-9cab-44d665e250c8",
+        "timestamp": 1783996854419
+      }
+    ],
+    "9. Checkpoint - Verify security tests pass": [
+      {
+        "executionId": "500056ed-8c91-4d36-9ed2-9bab0290f3cc",
+        "chatSessionId": "sess_8c2cf872-54c2-4aed-9cab-44d665e250c8",
+        "timestamp": 1783991747493
+      },
+      {
+        "executionId": "500056ed-8c91-4d36-9ed2-9bab0290f3cc",
+        "chatSessionId": "sess_8c2cf872-54c2-4aed-9cab-44d665e250c8",
+        "timestamp": 1783996884899
+      },
+      {
+        "executionId": "500056ed-8c91-4d36-9ed2-9bab0290f3cc",
+        "chatSessionId": "sess_8c2cf872-54c2-4aed-9cab-44d665e250c8",
+        "timestamp": 1783998008883
+      }
+    ],
+    "10. Final checkpoint - Ensure all tests pass": [
+      {
+        "executionId": "500056ed-8c91-4d36-9ed2-9bab0290f3cc",
+        "chatSessionId": "sess_8c2cf872-54c2-4aed-9cab-44d665e250c8",
+        "timestamp": 1783991747515
+      },
+      {
+        "executionId": "500056ed-8c91-4d36-9ed2-9bab0290f3cc",
+        "chatSessionId": "sess_8c2cf872-54c2-4aed-9cab-44d665e250c8",
+        "timestamp": 1783998012159
+      },
+      {
+        "executionId": "500056ed-8c91-4d36-9ed2-9bab0290f3cc",
+        "chatSessionId": "sess_8c2cf872-54c2-4aed-9cab-44d665e250c8",
+        "timestamp": 1783998140317
+      }
+    ],
+    "1. Set up test package structure and verify jqwik dependency": [
+      {
+        "executionId": "500056ed-8c91-4d36-9ed2-9bab0290f3cc",
+        "chatSessionId": "sess_8c2cf872-54c2-4aed-9cab-44d665e250c8",
+        "timestamp": 1783991903670
+      }
+    ],
+    "3. Implement UserService unit tests": [
+      {
+        "executionId": "500056ed-8c91-4d36-9ed2-9bab0290f3cc",
+        "chatSessionId": "sess_8c2cf872-54c2-4aed-9cab-44d665e250c8",
+        "timestamp": 1783992214579
+      }
+    ],
+    "2. Implement RegistrationService unit tests": [
+      {
+        "executionId": "500056ed-8c91-4d36-9ed2-9bab0290f3cc",
+        "chatSessionId": "sess_8c2cf872-54c2-4aed-9cab-44d665e250c8",
+        "timestamp": 1783996850564
+      }
+    ],
+    "4. Implement TaskService unit tests": [
+      {
+        "executionId": "500056ed-8c91-4d36-9ed2-9bab0290f3cc",
+        "chatSessionId": "sess_8c2cf872-54c2-4aed-9cab-44d665e250c8",
+        "timestamp": 1783996851440
+      }
+    ],
+    "6. Implement PasswordValidator unit tests": [
+      {
+        "executionId": "500056ed-8c91-4d36-9ed2-9bab0290f3cc",
+        "chatSessionId": "sess_8c2cf872-54c2-4aed-9cab-44d665e250c8",
+        "timestamp": 1783996852385
+      }
+    ],
+    "7. Implement JwtUtil unit tests": [
+      {
+        "executionId": "500056ed-8c91-4d36-9ed2-9bab0290f3cc",
+        "chatSessionId": "sess_8c2cf872-54c2-4aed-9cab-44d665e250c8",
+        "timestamp": 1783996853327
+      }
+    ],
+    "8. Implement AuthInterceptor unit tests": [
+      {
+        "executionId": "500056ed-8c91-4d36-9ed2-9bab0290f3cc",
+        "chatSessionId": "sess_8c2cf872-54c2-4aed-9cab-44d665e250c8",
+        "timestamp": 1783996854463
+      }
+    ]
+  }
+}

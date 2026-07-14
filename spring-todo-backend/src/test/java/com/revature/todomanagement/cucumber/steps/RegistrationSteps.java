@@ -4,7 +4,6 @@ import com.revature.todomanagement.cucumber.CucumberRunner;
 import com.revature.todomanagement.cucumber.poms.RegistrationPom;
 
 import io.cucumber.java.en.And;
-import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.WebDriver;
@@ -19,7 +18,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class RegistrationSteps {
 
-    private static final String BASE_URL = "http://localhost:4200";
     private WebDriver driver;
     private RegistrationPom registrationPom;
 
@@ -28,11 +26,6 @@ public class RegistrationSteps {
             driver = CucumberRunner.driver;
         }
         return driver;
-    }
-
-    @Given("The user is on the login page")
-    public void the_user_is_on_the_login_page() {
-        getDriver().get(BASE_URL + "/login");
     }
 
     @When("The user clicks the registration link")
@@ -47,13 +40,15 @@ public class RegistrationSteps {
 
     @And("The user enters valid credentials")
     public void the_user_enters_valid_credentials() {
-        registrationPom.enterCredentials("testuser", "ValidPassword123");
+        String uniqueUsername = "u" + (System.currentTimeMillis() % 100000000000L);
+        registrationPom.enterCredentials(uniqueUsername, "ValidPass1!");
     }
 
     @And("The user enters invalid credentials")
     public void the_user_enters_invalid_credentials() {
-        // Empty credentials to trigger validation
-        registrationPom.enterCredentials("", "");
+        // Enter data that passes client-side validation (non-empty, passwords match)
+        // but fails server-side PasswordValidator (too short, no uppercase, no digit, no special char)
+        registrationPom.enterCredentials("ab", "weak");
     }
 
     @And("The user clicks the register button")
@@ -66,15 +61,6 @@ public class RegistrationSteps {
         new WebDriverWait(getDriver(), Duration.ofSeconds(5))
                 .until(ExpectedConditions.urlContains("/login"));
         assertTrue(getDriver().getCurrentUrl().contains("/login"));
-    }
-
-    @Then("The user should be given an error message")
-    public void the_user_should_be_given_an_error_message() {
-        new WebDriverWait(getDriver(), Duration.ofSeconds(5))
-                .until(ExpectedConditions.visibilityOfElementLocated(
-                        By.cssSelector("[data-testid='error-message']")));
-        String message = registrationPom.getStatusMessage();
-        assertFalse(message.isEmpty());
     }
 
     @And("The user should remain on the registration page")
