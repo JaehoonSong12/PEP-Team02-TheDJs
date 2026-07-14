@@ -1,4 +1,4 @@
-package com.revature.todomanagement;
+package com.revature.todomanagement.rest;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;

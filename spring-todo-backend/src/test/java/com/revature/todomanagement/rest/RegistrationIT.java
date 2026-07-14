@@ -1,4 +1,4 @@
-package com.revature.todomanagement;
+package com.revature.todomanagement.rest;
 
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.*;
