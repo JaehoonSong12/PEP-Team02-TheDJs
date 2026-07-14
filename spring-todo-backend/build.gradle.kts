@@ -45,7 +45,7 @@ dependencies {
 	runtimeOnly("io.jsonwebtoken:jjwt-impl:0.13.0") // [Added dependency] Added as instructed for JSON Web Token implementation
 	runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.13.0") // [Added dependency] Added as instructed for JSON Web Token Jackson mapping
 	testImplementation("com.h2database:h2:2.4.240") // [Added dependency] Added as instructed for in-memory H2 database testing
-	testImplementation("net.jqwik:jqwik:1.9.3") // [Added dependency] Property-based testing for PasswordValidator
+	testImplementation("net.jqwik:jqwik:1.9.3") // [Added dependency] Property-based testing for PasswordValidator— also generates .jqwik-database at project root on every test run (replay cache, gitignored)
 	// the core cucumber code https://mvnrepository.com/artifact/io.cucumber/cucumber-java
     testImplementation("io.cucumber:cucumber-java:7.33.0")
     // the integration code for cucumber & junit https://mvnrepository.com/artifact/io.cucumber/cucumber-junit-platform-engine

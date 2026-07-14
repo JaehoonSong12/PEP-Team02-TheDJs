@@ -35,3 +35,8 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Test artifacts ###
+test-output.txt
+reports/
+.jqwik-database

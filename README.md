@@ -1,98 +1,124 @@
-# Project 1: Todo Management Application
+# Todo Management Application
 
-## Objective
-Build a full-stack, secure Todo Management application using Agile methodologies. You will move from initial requirement analysis to a functional product demonstration, simulating a real-world Software Development Lifecycle (SDLC).
+A full-stack web application that lets users register, authenticate via JWT, and manage hierarchical todo tasks with nested subtasks. Built with Spring Boot 4.1 (Java 21) and Angular.
+
+## Prerequisites
+
+- **Java 21** (OpenJDK or Oracle JDK)
+- **Gradle 8.x** (or use the included `gradlew` wrapper)
+- **Node.js 22.x** and npm (for the Angular frontend)
+- **Firefox** and **GeckoDriver** (for E2E browser tests only)
+
+## Getting Started
+
+### Backend
+
+```bash
+cd spring-todo-backend
+./gradlew bootRun
+```
+
+Serves the REST API at `http://localhost:8080`.
+
+### Frontend
+
+```bash
+cd angular-todo-frontend
+npm install
+npm start
+```
+
+Serves the Angular app at `http://localhost:4200`.
+
+## Testing
+
+All commands below run from `spring-todo-backend/`.
+
+### Unit Tests
+
+Validates service and security logic in isolation using Mockito. No Spring context is loaded.
+
+```bash
+./gradlew test --tests "com.revature.todomanagement.service.*" \
+               --tests "com.revature.todomanagement.security.*"
+```
+
+### Integration Tests
+
+Exercises the full REST API via REST Assured against an embedded server with H2 in-memory database.
+
+```bash
+./gradlew test --tests "com.revature.todomanagement.rest.*"
+```
+
+### End-to-End Tests
+
+Drives the Angular frontend through Firefox using Selenium and Cucumber BDD scenarios. Requires both backend and frontend to be running.
+
+```bash
+./gradlew test --tests "com.revature.todomanagement.cucumber.*"
+```
+
+### All Tests
+
+```bash
+./gradlew test
+```
+
+> **Note:** E2E tests require the backend on `:8080`, the frontend on `:4200`, and Firefox/GeckoDriver available on PATH.
+
+## Architecture
+
+```
+spring-todo-backend/src/
+├── main/java/com/revature/todomanagement/
+│   ├── controller/        # REST endpoints
+│   ├── service/           # Business logic
+│   ├── repository/        # Spring Data JPA interfaces
+│   ├── entity/            # JPA domain models
+│   ├── security/          # JWT, interceptor, password validation
+│   └── exception/         # Custom exceptions and error handling
+└── test/java/com/revature/todomanagement/
+    ├── service/           # Unit tests (Mockito)
+    ├── security/          # Unit tests (Mockito)
+    ├── rest/              # API integration tests (REST Assured)
+    └── cucumber/          # E2E browser tests (Selenium + Cucumber)
+```
+
+### Test Tiers
+
+| Tier | Package | Tools | Boots Spring? | Purpose |
+|------|---------|-------|:-------------:|---------|
+| Unit | `.service`, `.security` | JUnit 5, Mockito, jqwik | No | Verify business logic and security rules in isolation |
+| Integration | `.rest` | JUnit 5, REST Assured, H2 | Yes | Verify HTTP contracts, status codes, and error handling |
+| E2E | `.cucumber` | Cucumber, Selenium, Firefox | Yes | Verify user journeys through the browser |
 
 ## Tech Stack
+
 | Layer | Technology |
-| :--- | :--- |
-| **Frontend** | Angular |
-| **Backend** | Java (Spring Boot, Web, Data JPA) |
-| **Database** | SQLite |
-| **Build/Tools** | Gradle, Git, GitHub |
+|-------|-----------|
+| Backend | Spring Boot 4.1, Spring Web MVC, Spring Data JPA |
+| Auth | JJWT 0.13 (HS256) |
+| Database | SQLite (production), H2 (tests) |
+| Frontend | Angular, HttpClient with JWT interceptor |
+| Build | Gradle (Kotlin DSL) |
 
-## User Stories (The "What")
-*   **Registration:** As a new user, I can register an account.
-*   **Authentication:** As a new user, I can log in/out securely.
-*   **Task Management:** As a user, I can CRUD primary Todo items.
-*   **Organization:** As a user, I can CRUD nested subtasks.
+## API Endpoints
 
-## Project Roadmap
-*Click a phase to view specific checkpoints and requirements.*
+| Method | Path | Auth | Description |
+|--------|------|:----:|-------------|
+| POST | `/api/auth/register` | No | Register a new user |
+| POST | `/api/auth/login` | No | Authenticate and receive JWT |
+| GET | `/api/todos` | Yes | List tasks for authenticated user |
+| POST | `/api/todos` | Yes | Create a task |
+| GET | `/api/todos/{id}` | Yes | Get a task by ID |
+| PUT | `/api/todos/{id}` | Yes | Update a task |
+| DELETE | `/api/todos/{id}` | Yes | Delete a task (cascades to subtasks) |
+| GET | `/api/todos/{id}/subtasks` | Yes | List subtasks |
+| POST | `/api/todos/{id}/subtasks` | Yes | Create a subtask |
+| PUT | `/api/todos/{id}/subtasks/{sid}` | Yes | Update a subtask |
+| DELETE | `/api/todos/{id}/subtasks/{sid}` | Yes | Delete a subtask |
 
-### [Phase 1: Requirements Analysis](./docs/phase-1.md)
-> **Goal:** Deconstruct user stories into technical tasks and database schemas.
+## License
 
-### [Phase 2: Design](./docs/phase-2.md)
-> **Goal:** Plan API contracts, UI wireframes, and system architecture.
-
-### [Phase 3: Backend Development](./docs/phase-3.md)
-> **Goal:** Build the REST API, Security layer, and Data Persistence.
-
-### [Phase 4: Frontend Development](./docs/phase-4.md)
-> **Goal:** Build the responsive Angular UI and integrate with the API.
-
-### [Phase 5: Presentation](./docs/phase-5.md)
-> **Goal:** Demonstrate working software and technical architecture.
-
-## Agile & Collaboration Standards
-To ensure professional delivery, all teams must adhere to:
-*   **Daily Stand-ups:** Answer: *What did I do? What am I doing? Any blockers?*
-*   **Git Workflow:** 
-    - Feature branching (`feature/name`) or something similar
-    - peer-reviewed Pull Requests
-    - atomic commits
-    - Utilizing GitHub Issues and Projects to organize and track work
-*   **Success Criteria:** Alignment with design, effective Git collaboration, and application reliability.
-
-
-# Project 2: DevOps & Automated Testing
-
-## Objective
-The goal of Project 2 is to transition your application from a local development environment to a production-ready cloud architecture. You will implement a robust automated testing suite and establish a Continuous Integration/Continuous Deployment (CI/CD) pipeline to automate the deployment of your application to AWS.
-
-## Technology Stack
-| Category | Technology |
-| :--- | :--- |
-| **Cloud Hosting** | AWS (EC2 for Backend, S3 for Frontend) |
-| **Containerization** | Docker |
-| **CI/CD Automation** | Jenkins (MVP: Manual setup; Stretch: Full Pipeline) |
-| **API Testing** | REST Assured |
-| **E2E Testing** | Selenium, Cucumber, JUnit 5 |
-
-## Testing Requirements (Primary Goal)
-Before deployment, your application must prove its reliability through two layers of testing:
-
-1.  **API Layer (REST Assured):** Automated validation of all RESTful endpoints, ensuring correct status codes, JSON schemas, and business logic.
-2.  **End-to-End Layer (Selenium/Cucumber/JUnit 5):** Automated "User Story" testing. Using Gherkin syntax (Given/When/Then), you will simulate real user behavior in a browser to ensure the frontend and backend work in unison.
-
-## Project Roadmap
-*Click a phase to view specific checkpoints and requirements.*
-
-### [Phase 1: Automated Testing Suite](./docs/phase-1.md)
-> **Goal:** Implement REST Assured for API testing and Selenium/Cucumber for E2E testing.
-
-### [Phase 2: Containerization](./docs/phase-2.md)
-> **Goal:** Dockerize the application components to ensure environmental consistency.
-
-### [Phase 3: Cloud Infrastructure](./docs/phase-3.md)
-> **Goal:** Provision AWS resources (EC2 and S3) to host the backend and frontend.
-
-### [Phase 4: CI/CD Pipeline](./docs/phase-4.md)
-> **Goal:** Use Jenkins to automate the build, test, and deployment process.
-
-### [Phase 5: Presentation](./docs/phase-5.md)
-> **Goal:** Demonstrate a code change triggering an automated pipeline and deployment.
-
----
-
-## Agile & DevOps Practices
-*   **Daily Stand-ups:** Focus on "Pipeline Blockers" and "Test Failures."
-*   **Infrastructure as Code (Concept):** Aim to document your AWS and Docker configurations clearly.
-*   **Continuous Feedback:** Use your automated test results as the primary gatekeeper for your deployment.
-
-## Success Criteria
-*   **Test Coverage:** All core user stories are validated by automated API & E2E tests.
-*   **Deployment Success:** The application is accessible via a public AWS URL.
-*   **Pipeline Integrity:** A code push triggers a Jenkins build that runs tests before deploying.
-*   **Reliability:** The deployment process is repeatable and minimizes manual intervention.
+This project is part of a Revature training program (Team02 - TheDJs).
