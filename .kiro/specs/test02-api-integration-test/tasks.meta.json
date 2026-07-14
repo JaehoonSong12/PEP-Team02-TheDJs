@@ -1,0 +1,306 @@
+{
+  "pbtResults": {},
+  "executionHistory": {
+    "1.1 Create test properties file": [
+      {
+        "executionId": "08d48fd0-2b95-452b-aff5-1207215058bb",
+        "chatSessionId": "sess_63db50ea-8b5c-4b39-a24e-27c3fbfec663",
+        "timestamp": 1783999422124
+      },
+      {
+        "executionId": "08d48fd0-2b95-452b-aff5-1207215058bb",
+        "chatSessionId": "sess_63db50ea-8b5c-4b39-a24e-27c3fbfec663",
+        "timestamp": 1783999435911
+      },
+      {
+        "executionId": "08d48fd0-2b95-452b-aff5-1207215058bb",
+        "chatSessionId": "sess_63db50ea-8b5c-4b39-a24e-27c3fbfec663",
+        "timestamp": 1783999819654
+      }
+    ],
+    "1.2 Add REST Assured dependency to build.gradle.kts": [
+      {
+        "executionId": "08d48fd0-2b95-452b-aff5-1207215058bb",
+        "chatSessionId": "sess_63db50ea-8b5c-4b39-a24e-27c3fbfec663",
+        "timestamp": 1783999422165
+      },
+      {
+        "executionId": "08d48fd0-2b95-452b-aff5-1207215058bb",
+        "chatSessionId": "sess_63db50ea-8b5c-4b39-a24e-27c3fbfec663",
+        "timestamp": 1783999436962
+      },
+      {
+        "executionId": "08d48fd0-2b95-452b-aff5-1207215058bb",
+        "chatSessionId": "sess_63db50ea-8b5c-4b39-a24e-27c3fbfec663",
+        "timestamp": 1783999820552
+      }
+    ],
+    "1.3 Implement BaseIntegrationTest abstract class": [
+      {
+        "executionId": "08d48fd0-2b95-452b-aff5-1207215058bb",
+        "chatSessionId": "sess_63db50ea-8b5c-4b39-a24e-27c3fbfec663",
+        "timestamp": 1783999422203
+      },
+      {
+        "executionId": "08d48fd0-2b95-452b-aff5-1207215058bb",
+        "chatSessionId": "sess_63db50ea-8b5c-4b39-a24e-27c3fbfec663",
+        "timestamp": 1783999824060
+      },
+      {
+        "executionId": "08d48fd0-2b95-452b-aff5-1207215058bb",
+        "chatSessionId": "sess_63db50ea-8b5c-4b39-a24e-27c3fbfec663",
+        "timestamp": 1784000126223
+      }
+    ],
+    "2.1 Create RegistrationIT test class": [
+      {
+        "executionId": "08d48fd0-2b95-452b-aff5-1207215058bb",
+        "chatSessionId": "sess_63db50ea-8b5c-4b39-a24e-27c3fbfec663",
+        "timestamp": 1783999422240
+      },
+      {
+        "executionId": "08d48fd0-2b95-452b-aff5-1207215058bb",
+        "chatSessionId": "sess_63db50ea-8b5c-4b39-a24e-27c3fbfec663",
+        "timestamp": 1784000129879
+      },
+      {
+        "executionId": "08d48fd0-2b95-452b-aff5-1207215058bb",
+        "chatSessionId": "sess_63db50ea-8b5c-4b39-a24e-27c3fbfec663",
+        "timestamp": 1784001003367
+      }
+    ],
+    "3.1 Create AuthenticationIT test class": [
+      {
+        "executionId": "08d48fd0-2b95-452b-aff5-1207215058bb",
+        "chatSessionId": "sess_63db50ea-8b5c-4b39-a24e-27c3fbfec663",
+        "timestamp": 1783999422271
+      },
+      {
+        "executionId": "08d48fd0-2b95-452b-aff5-1207215058bb",
+        "chatSessionId": "sess_63db50ea-8b5c-4b39-a24e-27c3fbfec663",
+        "timestamp": 1784000130755
+      },
+      {
+        "executionId": "08d48fd0-2b95-452b-aff5-1207215058bb",
+        "chatSessionId": "sess_63db50ea-8b5c-4b39-a24e-27c3fbfec663",
+        "timestamp": 1784001004201
+      }
+    ],
+    "4.1 Create AuthInterceptorIT test class": [
+      {
+        "executionId": "08d48fd0-2b95-452b-aff5-1207215058bb",
+        "chatSessionId": "sess_63db50ea-8b5c-4b39-a24e-27c3fbfec663",
+        "timestamp": 1783999422300
+      },
+      {
+        "executionId": "08d48fd0-2b95-452b-aff5-1207215058bb",
+        "chatSessionId": "sess_63db50ea-8b5c-4b39-a24e-27c3fbfec663",
+        "timestamp": 1784000131625
+      },
+      {
+        "executionId": "08d48fd0-2b95-452b-aff5-1207215058bb",
+        "chatSessionId": "sess_63db50ea-8b5c-4b39-a24e-27c3fbfec663",
+        "timestamp": 1784001005010
+      }
+    ],
+    "5. Checkpoint - Verify base infrastructure and auth tests pass": [
+      {
+        "executionId": "08d48fd0-2b95-452b-aff5-1207215058bb",
+        "chatSessionId": "sess_63db50ea-8b5c-4b39-a24e-27c3fbfec663",
+        "timestamp": 1783999422325
+      },
+      {
+        "executionId": "08d48fd0-2b95-452b-aff5-1207215058bb",
+        "chatSessionId": "sess_63db50ea-8b5c-4b39-a24e-27c3fbfec663",
+        "timestamp": 1784001032267
+      },
+      {
+        "executionId": "08d48fd0-2b95-452b-aff5-1207215058bb",
+        "chatSessionId": "sess_63db50ea-8b5c-4b39-a24e-27c3fbfec663",
+        "timestamp": 1784001609971
+      }
+    ],
+    "6.1 Create TaskCrudIT test class": [
+      {
+        "executionId": "08d48fd0-2b95-452b-aff5-1207215058bb",
+        "chatSessionId": "sess_63db50ea-8b5c-4b39-a24e-27c3fbfec663",
+        "timestamp": 1783999422350
+      },
+      {
+        "executionId": "08d48fd0-2b95-452b-aff5-1207215058bb",
+        "chatSessionId": "sess_63db50ea-8b5c-4b39-a24e-27c3fbfec663",
+        "timestamp": 1784001617506
+      },
+      {
+        "executionId": "08d48fd0-2b95-452b-aff5-1207215058bb",
+        "chatSessionId": "sess_63db50ea-8b5c-4b39-a24e-27c3fbfec663",
+        "timestamp": 1784002842625
+      }
+    ],
+    "7.1 Create SubtaskCrudIT test class": [
+      {
+        "executionId": "08d48fd0-2b95-452b-aff5-1207215058bb",
+        "chatSessionId": "sess_63db50ea-8b5c-4b39-a24e-27c3fbfec663",
+        "timestamp": 1783999422376
+      },
+      {
+        "executionId": "08d48fd0-2b95-452b-aff5-1207215058bb",
+        "chatSessionId": "sess_63db50ea-8b5c-4b39-a24e-27c3fbfec663",
+        "timestamp": 1784001618431
+      },
+      {
+        "executionId": "08d48fd0-2b95-452b-aff5-1207215058bb",
+        "chatSessionId": "sess_63db50ea-8b5c-4b39-a24e-27c3fbfec663",
+        "timestamp": 1784002843568
+      }
+    ],
+    "8. Checkpoint - Verify CRUD tests pass": [
+      {
+        "executionId": "08d48fd0-2b95-452b-aff5-1207215058bb",
+        "chatSessionId": "sess_63db50ea-8b5c-4b39-a24e-27c3fbfec663",
+        "timestamp": 1783999422419
+      },
+      {
+        "executionId": "08d48fd0-2b95-452b-aff5-1207215058bb",
+        "chatSessionId": "sess_63db50ea-8b5c-4b39-a24e-27c3fbfec663",
+        "timestamp": 1784002847809
+      },
+      {
+        "executionId": "08d48fd0-2b95-452b-aff5-1207215058bb",
+        "chatSessionId": "sess_63db50ea-8b5c-4b39-a24e-27c3fbfec663",
+        "timestamp": 1784003010989
+      }
+    ],
+    "9.1 Create OwnershipIT test class": [
+      {
+        "executionId": "08d48fd0-2b95-452b-aff5-1207215058bb",
+        "chatSessionId": "sess_63db50ea-8b5c-4b39-a24e-27c3fbfec663",
+        "timestamp": 1783999422444
+      },
+      {
+        "executionId": "08d48fd0-2b95-452b-aff5-1207215058bb",
+        "chatSessionId": "sess_63db50ea-8b5c-4b39-a24e-27c3fbfec663",
+        "timestamp": 1784003014891
+      },
+      {
+        "executionId": "08d48fd0-2b95-452b-aff5-1207215058bb",
+        "chatSessionId": "sess_63db50ea-8b5c-4b39-a24e-27c3fbfec663",
+        "timestamp": 1784034768023
+      }
+    ],
+    "10.1 Create CascadeDeleteIT test class": [
+      {
+        "executionId": "08d48fd0-2b95-452b-aff5-1207215058bb",
+        "chatSessionId": "sess_63db50ea-8b5c-4b39-a24e-27c3fbfec663",
+        "timestamp": 1783999422469
+      },
+      {
+        "executionId": "08d48fd0-2b95-452b-aff5-1207215058bb",
+        "chatSessionId": "sess_63db50ea-8b5c-4b39-a24e-27c3fbfec663",
+        "timestamp": 1784003015752
+      },
+      {
+        "executionId": "08d48fd0-2b95-452b-aff5-1207215058bb",
+        "chatSessionId": "sess_63db50ea-8b5c-4b39-a24e-27c3fbfec663",
+        "timestamp": 1784034768917
+      }
+    ],
+    "11.1 Create BusinessRuleIT test class": [
+      {
+        "executionId": "08d48fd0-2b95-452b-aff5-1207215058bb",
+        "chatSessionId": "sess_63db50ea-8b5c-4b39-a24e-27c3fbfec663",
+        "timestamp": 1783999422496
+      },
+      {
+        "executionId": "08d48fd0-2b95-452b-aff5-1207215058bb",
+        "chatSessionId": "sess_63db50ea-8b5c-4b39-a24e-27c3fbfec663",
+        "timestamp": 1784003016615
+      },
+      {
+        "executionId": "08d48fd0-2b95-452b-aff5-1207215058bb",
+        "chatSessionId": "sess_63db50ea-8b5c-4b39-a24e-27c3fbfec663",
+        "timestamp": 1784034769759
+      }
+    ],
+    "12. Final checkpoint - Ensure full test suite passes": [
+      {
+        "executionId": "08d48fd0-2b95-452b-aff5-1207215058bb",
+        "chatSessionId": "sess_63db50ea-8b5c-4b39-a24e-27c3fbfec663",
+        "timestamp": 1783999422520
+      },
+      {
+        "executionId": "08d48fd0-2b95-452b-aff5-1207215058bb",
+        "chatSessionId": "sess_63db50ea-8b5c-4b39-a24e-27c3fbfec663",
+        "timestamp": 1784034773706
+      },
+      {
+        "executionId": "08d48fd0-2b95-452b-aff5-1207215058bb",
+        "chatSessionId": "sess_63db50ea-8b5c-4b39-a24e-27c3fbfec663",
+        "timestamp": 1784034854060
+      }
+    ],
+    "1. Set up test infrastructure and base configuration": [
+      {
+        "executionId": "08d48fd0-2b95-452b-aff5-1207215058bb",
+        "chatSessionId": "sess_63db50ea-8b5c-4b39-a24e-27c3fbfec663",
+        "timestamp": 1784000126254
+      }
+    ],
+    "2. Implement registration validation tests": [
+      {
+        "executionId": "08d48fd0-2b95-452b-aff5-1207215058bb",
+        "chatSessionId": "sess_63db50ea-8b5c-4b39-a24e-27c3fbfec663",
+        "timestamp": 1784001003452
+      }
+    ],
+    "3. Implement authentication tests": [
+      {
+        "executionId": "08d48fd0-2b95-452b-aff5-1207215058bb",
+        "chatSessionId": "sess_63db50ea-8b5c-4b39-a24e-27c3fbfec663",
+        "timestamp": 1784001004250
+      }
+    ],
+    "4. Implement auth interceptor tests": [
+      {
+        "executionId": "08d48fd0-2b95-452b-aff5-1207215058bb",
+        "chatSessionId": "sess_63db50ea-8b5c-4b39-a24e-27c3fbfec663",
+        "timestamp": 1784001005035
+      }
+    ],
+    "6. Implement task CRUD tests": [
+      {
+        "executionId": "08d48fd0-2b95-452b-aff5-1207215058bb",
+        "chatSessionId": "sess_63db50ea-8b5c-4b39-a24e-27c3fbfec663",
+        "timestamp": 1784002842664
+      }
+    ],
+    "7. Implement subtask CRUD tests": [
+      {
+        "executionId": "08d48fd0-2b95-452b-aff5-1207215058bb",
+        "chatSessionId": "sess_63db50ea-8b5c-4b39-a24e-27c3fbfec663",
+        "timestamp": 1784002843617
+      }
+    ],
+    "9. Implement ownership enforcement tests": [
+      {
+        "executionId": "08d48fd0-2b95-452b-aff5-1207215058bb",
+        "chatSessionId": "sess_63db50ea-8b5c-4b39-a24e-27c3fbfec663",
+        "timestamp": 1784034768063
+      }
+    ],
+    "10. Implement cascade delete tests": [
+      {
+        "executionId": "08d48fd0-2b95-452b-aff5-1207215058bb",
+        "chatSessionId": "sess_63db50ea-8b5c-4b39-a24e-27c3fbfec663",
+        "timestamp": 1784034768962
+      }
+    ],
+    "11. Implement business rule tests": [
+      {
+        "executionId": "08d48fd0-2b95-452b-aff5-1207215058bb",
+        "chatSessionId": "sess_63db50ea-8b5c-4b39-a24e-27c3fbfec663",
+        "timestamp": 1784034769793
+      }
+    ]
+  }
+}

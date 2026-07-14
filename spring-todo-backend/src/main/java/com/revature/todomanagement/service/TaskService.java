@@ -37,6 +37,10 @@ public class TaskService {
         task.setId(null);
         task.setUserId(userId);
 
+        if (task.getCompleted() == null) {
+            task.setCompleted(false);
+        }
+
         return taskRepository.save(task);
     }
 
