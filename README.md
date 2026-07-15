@@ -53,9 +53,12 @@ Exercises the full REST API via REST Assured against an embedded server with H2 
 
 ### End-to-End Tests
 
-Drives the Angular frontend through Firefox using Selenium and Cucumber BDD scenarios. Requires both backend and frontend to be running.
+Drives the Angular frontend through Firefox using Selenium and Cucumber BDD scenarios. The backend is auto-started by the test runner on port 8080. Only the frontend needs to be running separately.
 
 ```bash
+# Start frontend first (in a separate terminal):
+#   cd angular-todo-frontend && npm start
+
 ./gradlew test --tests "com.revature.todomanagement.cucumber.*"
 ```
 
