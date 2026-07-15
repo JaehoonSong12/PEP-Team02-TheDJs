@@ -1,0 +1,193 @@
+{
+  "pbtResults": {},
+  "executionHistory": {
+    "1.1 Create `spring-todo-backend/Dockerfile` with Gradle build stage and JRE runtime stage": [
+      {
+        "executionId": "48097b66-e056-4753-86a9-eeb723571205",
+        "chatSessionId": "sess_9dd32170-04d9-43a1-b9fc-6f806f9392e0",
+        "timestamp": 1784127623368
+      },
+      {
+        "executionId": "48097b66-e056-4753-86a9-eeb723571205",
+        "chatSessionId": "sess_9dd32170-04d9-43a1-b9fc-6f806f9392e0",
+        "timestamp": 1784127632311
+      },
+      {
+        "executionId": "48097b66-e056-4753-86a9-eeb723571205",
+        "chatSessionId": "sess_9dd32170-04d9-43a1-b9fc-6f806f9392e0",
+        "timestamp": 1784127808488
+      }
+    ],
+    "2.1 Create `angular-todo-frontend/nginx.conf` with API reverse proxy and Angular routing support": [
+      {
+        "executionId": "48097b66-e056-4753-86a9-eeb723571205",
+        "chatSessionId": "sess_9dd32170-04d9-43a1-b9fc-6f806f9392e0",
+        "timestamp": 1784127623545
+      },
+      {
+        "executionId": "48097b66-e056-4753-86a9-eeb723571205",
+        "chatSessionId": "sess_9dd32170-04d9-43a1-b9fc-6f806f9392e0",
+        "timestamp": 1784127818294
+      },
+      {
+        "executionId": "48097b66-e056-4753-86a9-eeb723571205",
+        "chatSessionId": "sess_9dd32170-04d9-43a1-b9fc-6f806f9392e0",
+        "timestamp": 1784127908159
+      }
+    ],
+    "2.2 Create `angular-todo-frontend/Dockerfile` with Node build stage and Nginx runtime stage": [
+      {
+        "executionId": "48097b66-e056-4753-86a9-eeb723571205",
+        "chatSessionId": "sess_9dd32170-04d9-43a1-b9fc-6f806f9392e0",
+        "timestamp": 1784127623592
+      },
+      {
+        "executionId": "48097b66-e056-4753-86a9-eeb723571205",
+        "chatSessionId": "sess_9dd32170-04d9-43a1-b9fc-6f806f9392e0",
+        "timestamp": 1784127914286
+      },
+      {
+        "executionId": "48097b66-e056-4753-86a9-eeb723571205",
+        "chatSessionId": "sess_9dd32170-04d9-43a1-b9fc-6f806f9392e0",
+        "timestamp": 1784127969077
+      }
+    ],
+    "3.1 Create root-level `docker-compose.yml` with frontend, backend services, network, and volume": [
+      {
+        "executionId": "48097b66-e056-4753-86a9-eeb723571205",
+        "chatSessionId": "sess_9dd32170-04d9-43a1-b9fc-6f806f9392e0",
+        "timestamp": 1784127623655
+      },
+      {
+        "executionId": "48097b66-e056-4753-86a9-eeb723571205",
+        "chatSessionId": "sess_9dd32170-04d9-43a1-b9fc-6f806f9392e0",
+        "timestamp": 1784127973301
+      },
+      {
+        "executionId": "48097b66-e056-4753-86a9-eeb723571205",
+        "chatSessionId": "sess_9dd32170-04d9-43a1-b9fc-6f806f9392e0",
+        "timestamp": 1784130005719
+      }
+    ],
+    "4.1 Create `spring-todo-backend/.dockerignore` to exclude build artifacts and unnecessary files": [
+      {
+        "executionId": "48097b66-e056-4753-86a9-eeb723571205",
+        "chatSessionId": "sess_9dd32170-04d9-43a1-b9fc-6f806f9392e0",
+        "timestamp": 1784127623689
+      },
+      {
+        "executionId": "48097b66-e056-4753-86a9-eeb723571205",
+        "chatSessionId": "sess_9dd32170-04d9-43a1-b9fc-6f806f9392e0",
+        "timestamp": 1784127633246
+      },
+      {
+        "executionId": "48097b66-e056-4753-86a9-eeb723571205",
+        "chatSessionId": "sess_9dd32170-04d9-43a1-b9fc-6f806f9392e0",
+        "timestamp": 1784127809374
+      }
+    ],
+    "4.2 Create `angular-todo-frontend/.dockerignore` to exclude node_modules and build output": [
+      {
+        "executionId": "48097b66-e056-4753-86a9-eeb723571205",
+        "chatSessionId": "sess_9dd32170-04d9-43a1-b9fc-6f806f9392e0",
+        "timestamp": 1784127623717
+      },
+      {
+        "executionId": "48097b66-e056-4753-86a9-eeb723571205",
+        "chatSessionId": "sess_9dd32170-04d9-43a1-b9fc-6f806f9392e0",
+        "timestamp": 1784127634308
+      },
+      {
+        "executionId": "48097b66-e056-4753-86a9-eeb723571205",
+        "chatSessionId": "sess_9dd32170-04d9-43a1-b9fc-6f806f9392e0",
+        "timestamp": 1784127810339
+      }
+    ],
+    "5. Checkpoint - Verify Docker builds complete successfully": [
+      {
+        "executionId": "48097b66-e056-4753-86a9-eeb723571205",
+        "chatSessionId": "sess_9dd32170-04d9-43a1-b9fc-6f806f9392e0",
+        "timestamp": 1784127623751
+      },
+      {
+        "executionId": "48097b66-e056-4753-86a9-eeb723571205",
+        "chatSessionId": "sess_9dd32170-04d9-43a1-b9fc-6f806f9392e0",
+        "timestamp": 1784130010495
+      },
+      {
+        "executionId": "48097b66-e056-4753-86a9-eeb723571205",
+        "chatSessionId": "sess_9dd32170-04d9-43a1-b9fc-6f806f9392e0",
+        "timestamp": 1784131639137
+      }
+    ],
+    "6.1 Remove or replace the existing empty `spring-todo-backend/compose.yaml` to avoid conflicts": [
+      {
+        "executionId": "48097b66-e056-4753-86a9-eeb723571205",
+        "chatSessionId": "sess_9dd32170-04d9-43a1-b9fc-6f806f9392e0",
+        "timestamp": 1784127623771
+      },
+      {
+        "executionId": "48097b66-e056-4753-86a9-eeb723571205",
+        "chatSessionId": "sess_9dd32170-04d9-43a1-b9fc-6f806f9392e0",
+        "timestamp": 1784127974250
+      },
+      {
+        "executionId": "48097b66-e056-4753-86a9-eeb723571205",
+        "chatSessionId": "sess_9dd32170-04d9-43a1-b9fc-6f806f9392e0",
+        "timestamp": 1784130006693
+      }
+    ],
+    "7. Final checkpoint - Verify full stack operation": [
+      {
+        "executionId": "48097b66-e056-4753-86a9-eeb723571205",
+        "chatSessionId": "sess_9dd32170-04d9-43a1-b9fc-6f806f9392e0",
+        "timestamp": 1784127623790
+      },
+      {
+        "executionId": "48097b66-e056-4753-86a9-eeb723571205",
+        "chatSessionId": "sess_9dd32170-04d9-43a1-b9fc-6f806f9392e0",
+        "timestamp": 1784131642543
+      },
+      {
+        "executionId": "48097b66-e056-4753-86a9-eeb723571205",
+        "chatSessionId": "sess_9dd32170-04d9-43a1-b9fc-6f806f9392e0",
+        "timestamp": 1784132277782
+      }
+    ],
+    "1. Create Backend Dockerfile with multi-stage build": [
+      {
+        "executionId": "48097b66-e056-4753-86a9-eeb723571205",
+        "chatSessionId": "sess_9dd32170-04d9-43a1-b9fc-6f806f9392e0",
+        "timestamp": 1784127808551
+      }
+    ],
+    "4. Create .dockerignore files for build optimization": [
+      {
+        "executionId": "48097b66-e056-4753-86a9-eeb723571205",
+        "chatSessionId": "sess_9dd32170-04d9-43a1-b9fc-6f806f9392e0",
+        "timestamp": 1784127810385
+      }
+    ],
+    "2. Create Frontend Dockerfile and Nginx configuration": [
+      {
+        "executionId": "48097b66-e056-4753-86a9-eeb723571205",
+        "chatSessionId": "sess_9dd32170-04d9-43a1-b9fc-6f806f9392e0",
+        "timestamp": 1784127969175
+      }
+    ],
+    "3. Create Docker Compose orchestration": [
+      {
+        "executionId": "48097b66-e056-4753-86a9-eeb723571205",
+        "chatSessionId": "sess_9dd32170-04d9-43a1-b9fc-6f806f9392e0",
+        "timestamp": 1784130005767
+      }
+    ],
+    "6. Clean up and finalize configuration": [
+      {
+        "executionId": "48097b66-e056-4753-86a9-eeb723571205",
+        "chatSessionId": "sess_9dd32170-04d9-43a1-b9fc-6f806f9392e0",
+        "timestamp": 1784130006738
+      }
+    ]
+  }
+}

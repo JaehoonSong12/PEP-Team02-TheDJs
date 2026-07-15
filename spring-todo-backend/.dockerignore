@@ -1,0 +1,13 @@
+# Build artifacts
+build/
+.gradle/
+
+# Database file
+todo.db
+
+# IDE files
+.idea/
+*.iml
+
+# Test artifacts
+.jqwik-database
