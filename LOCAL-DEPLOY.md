@@ -9,8 +9,17 @@ The entire application can be launched with a single command using Docker Compos
 
 ## Quick Start
 
+Create a `.env` file in the project root (same directory as `docker-compose.yml`):
+
 ```bash
-# Build images and start both containers
+# .env (gitignored — never committed)
+JWT_SECRET=LocalDevSecretKeyThatIsAtLeast32Characters!!
+CORS_ALLOWED_ORIGINS=http://localhost:4200
+```
+
+Then build and start:
+
+```bash
 docker compose up --build
 
 # View logs
@@ -89,17 +98,42 @@ graph LR
     FE ---|app-network| BE
 ```
 
-## Environment Variables
+## Environment Variables and `.env` File
 
-The backend container accepts configuration via environment variables defined in `docker-compose.yml`:
+Configuration is externalized via environment variables. The codebase never changes between environments — only the `.env` file differs per machine.
 
-| Variable | Default | Purpose |
-|----------|---------|---------|
+### How It Works
+
+1. Spring Boot reads `application.properties` for defaults (local dev values)
+2. Environment variables override any matching property via Spring's relaxed binding:
+   - `jwt.secret` in properties is overridden by env var `JWT_SECRET`
+   - `cors.allowed-origins` is overridden by env var `CORS_ALLOWED_ORIGINS`
+   - `spring.datasource.url` is overridden by env var `SPRING_DATASOURCE_URL`
+3. Docker Compose reads a `.env` file in the project root and injects variables into containers
+
+### The `.env` File (not committed to git)
+
+Create a `.env` file in the project root for local Docker development:
+
+```bash
+# .env (local development — this file is gitignored)
+JWT_SECRET=LocalDevSecretKeyThatIsAtLeast32Characters!!
+CORS_ALLOWED_ORIGINS=http://localhost:4200
+```
+
+Docker Compose substitutes `${JWT_SECRET:-default-dev-secret-change-in-production}` with the value from `.env`. If no `.env` exists, the default after `:-` is used.
+
+### Variable Reference
+
+| Variable | Default (in docker-compose.yml) | Purpose |
+|----------|--------------------------------|---------|
 | `SPRING_DATASOURCE_URL` | `jdbc:sqlite:/app/data/todo.db` | Database connection string |
 | `JWT_SECRET` | `default-dev-secret-change-in-production` | HS256 signing key (32+ chars) |
 | `CORS_ALLOWED_ORIGINS` | `http://localhost:4200` | Allowed CORS origins |
 
-The `JWT_SECRET` uses a shell variable expansion (`${JWT_SECRET:-default}`) so it can be overridden from the host environment or a `.env` file without modifying `docker-compose.yml`.
+### Angular (Frontend) — No Environment Config Needed
+
+All Angular HTTP calls use relative paths (`/api/auth/login`, `/api/todos`). Nginx proxies these to the backend container. The frontend has zero environment-specific configuration — it works identically regardless of where it is deployed, as long as the serving layer (Nginx locally, ALB/CloudFront in production) routes `/api/*` to the backend.
 
 ## How Nginx Works in This Setup
 
@@ -281,7 +315,7 @@ services:
     environment:
       - SPRING_DATASOURCE_URL=jdbc:sqlite:/app/data/todo.db
       - JWT_SECRET=${JWT_SECRET:-default-dev-secret-change-in-production}
-      - CORS_ALLOWED_ORIGINS=http://localhost:4200
+      - CORS_ALLOWED_ORIGINS=${CORS_ALLOWED_ORIGINS:-http://localhost:4200}
     volumes:
       - todo-data:/app/data
     networks:
@@ -561,6 +595,68 @@ location /api/ {
 The browser never talks directly to port 8080. From the browser's perspective, everything comes from a single origin (`localhost:4200`), eliminating CORS issues entirely. This is the key difference from production (where the browser talks to EC2 directly and CORS is required).
 
 **Why this matters:** In local Docker, Nginx acts as a same-origin gateway. The Angular app calls `/api/todos` and Nginx silently routes it to the Java backend. No CORS headers needed. No cross-origin preflight requests. Clean.
+
+### How Nginx Eliminates CORS (Same-Origin Trick)
+
+CORS (Cross-Origin Resource Sharing) is a browser security policy. The browser blocks JavaScript from making HTTP requests to a different **origin** than the page was loaded from. An origin is defined as the combination of **protocol + hostname + port**.
+
+```mermaid
+flowchart LR
+    subgraph same["Same Origin (no CORS needed)"]
+        direction TB
+        A1["Page loaded from<br/>http://localhost:4200"]
+        A2["API request to<br/>http://localhost:4200/api/todos"]
+        A1 -.- A2
+    end
+
+    subgraph cross["Cross Origin (CORS required)"]
+        direction TB
+        B1["Page loaded from<br/>http://my-bucket.s3.amazonaws.com"]
+        B2["API request to<br/>http://ec2-ip:8080/api/todos"]
+        B1 -.-x B2
+    end
+```
+
+In the local Docker setup, the browser loads the Angular app from `http://localhost:4200` and sends API requests to `http://localhost:4200/api/todos`. Same protocol (`http`), same hostname (`localhost`), same port (`4200`). The browser sees one origin and never triggers CORS.
+
+Behind the scenes, Nginx receives the `/api/todos` request and forwards it to `http://backend:8080/api/todos` internally on the Docker network. But the browser does not know this. It only sees that it sent a request to `:4200` and got a response from `:4200`. The proxy is invisible.
+
+```mermaid
+sequenceDiagram
+    participant Browser
+    participant Nginx as Nginx (:4200)
+    participant Spring as Spring Boot (:8080)
+
+    Note over Browser,Nginx: Same origin - no CORS check
+    Browser->>Nginx: GET /api/todos
+    Nginx->>Spring: GET /api/todos (proxied internally)
+    Spring-->>Nginx: 200 OK [{...}]
+    Nginx-->>Browser: 200 OK [{...}]
+    Note over Browser: Browser happy - same origin response
+```
+
+Without Nginx (production S3 + EC2 setup), the browser sends requests directly to a different origin and CORS kicks in:
+
+```mermaid
+sequenceDiagram
+    participant Browser
+    participant S3 as S3 (page origin)
+    participant EC2 as EC2 :8080 (different origin)
+
+    Browser->>S3: GET / (loads Angular app)
+    S3-->>Browser: index.html + JS bundle
+    Note over Browser,EC2: Different origin - CORS preflight required
+    Browser->>EC2: OPTIONS /api/todos (preflight)
+    EC2-->>Browser: 200 + Access-Control-Allow-Origin header
+    Browser->>EC2: GET /api/todos (actual request)
+    EC2-->>Browser: 200 OK [{...}]
+```
+
+In the S3+EC2 case, the browser first sends a preflight OPTIONS request asking "Am I allowed to call this origin?" The backend must respond with `Access-Control-Allow-Origin: http://your-s3-url` or the browser blocks the real request.
+
+**Summary:**
+- Nginx proxy = same origin = CORS bypassed (browser never notices the proxy)
+- S3 + EC2 = different origins = CORS required (backend must send allow headers)
 
 ### Path 2: Static File Server (real files)
 
