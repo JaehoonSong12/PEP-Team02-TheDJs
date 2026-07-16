@@ -1,4 +1,4 @@
-package com.revature.todomanagement;
+package com.revature.todomanagement.service;
 
 import com.revature.todomanagement.entity.Subtask;
 import com.revature.todomanagement.entity.Task;
@@ -7,7 +7,6 @@ import com.revature.todomanagement.exception.TaskNotFoundException;
 import com.revature.todomanagement.exception.TaskOwnershipException;
 import com.revature.todomanagement.repository.SubtaskRepository;
 import com.revature.todomanagement.repository.TaskRepository;
-import com.revature.todomanagement.service.SubtaskService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
