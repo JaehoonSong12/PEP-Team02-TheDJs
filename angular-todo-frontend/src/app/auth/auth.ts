@@ -21,7 +21,7 @@ export class AuthService {
 
   login(username: string, password: string): Observable<void> {
     return this.http
-      .post('http://localhost:8080/api/auth/login', { username, password }, { observe: 'response' })
+      .post('/api/auth/login', { username, password }, { observe: 'response' })
       .pipe(
         map((response: HttpResponse<Object>) => {
           const authHeader = response.headers.get('Authorization');
@@ -35,7 +35,7 @@ export class AuthService {
   }
 
   register(username: string, password: string): Observable<string> {
-    return this.http.post('http://localhost:8080/api/auth/register', { username, password }, { responseType: 'text' });
+    return this.http.post('/api/auth/register', { username, password }, { responseType: 'text' });
   }
 
   logout(): void {
