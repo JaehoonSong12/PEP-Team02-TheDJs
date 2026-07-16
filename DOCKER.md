@@ -473,3 +473,44 @@ dist/
 ```
 
 Excludes local `node_modules` (rebuilt inside the container via `npm ci`), previous build output, Angular cache, and editor config. Without this, Docker would copy hundreds of MB of unnecessary files into the build context.
+
+
+---
+
+## Cleanup Commands
+
+### Remove Everything This Project Created
+
+```bash
+# Stop containers + remove containers + remove volume + remove images (all in one)
+docker compose down -v --rmi all
+```
+
+| Flag | Removes |
+|------|---------|
+| (no flags) | Stops and removes containers only |
+| `-v` | Also removes the named volume (`todo-data`) and its data |
+| `--rmi all` | Also removes the images built by compose (`frontend` and `backend`) |
+
+After running this, Docker Desktop will show 0 containers, 0 project images, and 0 project volumes.
+
+### Selective Cleanup
+
+```bash
+# Stop and remove containers only (keep images and data)
+docker compose down
+
+# Stop containers and remove volume (keep images)
+docker compose down -v
+
+# Remove dangling build cache (intermediate layers from multi-stage builds)
+docker builder prune
+```
+
+### Nuclear Option (removes ALL Docker resources, not just this project)
+
+```bash
+docker system prune -a --volumes
+```
+
+This removes all stopped containers, all unused images, all unused volumes, and all build cache across your entire Docker installation. Use with caution.
