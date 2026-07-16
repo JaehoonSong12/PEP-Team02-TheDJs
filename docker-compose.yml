@@ -1,0 +1,29 @@
+services:
+  backend:
+    build: ./spring-todo-backend
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:sqlite:/app/data/todo.db
+      - JWT_SECRET=${JWT_SECRET:-default-dev-secret-change-in-production}
+      - CORS_ALLOWED_ORIGINS=http://localhost:4200
+    volumes:
+      - todo-data:/app/data
+    networks:
+      - app-network
+
+  frontend:
+    build: ./angular-todo-frontend
+    ports:
+      - "4200:80"
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  todo-data:

@@ -122,6 +122,19 @@ spring-todo-backend/src/
 | PUT | `/api/todos/{id}/subtasks/{sid}` | Yes | Update a subtask |
 | DELETE | `/api/todos/{id}/subtasks/{sid}` | Yes | Delete a subtask |
 
+## Docker Deployment
+
+Launch the full stack with one command — no local Java/Node installation needed:
+
+```bash
+docker compose up --build
+```
+
+- Frontend: http://localhost:4200
+- Backend API: http://localhost:8080
+
+See [DOCKER.md](DOCKER.md) for the full deployment guide, architecture diagram, and Nginx configuration details.
+
 ## License
 
 This project is part of a Revature training program (Team02 - TheDJs).
