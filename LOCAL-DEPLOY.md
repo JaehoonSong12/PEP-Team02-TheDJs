@@ -514,3 +514,115 @@ docker system prune -a --volumes
 ```
 
 This removes all stopped containers, all unused images, all unused volumes, and all build cache across your entire Docker installation. Use with caution.
+
+
+---
+
+## Nginx Deep Dive
+
+Nginx is the production-grade web server inside the frontend container. It replaces the Node.js development server (`ng serve`) that runs during local development. Understanding Nginx's role is critical because it handles three fundamentally different types of requests through a single port.
+
+### What Nginx Is
+
+Nginx (pronounced "engine-x") is an open-source, high-performance HTTP server and reverse proxy. In this project it runs inside the frontend Docker container on port 80 (mapped to host port 4200). It serves compiled Angular files and proxies API requests to the backend.
+
+### What Nginx Is NOT Doing Here
+
+- It is NOT a load balancer (only one backend instance exists)
+- It is NOT terminating TLS/HTTPS (handled by AWS or a separate layer in production)
+- It is NOT running application logic (just serving files and forwarding requests)
+
+### The Three Request Paths
+
+```mermaid
+flowchart TD
+    Browser["Browser Request"]
+    Browser --> Nginx["Nginx :80"]
+
+    Nginx -->|"Path starts with /api/"| Proxy["Reverse Proxy"]
+    Nginx -->|"Path matches a real file"| Static["Static File Server"]
+    Nginx -->|"Path matches nothing"| SPA["SPA Fallback"]
+
+    Proxy -->|"http://backend:8080"| SpringBoot["Spring Boot"]
+    Static -->|"Serves from /usr/share/nginx/html/"| File["HTML / JS / CSS"]
+    SPA -->|"Serves index.html"| Angular["Angular Router takes over"]
+```
+
+### Path 1: Reverse Proxy (`/api/*`)
+
+Any request path starting with `/api/` is forwarded to the backend container.
+
+```nginx
+location /api/ {
+    proxy_pass http://backend:8080/api/;
+}
+```
+
+The browser never talks directly to port 8080. From the browser's perspective, everything comes from a single origin (`localhost:4200`), eliminating CORS issues entirely. This is the key difference from production (where the browser talks to EC2 directly and CORS is required).
+
+**Why this matters:** In local Docker, Nginx acts as a same-origin gateway. The Angular app calls `/api/todos` and Nginx silently routes it to the Java backend. No CORS headers needed. No cross-origin preflight requests. Clean.
+
+### Path 2: Static File Server (real files)
+
+When the browser requests `/main.js`, `/styles.css`, or any other file that physically exists in `/usr/share/nginx/html/`, Nginx serves it directly from disk.
+
+```nginx
+root /usr/share/nginx/html;
+index index.html;
+```
+
+These are the compiled Angular build artifacts produced by `npm run build` during the Docker image build stage.
+
+### Path 3: SPA Routing Fallback (everything else)
+
+Angular uses client-side routing. URLs like `/login`, `/dashboard`, `/register` are virtual routes handled by JavaScript in the browser. There are no corresponding files on disk.
+
+Without Nginx's fallback rule, refreshing the browser on `/dashboard` would return 404 because no `dashboard` file exists. The `try_files` directive solves this:
+
+```nginx
+location / {
+    try_files $uri $uri/ /index.html;
+}
+```
+
+Translation: "Try to serve the exact path as a file. If that fails, try it as a directory. If that also fails, serve `index.html` instead." Angular's router then reads the URL and renders the correct component.
+
+### Gzip Compression
+
+```nginx
+gzip on;
+gzip_types text/css application/javascript application/json;
+gzip_min_length 256;
+```
+
+Nginx compresses responses before sending them to the browser. A 500KB JavaScript bundle becomes roughly 150KB over the wire. Only files larger than 256 bytes are compressed (compressing tiny responses would add overhead without meaningful size reduction).
+
+### Why Nginx Instead of Node.js in Production
+
+| Concern | Node.js (`ng serve`) | Nginx |
+|---------|---------------------|-------|
+| Purpose | Development server with hot reload | Production static server |
+| Performance | Single-threaded, ~1K concurrent connections | Event-driven, ~10K+ concurrent connections |
+| Memory | ~200MB (Angular compiler loaded) | ~5MB |
+| Security | Exposes source maps, dev tooling | Serves only compiled output |
+| Image size | Requires full Node.js runtime (~300MB) | Nginx Alpine image (~7MB) |
+
+In production (Docker or otherwise), Angular is always compiled ahead of time and served as static files. There is no reason to ship the Node.js runtime.
+
+### Proxy Headers Explained
+
+```nginx
+proxy_set_header Host $host;
+proxy_set_header X-Real-IP $remote_addr;
+proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+proxy_set_header X-Forwarded-Proto $scheme;
+```
+
+| Header | Value | Why the backend needs it |
+|--------|-------|--------------------------|
+| `Host` | Original hostname from browser | Some apps route differently based on hostname |
+| `X-Real-IP` | Client's actual IP address | Logging, rate limiting, geolocation |
+| `X-Forwarded-For` | Chain of proxy IPs the request passed through | Audit trail for multi-layer architectures |
+| `X-Forwarded-Proto` | `http` or `https` | Backend can generate correct redirect URLs |
+
+Without these headers, the backend would see every request as coming from Nginx's internal Docker IP (e.g., `172.18.0.3`) instead of the actual client.

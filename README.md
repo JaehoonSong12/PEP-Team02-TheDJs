@@ -133,7 +133,11 @@ docker compose up --build
 - Frontend: http://localhost:4200
 - Backend API: http://localhost:8080
 
-See [DOCKER.md](DOCKER.md) for the full deployment guide, architecture diagram, and Nginx configuration details.
+See [LOCAL-DEPLOY.md](LOCAL-DEPLOY.md) for the full Docker guide, Nginx configuration, and architecture details.
+
+## Production Deployment (AWS)
+
+See [REMOTE-DEPLOY.md](REMOTE-DEPLOY.md) for the S3 + EC2 production deployment guide.
 
 ## License
 
