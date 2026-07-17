@@ -17,13 +17,21 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+/**
+ * Unit tests for {@link UserService}.
+ * Verifies operations for user retrieval by username, ensuring that correct User
+ * entities are returned and appropriate exceptions (e.g., UsernameNotFoundException)
+ * are thrown when users do not exist.
+ */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("UserService")
 class UserServiceTest {
 
+    // Mocked dependency required by UserService
     @Mock
     UserRepository userRepository;
 
+    // The real component being tested, with mocks injected
     @InjectMocks
     UserService userService;
 

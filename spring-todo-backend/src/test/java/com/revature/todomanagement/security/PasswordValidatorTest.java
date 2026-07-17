@@ -15,6 +15,11 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
+/**
+ * Unit tests for {@link PasswordValidator}.
+ * Validates the enforcement of password complexity rules, including length requirements,
+ * inclusion of uppercase and lowercase letters, numbers, and special characters.
+ */
 @DisplayName("PasswordValidator")
 class PasswordValidatorTest {
 

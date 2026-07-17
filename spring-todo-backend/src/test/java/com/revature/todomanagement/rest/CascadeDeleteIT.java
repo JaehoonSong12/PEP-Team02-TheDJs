@@ -13,6 +13,8 @@ import static org.hamcrest.Matchers.*;
 /**
  * Integration tests for cascade delete behavior.
  * Verifies that deleting a parent task also removes all associated subtasks.
+ * 
+ * @see "docs/module/05-api-contract.tex - Endpoint: DELETE /api/todos/{id} (cascade subtasks)"
  */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -62,6 +64,25 @@ class CascadeDeleteIT extends BaseIntegrationTest {
     //  Cascade Delete Tests                                                //
     // ------------------------------------------------------------------ //
 
+    /**
+     * Validates the following exchange from docs/module/05-api-contract.tex:
+     * <pre>
+     * GET /api/todos/{id}/subtasks HTTP/1.1
+     * Authorization: Bearer &lt;token&gt;
+     * 
+     * HTTP/1.1 200 OK
+     * Content-Type: application/json
+     * 
+     * [
+     *     {
+     *         "id": "UUID",
+     *         "taskId": "UUID",
+     *         "title": "String",
+     *         "completed": boolean
+     *     }
+     * ]
+     * </pre>
+     */
     @Test
     @Order(1)
     @DisplayName("Subtasks exist before delete")
@@ -76,6 +97,15 @@ class CascadeDeleteIT extends BaseIntegrationTest {
                 .body("$.size()", greaterThanOrEqualTo(1));
     }
 
+    /**
+     * Validates the following exchange from docs/module/05-api-contract.tex:
+     * <pre>
+     * DELETE /api/todos/{id} HTTP/1.1
+     * Authorization: Bearer &lt;token&gt;
+     * 
+     * HTTP/1.1 204 No Content
+     * </pre>
+     */
     @Test
     @Order(2)
     @DisplayName("Delete task with subtasks returns 204")
@@ -89,6 +119,21 @@ class CascadeDeleteIT extends BaseIntegrationTest {
                 .statusCode(204);
     }
 
+    /**
+     * Validates the following exchange from docs/module/05-api-contract.tex:
+     * <pre>
+     * GET /api/todos/{id} HTTP/1.1
+     * ...
+     * 
+     * HTTP/1.1 404 Not Found
+     * Content-Type: application/json
+     * 
+     * {
+     *     "status": 404,
+     *     "message": "Task not found: &lt;id&gt;"
+     * }
+     * </pre>
+     */
     @Test
     @Order(3)
     @DisplayName("Get deleted task returns 404")
@@ -103,6 +148,18 @@ class CascadeDeleteIT extends BaseIntegrationTest {
                 .body("message", containsString("Task not found"));
     }
 
+    /**
+     * Validates the following exchange from docs/module/05-api-contract.tex:
+     * <pre>
+     * GET /api/todos HTTP/1.1
+     * Authorization: Bearer &lt;token&gt;
+     * 
+     * HTTP/1.1 200 OK
+     * Content-Type: application/json
+     * 
+     * []
+     * </pre>
+     */
     @Test
     @Order(4)
     @DisplayName("List tasks excludes deleted task")
@@ -117,6 +174,21 @@ class CascadeDeleteIT extends BaseIntegrationTest {
                 .body("id", not(hasItem(taskId)));
     }
 
+    /**
+     * Validates the following exchange from docs/module/05-api-contract.tex:
+     * <pre>
+     * GET /api/todos/{id}/subtasks HTTP/1.1
+     * ...
+     * 
+     * HTTP/1.1 404 Not Found
+     * Content-Type: application/json
+     * 
+     * {
+     *     "status": 404,
+     *     "message": "Task not found: &lt;id&gt;"
+     * }
+     * </pre>
+     */
     @Test
     @Order(5)
     @DisplayName("Get subtasks of deleted task returns 404")

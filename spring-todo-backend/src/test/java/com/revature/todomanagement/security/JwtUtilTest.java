@@ -17,6 +17,12 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
+/**
+ * Unit tests for {@link JwtUtil}.
+ * Verifies the generation, parsing, and validation of JSON Web Tokens (JWTs).
+ * Ensures that tokens contain the correct claims (subject, user ID, issued at, expiration),
+ * and that validation logic accurately detects expired or tampered tokens.
+ */
 @DisplayName("JwtUtil")
 class JwtUtilTest {
 

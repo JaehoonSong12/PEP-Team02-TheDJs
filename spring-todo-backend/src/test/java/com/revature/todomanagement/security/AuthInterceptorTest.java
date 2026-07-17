@@ -16,13 +16,22 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
+/**
+ * Unit tests for the {@link AuthInterceptor}.
+ * Validates the interception of incoming HTTP requests, ensuring that CORS preflight
+ * requests are bypassed, required Authorization headers are present and correctly formatted,
+ * and JWT tokens are successfully parsed and validated before requests are allowed
+ * to proceed to the controllers.
+ */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("AuthInterceptor")
 class AuthInterceptorTest {
 
+    // Mocked dependency required by AuthInterceptor
     @Mock
     JwtUtil jwtUtil;
 
+    // The real component being tested, with mocks injected
     @InjectMocks
     AuthInterceptor authInterceptor;
 

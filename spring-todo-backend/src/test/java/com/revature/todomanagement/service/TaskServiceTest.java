@@ -22,16 +22,25 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+/**
+ * Unit tests for {@link TaskService}.
+ * Verifies business logic for task management, including fetching, creating, updating,
+ * and deleting tasks. Asserts that tasks with blank titles are rejected, and cross-user
+ * interactions are properly blocked by validating task ownership against the authenticated user.
+ */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("TaskService")
 class TaskServiceTest {
 
+    // Mocked dependency required by TaskService
     @Mock
     TaskRepository taskRepository;
 
+    // Mocked dependency required by TaskService
     @Mock
     SubtaskRepository subtaskRepository;
 
+    // The real component being tested, with mocks injected
     @InjectMocks
     TaskService taskService;
 

@@ -13,6 +13,8 @@ import static org.hamcrest.Matchers.*;
  * Integration tests for ownership enforcement.
  * Verifies that cross-user access to tasks and subtasks is denied with HTTP 403,
  * and that User B's task list does not leak data from User A.
+ * 
+ * @see "docs/module/05-api-contract.tex - Section: Ownership"
  */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -27,6 +29,7 @@ class OwnershipIT extends BaseIntegrationTest {
     private String tokenA;
     private String tokenB;
     private String userATaskId;
+    private String userASubtaskId;
 
     /**
      * Lazily registers both users, acquires tokens, and creates a task as User A.
@@ -50,6 +53,17 @@ class OwnershipIT extends BaseIntegrationTest {
                     .body("id", notNullValue());
 
             userATaskId = response.jsonPath().getString("id");
+
+            // Create a subtask as User A
+            Response subtaskResponse = given()
+                    .contentType(ContentType.JSON)
+                    .header("Authorization", "Bearer " + tokenA)
+                    .body(Map.of("title", "User A private subtask", "completed", false))
+            .when()
+                    .post("/api/todos/" + userATaskId + "/subtasks");
+
+            subtaskResponse.then().statusCode(200);
+            userASubtaskId = subtaskResponse.jsonPath().getString("id");
         }
     }
 
@@ -57,6 +71,21 @@ class OwnershipIT extends BaseIntegrationTest {
     //  Cross-user access tests                                             //
     // ------------------------------------------------------------------ //
 
+    /**
+     * Validates the following exchange from docs/module/05-api-contract.tex:
+     * <pre>
+     * GET /api/todos/{id} HTTP/1.1
+     * ...
+     * 
+     * HTTP/1.1 403 Forbidden
+     * Content-Type: application/json
+     * 
+     * {
+     *     "status": 403,
+     *     "message": "User &lt;userId&gt; does not own task &lt;taskId&gt;"
+     * }
+     * </pre>
+     */
     @Test
     @Order(1)
     @DisplayName("User B GET User A's task returns 403")
@@ -73,6 +102,21 @@ class OwnershipIT extends BaseIntegrationTest {
                 .body("message", containsString("does not own task"));
     }
 
+    /**
+     * Validates the following exchange from docs/module/05-api-contract.tex:
+     * <pre>
+     * PUT /api/todos/{id} HTTP/1.1
+     * ...
+     * 
+     * HTTP/1.1 403 Forbidden
+     * Content-Type: application/json
+     * 
+     * {
+     *     "status": 403,
+     *     "message": "User &lt;userId&gt; does not own task &lt;taskId&gt;"
+     * }
+     * </pre>
+     */
     @Test
     @Order(2)
     @DisplayName("User B PUT User A's task returns 403")
@@ -90,6 +134,21 @@ class OwnershipIT extends BaseIntegrationTest {
                 .body("message", containsString("does not own task"));
     }
 
+    /**
+     * Validates the following exchange from docs/module/05-api-contract.tex:
+     * <pre>
+     * DELETE /api/todos/{id} HTTP/1.1
+     * ...
+     * 
+     * HTTP/1.1 403 Forbidden
+     * Content-Type: application/json
+     * 
+     * {
+     *     "status": 403,
+     *     "message": "User &lt;userId&gt; does not own task &lt;taskId&gt;"
+     * }
+     * </pre>
+     */
     @Test
     @Order(3)
     @DisplayName("User B DELETE User A's task returns 403 and preserves task")
@@ -117,6 +176,21 @@ class OwnershipIT extends BaseIntegrationTest {
                 .body("id", equalTo(userATaskId));
     }
 
+    /**
+     * Validates the following exchange from docs/module/05-api-contract.tex:
+     * <pre>
+     * GET /api/todos/{id}/subtasks HTTP/1.1
+     * ...
+     * 
+     * HTTP/1.1 403 Forbidden
+     * Content-Type: application/json
+     * 
+     * {
+     *     "status": 403,
+     *     "message": "User &lt;userId&gt; does not own task &lt;taskId&gt;"
+     * }
+     * </pre>
+     */
     @Test
     @Order(4)
     @DisplayName("User B GET subtasks of User A's task returns 403")
@@ -133,8 +207,134 @@ class OwnershipIT extends BaseIntegrationTest {
                 .body("message", containsString("does not own task"));
     }
 
+    /**
+     * Validates the following exchange from docs/module/05-api-contract.tex:
+     * <pre>
+     * POST /api/todos/{id}/subtasks HTTP/1.1
+     * ...
+     * 
+     * HTTP/1.1 403 Forbidden
+     * Content-Type: application/json
+     * 
+     * {
+     *     "status": 403,
+     *     "message": "User &lt;userId&gt; does not own task &lt;taskId&gt;"
+     * }
+     * </pre>
+     */
     @Test
     @Order(5)
+    @DisplayName("User B POST subtask to User A's task returns 403")
+    void crossUserCreateSubtask_returns403() {
+        ensureSetup();
+
+        given()
+                .contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + tokenB)
+                .body(Map.of("title", "Hijacked subtask", "completed", false))
+        .when()
+                .post("/api/todos/" + userATaskId + "/subtasks")
+        .then()
+                .statusCode(403)
+                .body("message", containsString("does not own task"));
+    }
+
+    /**
+     * Validates the following exchange from docs/module/05-api-contract.tex:
+     * <pre>
+     * GET /api/todos/{id}/subtasks/{subtaskId} HTTP/1.1
+     * ...
+     * 
+     * HTTP/1.1 403 Forbidden
+     * Content-Type: application/json
+     * 
+     * {
+     *     "status": 403,
+     *     "message": "User &lt;userId&gt; does not own task &lt;taskId&gt;"
+     * }
+     * </pre>
+     */
+    @Test
+    @Order(6)
+    @DisplayName("User B GET User A's subtask returns 403")
+    void crossUserGetSubtask_returns403() {
+        ensureSetup();
+
+        given()
+                .contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + tokenB)
+        .when()
+                .get("/api/todos/" + userATaskId + "/subtasks/" + userASubtaskId)
+        .then()
+                .statusCode(403)
+                .body("message", containsString("does not own task"));
+    }
+
+    /**
+     * Validates the following exchange from docs/module/05-api-contract.tex:
+     * <pre>
+     * PUT /api/todos/{id}/subtasks/{subtaskId} HTTP/1.1
+     * ...
+     * 
+     * HTTP/1.1 403 Forbidden
+     * Content-Type: application/json
+     * 
+     * {
+     *     "status": 403,
+     *     "message": "User &lt;userId&gt; does not own task &lt;taskId&gt;"
+     * }
+     * </pre>
+     */
+    @Test
+    @Order(7)
+    @DisplayName("User B PUT User A's subtask returns 403")
+    void crossUserUpdateSubtask_returns403() {
+        ensureSetup();
+
+        given()
+                .contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + tokenB)
+                .body(Map.of("title", "Hijacked subtask update", "completed", false))
+        .when()
+                .put("/api/todos/" + userATaskId + "/subtasks/" + userASubtaskId)
+        .then()
+                .statusCode(403)
+                .body("message", containsString("does not own task"));
+    }
+
+    /**
+     * Validates the following exchange from docs/module/05-api-contract.tex:
+     * <pre>
+     * DELETE /api/todos/{id}/subtasks/{subtaskId} HTTP/1.1
+     * ...
+     * 
+     * HTTP/1.1 403 Forbidden
+     * Content-Type: application/json
+     * 
+     * {
+     *     "status": 403,
+     *     "message": "User &lt;userId&gt; does not own task &lt;taskId&gt;"
+     * }
+     * </pre>
+     */
+    @Test
+    @Order(8)
+    @DisplayName("User B DELETE User A's subtask returns 403")
+    void crossUserDeleteSubtask_returns403() {
+        ensureSetup();
+
+        given()
+                .contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + tokenB)
+        .when()
+                .delete("/api/todos/" + userATaskId + "/subtasks/" + userASubtaskId)
+        .then()
+                .statusCode(403)
+                .body("message", containsString("does not own task"));
+    }
+
+    @Test
+    @Order(9)
     @DisplayName("User B list own tasks returns empty array")
     void userBListOwnTasks_returnsEmpty() {
         ensureSetup();
