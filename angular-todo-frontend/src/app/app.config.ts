@@ -1,6 +1,6 @@
 import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideAppInitializer, inject } from '@angular/core';
 import { provideRouter } from '@angular/router';
-import { provideHttpClient, withInterceptors, HttpBackend, HttpRequest } from '@angular/common/http';
+import { provideHttpClient, withInterceptors, HttpBackend, HttpRequest, HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 
 import { routes } from './app.routes';
@@ -38,19 +38,21 @@ export const appConfig: ApplicationConfig = {
     // [App initializer]
     //
     // Blocks rendering until config.json is fetched. Uses HttpBackend
-    // directly to avoid the authInterceptor (which would try to attach
-    // a JWT token to a config file request and may fail during bootstrap).
+    // directly (via a fresh HttpClient) to avoid the authInterceptor
+    // (which would try to attach a JWT token to a config file request).
     provideAppInitializer(() => {
       const httpBackend = inject(HttpBackend);
-      return firstValueFrom(
-        httpBackend.handle(new HttpRequest<AppConfig>('GET', '/config.json'))
-      ).then(event => {
-        if ('body' in event && event.body) {
-          loadedConfig = event.body as AppConfig;
-        }
-      }).catch(() => {
-        // Fallback: keep empty apiUrl (relative paths for local dev)
-      });
+      // Create a raw client without interceptors
+      const http = new HttpClient(httpBackend);
+      return firstValueFrom(http.get<AppConfig>('/config.json'))
+        .then(config => {
+          if (config) {
+            loadedConfig = config;
+          }
+        })
+        .catch(() => {
+          // Fallback: keep empty apiUrl (relative paths for local dev)
+        });
     }),
 
     // [APP_CONFIG provider]
