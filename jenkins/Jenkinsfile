@@ -17,6 +17,9 @@ pipeline {
         stage('Load Config') {
             steps {
                 script {
+                    // Read the mounted .env file and extract S3_BUCKET and
+                    // AWS_REGION into the Groovy env map. Uses substring/indexOf
+                    // because Jenkins sandbox blocks array indexing (getAt, putAt).
                     def content = readFile(env.ENV_FILE).trim()
                     content.split('\n').each { line ->
                         if (line && !line.startsWith('#') && line.contains('=')) {
@@ -33,7 +36,10 @@ pipeline {
         stage('Build Backend') {
             steps {
                 dir('spring-todo-backend') {
+                    // chmod +x: git does not preserve execute bit on Windows clones
                     sh 'chmod +x gradlew'
+                    // --no-daemon: prevent background Gradle process on t3.small
+                    // -Xmx512m: cap JVM heap to prevent OOM
                     sh './gradlew bootJar -x test --no-daemon -Dorg.gradle.jvmargs=-Xmx512m'
                 }
             }
@@ -42,6 +48,8 @@ pipeline {
         stage('Test Backend') {
             steps {
                 dir('spring-todo-backend') {
+                    // Run unit + integration tests only (service, security, rest)
+                    // Cucumber/E2E excluded (no browser on the server)
                     sh './gradlew test --tests "com.revature.todomanagement.service.*" --tests "com.revature.todomanagement.security.*" --tests "com.revature.todomanagement.rest.*" --no-daemon -Dorg.gradle.jvmargs=-Xmx512m'
                 }
             }
@@ -50,7 +58,11 @@ pipeline {
         stage('Build Frontend') {
             steps {
                 dir('angular-todo-frontend') {
+                    // npm ci: install exact lockfile versions (deterministic)
                     sh 'npm ci'
+                    // --configuration=production: AOT compilation + tree-shaking
+                    // Output goes to dist/angular-todo-frontend/browser/
+                    // Includes public/config.json with apiUrl:"" (empty for local)
                     sh 'npm run build -- --configuration=production'
                 }
             }
@@ -58,15 +70,18 @@ pipeline {
 
         stage('Deploy Backend') {
             steps {
+                // Build Docker image from the backend Dockerfile
                 sh "docker build -t ${BACKEND_IMAGE}:latest ./spring-todo-backend"
+                // Stop + remove old container (|| true so it doesn't fail if missing)
                 sh "docker stop ${BACKEND_IMAGE} || true"
                 sh "docker rm ${BACKEND_IMAGE} || true"
+                // Start new container with .env secrets and persistent SQLite volume
                 sh """
-                    docker run -d --name ${BACKEND_IMAGE} \
-                        -p 8080:8080 \
-                        --env-file ${ENV_FILE} \
-                        -v todo-data:/app/data \
-                        --restart unless-stopped \
+                    docker run -d --name ${BACKEND_IMAGE} \\
+                        -p 8080:8080 \\
+                        --env-file ${ENV_FILE} \\
+                        -v todo-data:/app/data \\
+                        --restart unless-stopped \\
                         ${BACKEND_IMAGE}:latest
                 """
             }
@@ -75,10 +90,23 @@ pipeline {
         stage('Deploy Frontend to S3') {
             steps {
                 sh """
+                    # Extract AWS credentials from the mounted .env file.
+                    # Jenkins does not auto-inject these; grep matches the key,
+                    # cut splits on '=' and takes the value portion.
                     export AWS_ACCESS_KEY_ID=\$(grep '^AWS_ACCESS_KEY_ID=' ${ENV_FILE} | cut -d= -f2)
                     export AWS_SECRET_ACCESS_KEY=\$(grep '^AWS_SECRET_ACCESS_KEY=' ${ENV_FILE} | cut -d= -f2)
                     export AWS_REGION=\$(grep '^AWS_REGION=' ${ENV_FILE} | cut -d= -f2)
                     S3_BUCKET=\$(grep '^S3_BUCKET=' ${ENV_FILE} | cut -d= -f2)
+
+                    # Overwrite config.json IN THE BUILD OUTPUT (not source code)
+                    # with the EC2 Elastic IP. The source repo ships config.json
+                    # with apiUrl:"" (empty) for local Docker/Nginx dev. This line
+                    # is the ONLY place the EC2 IP is hardcoded. If the Elastic IP
+                    # changes, update this line and re-run the pipeline.
+                    echo '{"apiUrl":"http://54.81.54.237:8080"}' > angular-todo-frontend/dist/angular-todo-frontend/browser/config.json
+
+                    # Upload to S3. --delete removes stale files (old JS chunks)
+                    # that no longer exist in the local dist/ directory.
                     aws s3 sync angular-todo-frontend/dist/angular-todo-frontend/browser/ s3://\${S3_BUCKET}/ --delete --region \${AWS_REGION}
                 """
             }

@@ -1,3 +1,13 @@
+# Jenkins plugins pre-installed at image build time via jenkins-plugin-cli.
+# Each plugin and its dependencies are resolved automatically.
+#
+# git                 - Git SCM support for checking out repositories
+# workflow-aggregator - Declarative Pipeline syntax support
+# pipeline-stage-view - Visual stage progress in Jenkins UI
+# github              - GitHub integration (webhook triggers, commit status)
+# credentials-binding - Secure credential injection into pipelines
+# docker-workflow     - Docker build/push steps within pipelines
+# junit               - Test result reporting (JUnit XML format)
 git
 workflow-aggregator
 pipeline-stage-view

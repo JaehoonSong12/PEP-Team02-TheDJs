@@ -3,6 +3,19 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable, map } from 'rxjs';
 
+/**
+ * Handles user authentication (login, register, logout).
+ *
+ * All HTTP calls use relative paths (`/api/auth/login`, `/api/auth/register`).
+ * The compiled JS bundle is identical across all environments. Environment-
+ * specific routing is handled by the `authInterceptor`, which reads the
+ * runtime `APP_CONFIG` token (loaded from `/config.json` at bootstrap):
+ * - Local Docker: `apiUrl` is empty, paths stay relative, Nginx proxies
+ *   `/api/*` to `backend:8080` (same origin, no CORS).
+ * - Production S3: `apiUrl` is `http://<EC2-IP>:8080`, the interceptor
+ *   prepends it to every `/api/*` call, making cross-origin requests to
+ *   EC2. Spring Boot CORS policy authorizes the S3 origin.
+ */
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private readonly http = inject(HttpClient);

@@ -3,9 +3,19 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Subtask } from '../models/subtask.model';
 
+/**
+ * CRUD operations for subtasks nested under a parent task.
+ *
+ * Uses relative path `/api/todos/{taskId}/subtasks`. The `authInterceptor`
+ * prepends the runtime `apiUrl` from `/config.json` when deployed to S3
+ * (production). Locally, `apiUrl` is empty and Nginx proxies relative
+ * paths to the backend.
+ */
 @Injectable({ providedIn: 'root' })
 export class SubtaskService {
   private readonly http = inject(HttpClient);
+
+  /** Relative API base — infrastructure handles routing to the backend. */
   private readonly apiUrl = '/api/todos';
 
   getSubtasks(taskId: string): Observable<Subtask[]> {
