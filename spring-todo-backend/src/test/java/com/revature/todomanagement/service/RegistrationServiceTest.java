@@ -18,16 +18,25 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+/**
+ * Unit tests for {@link RegistrationService}.
+ * Verifies business logic for user registration, ensuring that passwords are encrypted,
+ * usernames and passwords meet complexity and length requirements, and duplicate usernames
+ * are rejected before attempting to save to the database.
+ */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("RegistrationService")
 class RegistrationServiceTest {
 
+    // Mocked dependency required by RegistrationService
     @Mock
     UserRepository userRepository;
 
+    // Mocked dependency required by RegistrationService
     @Mock
     PasswordValidator passwordValidator;
 
+    // The real component being tested, with mocks injected
     @InjectMocks
     RegistrationService registrationService;
 

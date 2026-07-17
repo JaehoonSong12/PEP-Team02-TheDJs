@@ -65,11 +65,6 @@ Username must be between 5 and 18 characters.
 Password must not be blank.
 Password must contain at least one special character (!@#$%^&*).
 Username 'example' is already taken.
-
-HTTP/1.1 409 Conflict
-Content-Type: text/plain
-
-Could not complete registration: data conflict
 \end{httplisting}
 \end{httpexchange}
 
@@ -442,6 +437,14 @@ Content-Type: application/json
     "status": 404,
     "message": "Subtask not found: <subtaskId>"
 }
+
+HTTP/1.1 404 Not Found
+Content-Type: application/json
+
+{
+    "status": 404,
+    "message": "Task not found: <id>"
+}
 \end{httplisting}
 \end{httpexchange}
 
@@ -489,6 +492,14 @@ Content-Type: application/json
     "status": 404,
     "message": "Subtask not found: <subtaskId>"
 }
+
+HTTP/1.1 404 Not Found
+Content-Type: application/json
+
+{
+    "status": 404,
+    "message": "Task not found: <id>"
+}
 \end{httplisting}
 \end{httpexchange}
 
@@ -514,6 +525,14 @@ Content-Type: application/json
     "status": 404,
     "message": "Subtask not found: <subtaskId>"
 }
+
+HTTP/1.1 404 Not Found
+Content-Type: application/json
+
+{
+    "status": 404,
+    "message": "Task not found: <id>"
+}
 \end{httplisting}
 \end{httpexchange}
 
@@ -529,7 +548,6 @@ Content-Type: application/json
   \texttt{401} & \texttt{text/plain} & Missing, malformed, or expired token \\
   \texttt{403} & \texttt{application/json} & Authenticated user does not own the requested resource \\
   \texttt{404} & \texttt{application/json} & Resource (task or subtask) does not exist \\
-  \texttt{409} & \texttt{text/plain} & Data conflict (duplicate username at DB level) \\
   \texttt{503} & \texttt{text/plain} & Database temporarily unavailable \\
   \bottomrule
 \end{tabularx}

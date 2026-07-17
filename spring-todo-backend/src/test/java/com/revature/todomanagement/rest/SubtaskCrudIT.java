@@ -14,6 +14,8 @@ import static org.hamcrest.Matchers.*;
 /**
  * Integration tests for subtask CRUD operations.
  * Validates create, read, update, and delete of subtasks nested under a parent task.
+ * 
+ * @see "docs/module/05-api-contract.tex - Endpoint: POST, GET, PUT, DELETE /api/todos/{id}/subtasks"
  */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -63,6 +65,29 @@ class SubtaskCrudIT extends BaseIntegrationTest {
     //  Create Subtask Tests                                                //
     // ------------------------------------------------------------------ //
 
+    /**
+     * Validates the following exchange from docs/module/05-api-contract.tex:
+     * <pre>
+     * POST /api/todos/{id}/subtasks HTTP/1.1
+     * Content-Type: application/json
+     * Authorization: Bearer &lt;token&gt;
+     * 
+     * {
+     *     "title": "String",
+     *     "completed": boolean
+     * }
+     * 
+     * HTTP/1.1 200 OK
+     * Content-Type: application/json
+     * 
+     * {
+     *     "id": "UUID",
+     *     "taskId": "UUID",
+     *     "title": "String",
+     *     "completed": boolean
+     * }
+     * </pre>
+     */
     @Test
     @Order(1)
     @DisplayName("Create subtask with valid title returns 200")
@@ -85,6 +110,21 @@ class SubtaskCrudIT extends BaseIntegrationTest {
         subtaskId = response.jsonPath().getString("id");
     }
 
+    /**
+     * Validates the following exchange from docs/module/05-api-contract.tex:
+     * <pre>
+     * POST /api/todos/{id}/subtasks HTTP/1.1
+     * ...
+     * 
+     * HTTP/1.1 400 Bad Request
+     * Content-Type: application/json
+     * 
+     * {
+     *     "status": 400,
+     *     "message": "Subtask title must not be blank."
+     * }
+     * </pre>
+     */
     @Test
     @Order(2)
     @DisplayName("Create subtask with blank title returns 400")
@@ -100,10 +140,61 @@ class SubtaskCrudIT extends BaseIntegrationTest {
                 .body("message", containsString("Subtask title must not be blank."));
     }
 
+    /**
+     * Validates the following exchange from docs/module/05-api-contract.tex:
+     * <pre>
+     * POST /api/todos/{id}/subtasks HTTP/1.1
+     * ...
+     * 
+     * HTTP/1.1 404 Not Found
+     * Content-Type: application/json
+     * 
+     * {
+     *     "status": 404,
+     *     "message": "Task not found: &lt;id&gt;"
+     * }
+     * </pre>
+     */
+    @Test
+    @Order(2)
+    @DisplayName("Create subtask on non-existent task returns 404")
+    void createSubtaskNonExistentTask_returns404() {
+        String randomId = UUID.randomUUID().toString();
+
+        given()
+                .contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + token)
+                .body(Map.of("title", "Valid title", "completed", false))
+        .when()
+                .post("/api/todos/" + randomId + "/subtasks")
+        .then()
+                .statusCode(404)
+                .body("message", containsString("Task not found"));
+    }
+
     // ------------------------------------------------------------------ //
     //  List Subtasks Tests                                                 //
     // ------------------------------------------------------------------ //
 
+    /**
+     * Validates the following exchange from docs/module/05-api-contract.tex:
+     * <pre>
+     * GET /api/todos/{id}/subtasks HTTP/1.1
+     * Authorization: Bearer &lt;token&gt;
+     * 
+     * HTTP/1.1 200 OK
+     * Content-Type: application/json
+     * 
+     * [
+     *     {
+     *         "id": "UUID",
+     *         "taskId": "UUID",
+     *         "title": "String",
+     *         "completed": boolean
+     *     }
+     * ]
+     * </pre>
+     */
     @Test
     @Order(3)
     @DisplayName("List subtasks returns all subtasks for task")
@@ -122,6 +213,18 @@ class SubtaskCrudIT extends BaseIntegrationTest {
                 .body("[0].completed", equalTo(false));
     }
 
+    /**
+     * Validates the following exchange from docs/module/05-api-contract.tex:
+     * <pre>
+     * GET /api/todos/{id}/subtasks HTTP/1.1
+     * ...
+     * 
+     * HTTP/1.1 200 OK
+     * Content-Type: application/json
+     * 
+     * []
+     * </pre>
+     */
     @Test
     @Order(4)
     @DisplayName("List subtasks for task with no subtasks returns empty array")
@@ -140,6 +243,23 @@ class SubtaskCrudIT extends BaseIntegrationTest {
     //  Get Subtask by ID Tests                                             //
     // ------------------------------------------------------------------ //
 
+    /**
+     * Validates the following exchange from docs/module/05-api-contract.tex:
+     * <pre>
+     * GET /api/todos/{id}/subtasks/{subtaskId} HTTP/1.1
+     * Authorization: Bearer &lt;token&gt;
+     * 
+     * HTTP/1.1 200 OK
+     * Content-Type: application/json
+     * 
+     * {
+     *     "id": "UUID",
+     *     "taskId": "UUID",
+     *     "title": "String",
+     *     "completed": boolean
+     * }
+     * </pre>
+     */
     @Test
     @Order(5)
     @DisplayName("Get subtask by ID returns 200")
@@ -157,6 +277,21 @@ class SubtaskCrudIT extends BaseIntegrationTest {
                 .body("completed", equalTo(false));
     }
 
+    /**
+     * Validates the following exchange from docs/module/05-api-contract.tex:
+     * <pre>
+     * GET /api/todos/{id}/subtasks/{subtaskId} HTTP/1.1
+     * ...
+     * 
+     * HTTP/1.1 404 Not Found
+     * Content-Type: application/json
+     * 
+     * {
+     *     "status": 404,
+     *     "message": "Subtask not found: &lt;subtaskId&gt;"
+     * }
+     * </pre>
+     */
     @Test
     @Order(6)
     @DisplayName("Get subtask by non-existent ID returns 404")
@@ -177,6 +312,29 @@ class SubtaskCrudIT extends BaseIntegrationTest {
     //  Update Subtask Tests                                                //
     // ------------------------------------------------------------------ //
 
+    /**
+     * Validates the following exchange from docs/module/05-api-contract.tex:
+     * <pre>
+     * PUT /api/todos/{id}/subtasks/{subtaskId} HTTP/1.1
+     * Content-Type: application/json
+     * Authorization: Bearer &lt;token&gt;
+     * 
+     * {
+     *     "title": "String",
+     *     "completed": boolean
+     * }
+     * 
+     * HTTP/1.1 200 OK
+     * Content-Type: application/json
+     * 
+     * {
+     *     "id": "UUID",
+     *     "taskId": "UUID",
+     *     "title": "String",
+     *     "completed": boolean
+     * }
+     * </pre>
+     */
     @Test
     @Order(7)
     @DisplayName("Update subtask returns 200")
@@ -195,6 +353,21 @@ class SubtaskCrudIT extends BaseIntegrationTest {
                 .body("completed", equalTo(true));
     }
 
+    /**
+     * Validates the following exchange from docs/module/05-api-contract.tex:
+     * <pre>
+     * PUT /api/todos/{id}/subtasks/{subtaskId} HTTP/1.1
+     * ...
+     * 
+     * HTTP/1.1 400 Bad Request
+     * Content-Type: application/json
+     * 
+     * {
+     *     "status": 400,
+     *     "message": "Subtask title must not be blank."
+     * }
+     * </pre>
+     */
     @Test
     @Order(8)
     @DisplayName("Update subtask with blank title returns 400")
@@ -210,10 +383,51 @@ class SubtaskCrudIT extends BaseIntegrationTest {
                 .body("message", containsString("Subtask title must not be blank."));
     }
 
+    /**
+     * Validates the following exchange from docs/module/05-api-contract.tex:
+     * <pre>
+     * PUT /api/todos/{id}/subtasks/{subtaskId} HTTP/1.1
+     * ...
+     * 
+     * HTTP/1.1 404 Not Found
+     * Content-Type: application/json
+     * 
+     * {
+     *     "status": 404,
+     *     "message": "Subtask not found: &lt;subtaskId&gt;"
+     * }
+     * </pre>
+     */
+    @Test
+    @Order(8)
+    @DisplayName("Update non-existent subtask returns 404")
+    void updateNonExistentSubtask_returns404() {
+        String randomId = UUID.randomUUID().toString();
+
+        given()
+                .contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + token)
+                .body(Map.of("title", "Valid update", "completed", false))
+        .when()
+                .put("/api/todos/" + parentTaskId + "/subtasks/" + randomId)
+        .then()
+                .statusCode(404)
+                .body("message", containsString("Subtask not found"));
+    }
+
     // ------------------------------------------------------------------ //
     //  Delete Subtask Tests                                                //
     // ------------------------------------------------------------------ //
 
+    /**
+     * Validates the following exchange from docs/module/05-api-contract.tex:
+     * <pre>
+     * DELETE /api/todos/{id}/subtasks/{subtaskId} HTTP/1.1
+     * Authorization: Bearer &lt;token&gt;
+     * 
+     * HTTP/1.1 204 No Content
+     * </pre>
+     */
     @Test
     @Order(9)
     @DisplayName("Delete subtask returns 204")
@@ -227,6 +441,21 @@ class SubtaskCrudIT extends BaseIntegrationTest {
                 .statusCode(204);
     }
 
+    /**
+     * Validates the following exchange from docs/module/05-api-contract.tex:
+     * <pre>
+     * DELETE /api/todos/{id}/subtasks/{subtaskId} HTTP/1.1
+     * ...
+     * 
+     * HTTP/1.1 404 Not Found
+     * Content-Type: application/json
+     * 
+     * {
+     *     "status": 404,
+     *     "message": "Subtask not found: &lt;subtaskId&gt;"
+     * }
+     * </pre>
+     */
     @Test
     @Order(10)
     @DisplayName("Delete already deleted subtask returns 404")
@@ -245,6 +474,21 @@ class SubtaskCrudIT extends BaseIntegrationTest {
     //  Non-existent Parent Task Test                                        //
     // ------------------------------------------------------------------ //
 
+    /**
+     * Validates the following exchange from docs/module/05-api-contract.tex:
+     * <pre>
+     * GET /api/todos/{id}/subtasks HTTP/1.1
+     * ...
+     * 
+     * HTTP/1.1 404 Not Found
+     * Content-Type: application/json
+     * 
+     * {
+     *     "status": 404,
+     *     "message": "Task not found: &lt;id&gt;"
+     * }
+     * </pre>
+     */
     @Test
     @Order(11)
     @DisplayName("List subtasks for non-existent task returns 404")

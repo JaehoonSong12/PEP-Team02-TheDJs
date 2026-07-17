@@ -13,6 +13,8 @@ import static org.hamcrest.Matchers.*;
  * Integration tests for the business rule: no subtasks on completed tasks.
  * Verifies that marking a task as completed succeeds, adding a subtask to a completed task
  * is rejected with 400, and adding a subtask to an incomplete task succeeds.
+ * 
+ * @see "docs/module/05-api-contract.tex - Endpoint: POST /api/todos/{id}/subtasks (Business Rule)"
  */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -50,6 +52,27 @@ class BusinessRuleIT extends BaseIntegrationTest {
     //  Business Rule Tests                                                 //
     // ------------------------------------------------------------------ //
 
+    /**
+     * Validates the following exchange from docs/module/05-api-contract.tex:
+     * <pre>
+     * PUT /api/todos/{id} HTTP/1.1
+     * Content-Type: application/json
+     * Authorization: Bearer &lt;token&gt;
+     * 
+     * {
+     *     "title": "Business Rule Task",
+     *     "completed": true
+     * }
+     * 
+     * HTTP/1.1 200 OK
+     * Content-Type: application/json
+     * 
+     * {
+     *     ...
+     *     "completed": true
+     * }
+     * </pre>
+     */
     @Test
     @Order(1)
     @DisplayName("Mark task as completed returns 200 with completed: true")
@@ -67,6 +90,21 @@ class BusinessRuleIT extends BaseIntegrationTest {
                 .body("completed", equalTo(true));
     }
 
+    /**
+     * Validates the following exchange from docs/module/05-api-contract.tex:
+     * <pre>
+     * POST /api/todos/{id}/subtasks HTTP/1.1
+     * ...
+     * 
+     * HTTP/1.1 400 Bad Request
+     * Content-Type: application/json
+     * 
+     * {
+     *     "status": 400,
+     *     "message": "Cannot add subtasks to a completed task."
+     * }
+     * </pre>
+     */
     @Test
     @Order(2)
     @DisplayName("Create subtask on completed task returns 400")
@@ -84,6 +122,29 @@ class BusinessRuleIT extends BaseIntegrationTest {
                 .body("message", containsString("Cannot add subtasks to a completed task."));
     }
 
+    /**
+     * Validates the following exchange from docs/module/05-api-contract.tex:
+     * <pre>
+     * POST /api/todos/{id}/subtasks HTTP/1.1
+     * Content-Type: application/json
+     * Authorization: Bearer &lt;token&gt;
+     * 
+     * {
+     *     "title": "Valid Subtask",
+     *     "completed": false
+     * }
+     * 
+     * HTTP/1.1 200 OK
+     * Content-Type: application/json
+     * 
+     * {
+     *     "id": "UUID",
+     *     "taskId": "UUID",
+     *     "title": "Valid Subtask",
+     *     "completed": false
+     * }
+     * </pre>
+     */
     @Test
     @Order(3)
     @DisplayName("Create subtask on incomplete task returns 200")

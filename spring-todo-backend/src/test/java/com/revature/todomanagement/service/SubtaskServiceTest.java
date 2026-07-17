@@ -7,6 +7,7 @@ import com.revature.todomanagement.exception.TaskNotFoundException;
 import com.revature.todomanagement.exception.TaskOwnershipException;
 import com.revature.todomanagement.repository.SubtaskRepository;
 import com.revature.todomanagement.repository.TaskRepository;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -20,15 +21,26 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+/**
+ * Unit tests for {@link SubtaskService}.
+ * Verifies business rules related to subtask management, including creating, updating,
+ * and deleting subtasks. Asserts that subtasks cannot be added to completed parent tasks,
+ * titles cannot be blank, and cross-user modifications are correctly prevented by validating
+ * parent task ownership.
+ */
 @ExtendWith(MockitoExtension.class)
+@DisplayName("SubtaskService")
 class SubtaskServiceTest {
 
+    // Mocked dependency required by SubtaskService
     @Mock
     private SubtaskRepository subtaskRepository;
 
+    // Mocked dependency required by SubtaskService
     @Mock
     private TaskRepository taskRepository;
 
+    // The real component being tested, with mocks injected
     @InjectMocks
     private SubtaskService subtaskService;
 
@@ -36,10 +48,12 @@ class SubtaskServiceTest {
 
     @Test
     void createSubtask_validTitle_savesAndReturnsSubtask() {
+        // Arranage
         UUID userId = UUID.randomUUID();
         UUID taskId = UUID.randomUUID();
         UUID subtaskId = UUID.randomUUID();
 
+        // Act
         Task task = new Task(taskId, userId, "Parent Task", false);
         when(taskRepository.findById(taskId)).thenReturn(Optional.of(task));
 
@@ -49,6 +63,7 @@ class SubtaskServiceTest {
 
         Subtask result = subtaskService.createSubtask(userId, taskId, input);
 
+        // Assert
         verify(subtaskRepository, times(1)).save(any(Subtask.class));
         assertEquals(taskId, result.getTaskId());
         assertEquals(subtaskId, result.getId());
