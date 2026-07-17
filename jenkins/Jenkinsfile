@@ -1,0 +1,94 @@
+pipeline {
+    agent any
+
+    environment {
+        BACKEND_IMAGE = 'todo-backend'
+        ENV_FILE = '/run/secrets/.env'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main',
+                    url: 'https://github.com/JaehoonSong12/PEP-Team02-TheDJs.git'
+            }
+        }
+
+        stage('Load Config') {
+            steps {
+                script {
+                    def envVars = readFile(env.ENV_FILE).split('\n')
+                    envVars.each { line ->
+                        if (line && !line.startsWith('#')) {
+                            def parts = line.split('=', 2)
+                            if (parts.length == 2) {
+                                env[parts[0].trim()] = parts[1].trim()
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        stage('Build Backend') {
+            steps {
+                dir('spring-todo-backend') {
+                    sh './gradlew bootJar -x test'
+                }
+            }
+        }
+
+        stage('Test Backend') {
+            steps {
+                dir('spring-todo-backend') {
+                    sh './gradlew test --tests "com.revature.todomanagement.service.*" --tests "com.revature.todomanagement.security.*" --tests "com.revature.todomanagement.rest.*"'
+                }
+            }
+            post {
+                always {
+                    junit 'spring-todo-backend/build/test-results/test/*.xml'
+                }
+            }
+        }
+
+        stage('Build Frontend') {
+            steps {
+                dir('angular-todo-frontend') {
+                    sh 'npm ci'
+                    sh 'npm run build -- --configuration=production'
+                }
+            }
+        }
+
+        stage('Deploy Backend') {
+            steps {
+                sh "docker build -t ${BACKEND_IMAGE}:latest ./spring-todo-backend"
+                sh "docker stop ${BACKEND_IMAGE} || true"
+                sh "docker rm ${BACKEND_IMAGE} || true"
+                sh """
+                    docker run -d --name ${BACKEND_IMAGE} \
+                        -p 8080:8080 \
+                        --env-file ${ENV_FILE} \
+                        -v todo-data:/app/data \
+                        --restart unless-stopped \
+                        ${BACKEND_IMAGE}:latest
+                """
+            }
+        }
+
+        stage('Deploy Frontend to S3') {
+            steps {
+                sh "aws s3 sync angular-todo-frontend/dist/angular-todo-frontend/browser/ s3://${env.S3_BUCKET}/ --delete --region ${env.AWS_REGION}"
+            }
+        }
+    }
+
+    post {
+        failure {
+            echo 'Pipeline failed. No deployment made.'
+        }
+        success {
+            echo 'Pipeline succeeded. Backend restarted, frontend synced to S3.'
+        }
+    }
+}
