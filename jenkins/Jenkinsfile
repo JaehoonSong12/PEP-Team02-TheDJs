@@ -17,15 +17,15 @@ pipeline {
         stage('Load Config') {
             steps {
                 script {
-                    def props = readFile(env.ENV_FILE).trim().split('\n')
-                    def envList = []
-                    props.each { line ->
+                    def content = readFile(env.ENV_FILE).trim()
+                    content.split('\n').each { line ->
                         if (line && !line.startsWith('#') && line.contains('=')) {
-                            envList.add(line.trim())
+                            def key = line.substring(0, line.indexOf('='))
+                            def val = line.substring(line.indexOf('=') + 1)
+                            if (key == 'S3_BUCKET') { env.S3_BUCKET = val }
+                            if (key == 'AWS_REGION') { env.AWS_REGION = val }
                         }
                     }
-                    env.S3_BUCKET = envList.find { it.startsWith('S3_BUCKET=') }?.split('=', 2)?.getAt(1) ?: ''
-                    env.AWS_REGION = envList.find { it.startsWith('AWS_REGION=') }?.split('=', 2)?.getAt(1) ?: 'us-east-1'
                 }
             }
         }
