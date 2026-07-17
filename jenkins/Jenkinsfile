@@ -45,11 +45,6 @@ pipeline {
                     sh './gradlew test --tests "com.revature.todomanagement.service.*" --tests "com.revature.todomanagement.security.*" --tests "com.revature.todomanagement.rest.*" --no-daemon -Dorg.gradle.jvmargs=-Xmx512m'
                 }
             }
-            post {
-                always {
-                    junit 'spring-todo-backend/build/test-results/test/*.xml'
-                }
-            }
         }
 
         stage('Build Frontend') {

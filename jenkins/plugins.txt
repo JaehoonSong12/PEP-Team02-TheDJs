@@ -4,3 +4,4 @@ pipeline-stage-view
 github
 credentials-binding
 docker-workflow
+junit
