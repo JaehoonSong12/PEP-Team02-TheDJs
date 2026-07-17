@@ -33,6 +33,7 @@ pipeline {
         stage('Build Backend') {
             steps {
                 dir('spring-todo-backend') {
+                    sh 'chmod +x gradlew'
                     sh './gradlew bootJar -x test'
                 }
             }
