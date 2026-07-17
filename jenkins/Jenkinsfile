@@ -90,20 +90,18 @@ pipeline {
         stage('Deploy Frontend to S3') {
             steps {
                 sh """
-                    # Extract AWS credentials from the mounted .env file.
-                    # Jenkins does not auto-inject these; grep matches the key,
-                    # cut splits on '=' and takes the value portion.
-                    export AWS_ACCESS_KEY_ID=\$(grep '^AWS_ACCESS_KEY_ID=' ${ENV_FILE} | cut -d= -f2)
-                    export AWS_SECRET_ACCESS_KEY=\$(grep '^AWS_SECRET_ACCESS_KEY=' ${ENV_FILE} | cut -d= -f2)
-                    export AWS_REGION=\$(grep '^AWS_REGION=' ${ENV_FILE} | cut -d= -f2)
-                    S3_BUCKET=\$(grep '^S3_BUCKET=' ${ENV_FILE} | cut -d= -f2)
+                    # --- Extract AWS credentials and IP from the mounted .env file ---
+                    # Using 'set -a' automatically exports all variables sourced from the file.
+                    # This is much safer than grep/cut because it correctly handles AWS secret
+                    # keys that contain '=' characters and strips quotes.
+                    set -a
+                    . ${ENV_FILE}
+                    set +a
 
                     # Overwrite config.json IN THE BUILD OUTPUT (not source code)
-                    # with the EC2 Elastic IP. The source repo ships config.json
-                    # with apiUrl:"" (empty) for local Docker/Nginx dev. This line
-                    # is the ONLY place the EC2 IP is hardcoded. If the Elastic IP
-                    # changes, update this line and re-run the pipeline.
-                    echo '{"apiUrl":"http://54.81.54.237:8080"}' > angular-todo-frontend/dist/angular-todo-frontend/browser/config.json
+                    # with the EC2 Elastic IP from .env. The source repo ships
+                    # config.json with apiUrl:"" (empty) for local Docker dev.
+                    echo '{"apiUrl":"http://'\${EC2_PUBLIC_IP}':8080"}' > angular-todo-frontend/dist/angular-todo-frontend/browser/config.json
 
                     # Upload to S3. --delete removes stale files (old JS chunks)
                     # that no longer exist in the local dist/ directory.
