@@ -1,0 +1,16 @@
+services:
+  jenkins:
+    build: .
+    ports:
+      - "9090:8080"
+      - "50000:50000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - jenkins_home:/var/jenkins_home
+      - /home/ec2-user/.env:/run/secrets/.env:ro
+    environment:
+      - JAVA_OPTS=-Djenkins.install.runSetupWizard=false
+    restart: unless-stopped
+
+volumes:
+  jenkins_home:
