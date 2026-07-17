@@ -1,16 +1,18 @@
+# Jenkins CI/CD container configuration.
+# Runs on EC2 alongside the backend container as a sibling (not nested).
 services:
   jenkins:
-    build: .
+    build: .                              # Builds from jenkins/Dockerfile
     ports:
-      - "9090:8080"
-      - "50000:50000"
+      - "9090:8080"                       # Jenkins UI on host port 9090 (8080 taken by backend)
+      - "50000:50000"                     # Agent protocol port (unused in single-node setup)
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - jenkins_home:/var/jenkins_home
-      - /home/ec2-user/.env:/run/secrets/.env:ro
+      - /var/run/docker.sock:/var/run/docker.sock   # DooD: host Docker socket mounted in
+      - jenkins_home:/var/jenkins_home              # Persist jobs, config, build history
+      - /home/ec2-user/.env:/run/secrets/.env:ro    # Production secrets (read-only mount)
     environment:
-      - JAVA_OPTS=-Djenkins.install.runSetupWizard=false
-    restart: unless-stopped
+      - JAVA_OPTS=-Djenkins.install.runSetupWizard=false  # Skip setup wizard (plugins pre-installed)
+    restart: unless-stopped               # Auto-restart after EC2 reboots
 
 volumes:
   jenkins_home:

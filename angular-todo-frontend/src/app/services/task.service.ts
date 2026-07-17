@@ -3,9 +3,18 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Task } from '../models/task.model';
 
+/**
+ * CRUD operations for top-level tasks.
+ *
+ * Uses relative path `/api/todos`. The `authInterceptor` prepends the
+ * runtime `apiUrl` from `/config.json` when deployed to S3 (production).
+ * Locally, `apiUrl` is empty and Nginx proxies relative paths to the backend.
+ */
 @Injectable({ providedIn: 'root' })
 export class TaskService {
   private readonly http = inject(HttpClient);
+
+  /** Relative API base — infrastructure handles routing to the backend. */
   private readonly apiUrl = '/api/todos';
 
   getTasks(): Observable<Task[]> {
